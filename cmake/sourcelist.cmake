@@ -1,0 +1,17 @@
+set(sources
+    src/Application.cpp
+    src/Configuration.cpp
+    src/Hooks.cpp
+    src/HotkeyManager.cpp
+    src/ImGui/Renderer.cpp
+    src/Main.cpp
+    src/Menu.cpp
+    src/Util/Win.cpp
+    vendor/imgui.cpp
+    vendor/imgui_demo.cpp
+    vendor/imgui_draw.cpp
+    vendor/imgui_impl_dx11.cpp
+    vendor/imgui_impl_win32.cpp
+    vendor/imgui_tables.cpp
+    vendor/imgui_widgets.cpp
+)

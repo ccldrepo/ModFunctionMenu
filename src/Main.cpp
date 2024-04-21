@@ -3,7 +3,8 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 #include "Configuration.h"
-#include "EventSink.h"
+#include "Hooks.h"
+#include "ImGui/Renderer.h"
 #include "Util/Win.h"
 
 namespace
@@ -33,8 +34,8 @@ namespace
     void OnMessage(SKSE::MessagingInterface::Message* a_message)
     {
         switch (a_message->type) {
-        case SKSE::MessagingInterface::kInputLoaded:
-            InputEventSink::Register();
+        case SKSE::MessagingInterface::kPostPostLoad:
+            Hooks::Install();
             break;
         default:
             break;
@@ -62,6 +63,8 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
     SKSE::Init(a_skse);
 
     Configuration::Init();
+
+    ImGui::Install();
 
     SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
 

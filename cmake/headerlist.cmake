@@ -1,0 +1,20 @@
+set(headers
+    src/Application.h
+    src/Configuration.h
+    src/Hooks.h
+    src/HotkeyManager.h
+    src/ImGui/Renderer.h
+    src/Menu.h
+    src/PCH.h
+    src/Util/Singleton.h
+    src/Util/TOML.h
+    src/Util/Win.h
+    vendor/imconfig.h
+    vendor/imgui.h
+    vendor/imgui_impl_dx11.h
+    vendor/imgui_impl_win32.h
+    vendor/imgui_internal.h
+    vendor/imstb_rectpack.h
+    vendor/imstb_textedit.h
+    vendor/imstb_truetype.h
+)
