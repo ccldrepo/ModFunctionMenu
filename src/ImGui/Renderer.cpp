@@ -7,6 +7,7 @@
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 
+#include "../CLib/Hook.h"
 #include "../Menu.h"
 
 namespace ImGui
@@ -25,7 +26,7 @@ namespace ImGui
         static inline WNDPROC func;
     };
 
-    struct D3DInitHook
+    struct D3DInitHook : CLib::CallHook<D3DInitHook>
     {
         static void thunk()
         {
@@ -82,9 +83,14 @@ namespace ImGui
         }
 
         static inline REL::Relocation<decltype(thunk)> func;
+
+        static constexpr std::string_view name{ "D3DInit"sv };
+
+        static constexpr REL::RelocationID  id{ 75595, 77226, 0xDC5530 };
+        static constexpr REL::VariantOffset offset{ 0x9, 0x275, 0x9 };
     };
 
-    struct DXGIPresentHook
+    struct DXGIPresentHook : CLib::CallHook<DXGIPresentHook>
     {
         static void thunk(std::uint32_t a_timer)
         {
@@ -118,18 +124,16 @@ namespace ImGui
         }
 
         static inline REL::Relocation<decltype(thunk)> func;
+
+        static constexpr std::string_view name{ "DXGIPresent"sv };
+
+        static constexpr REL::RelocationID  id{ 75461, 77246, 0xDBBDD };
+        static constexpr REL::VariantOffset offset{ 0x9, 0x9, 0x15 };
     };
 
     void Install()
     {
-        REL::Relocation<std::uintptr_t> target{ REL::RelocationID(75595, 77226, 0xDC5530),
-            REL::VariantOffset(0x9, 0x275, 0x9) };
-        SKSE::stl::write_thunk_call<D3DInitHook>(target);
-        SKSE::log::info("Hooked 0x{:016X} call.", target.address());
-
-        REL::Relocation<std::uintptr_t> target2{ REL::RelocationID(75461, 77246, 0xDBBDD),
-            REL::VariantOffset(0x9, 0x9, 0x15) };
-        SKSE::stl::write_thunk_call<DXGIPresentHook>(target2);
-        SKSE::log::info("Hooked 0x{:016X} call.", target2.address());
+        D3DInitHook::Install();
+        DXGIPresentHook::Install();
     }
 }

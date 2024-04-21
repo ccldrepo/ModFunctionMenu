@@ -35,7 +35,7 @@ namespace
     {
         switch (a_message->type) {
         case SKSE::MessagingInterface::kPostPostLoad:
-            Hooks::Install();
+            ProcessInputQueueHook::Install();
             break;
         default:
             break;

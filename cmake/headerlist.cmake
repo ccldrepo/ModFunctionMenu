@@ -1,5 +1,6 @@
 set(headers
     src/Application.h
+    src/CLib/Hook.h
     src/Configuration.h
     src/Hooks.h
     src/HotkeyManager.h
