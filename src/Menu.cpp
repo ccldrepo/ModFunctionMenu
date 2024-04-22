@@ -6,17 +6,20 @@
 #include <imgui_internal.h>
 
 #include "ImGui/Renderer.h"
+#include "InputManager.h"
 
 void Menu::Open()
 {
     isOpen = true;
     ImGui::shouldRender = true;
+    InputManager::SetBlocked();
 }
 
 void Menu::Close()
 {
     isOpen = false;
     ImGui::shouldRender = false;
+    InputManager::SetWantUnblock();
 }
 
 void Menu::Toggle()

@@ -119,7 +119,6 @@ namespace
         {
             if (hotkey.IsActive()) {
                 menu->Open();
-                HotkeyManager::shouldBlockInput = true;
             }
         }
 
@@ -154,7 +153,6 @@ namespace
         {
             if (esc.IsActive() || hotkey.IsActive()) {
                 menu->Close();
-                HotkeyManager::shouldBlockInput = false;
             }
         }
 

@@ -5,6 +5,7 @@ set(headers
     src/Hooks.h
     src/HotkeyManager.h
     src/ImGui/Renderer.h
+    src/InputManager.h
     src/Menu.h
     src/PCH.h
     src/Util/Singleton.h
