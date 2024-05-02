@@ -6,9 +6,9 @@ namespace ImGui
 {
     namespace
     {
-        inline ImGuiKey ParseKeyFromKeyboard(std::uint32_t a_key)
+        inline ImGuiKey ParseKeyFromKeyboard(RE::BSKeyboardDevice::Key a_key)
         {
-            switch (static_cast<RE::BSKeyboardDevice::Key>(a_key)) {
+            switch (a_key) {
             // 512
             case RE::BSKeyboardDevice::Key::kTab:
                 return ImGuiKey_Tab;
@@ -224,6 +224,52 @@ namespace ImGui
             }
         }
 
+        inline ImGuiKey ParseKeyFromKeyboard(std::uint32_t a_key)
+        {
+            return ParseKeyFromKeyboard(static_cast<RE::BSKeyboardDevice::Key>(a_key));
+        }
+
+        inline ImGuiKey ParseKeyFromGamepad(RE::BSWin32GamepadDevice::Key a_key)
+        {
+            switch (a_key) {
+            case RE::BSWin32GamepadDevice::Key::kUp:
+                return ImGuiKey_GamepadDpadUp;
+            case RE::BSWin32GamepadDevice::Key::kDown:
+                return ImGuiKey_GamepadDpadDown;
+            case RE::BSWin32GamepadDevice::Key::kLeft:
+                return ImGuiKey_GamepadDpadLeft;
+            case RE::BSWin32GamepadDevice::Key::kRight:
+                return ImGuiKey_GamepadDpadRight;
+            case RE::BSWin32GamepadDevice::Key::kStart:
+                return ImGuiKey_GamepadStart;
+            case RE::BSWin32GamepadDevice::Key::kBack:
+                return ImGuiKey_GamepadBack;
+            case RE::BSWin32GamepadDevice::Key::kLeftThumb:
+                return ImGuiKey_GamepadL3;
+            case RE::BSWin32GamepadDevice::Key::kRightThumb:
+                return ImGuiKey_GamepadR3;
+            case RE::BSWin32GamepadDevice::Key::kLeftShoulder:
+                return ImGuiKey_GamepadL1;
+            case RE::BSWin32GamepadDevice::Key::kRightShoulder:
+                return ImGuiKey_GamepadR1;
+            case RE::BSWin32GamepadDevice::Key::kA:
+                return ImGuiKey_GamepadFaceDown;
+            case RE::BSWin32GamepadDevice::Key::kB:
+                return ImGuiKey_GamepadFaceRight;
+            case RE::BSWin32GamepadDevice::Key::kX:
+                return ImGuiKey_GamepadFaceLeft;
+            case RE::BSWin32GamepadDevice::Key::kY:
+                return ImGuiKey_GamepadFaceUp;
+            default:
+                return ImGuiKey_None;
+            }
+        }
+
+        inline ImGuiKey ParseKeyFromGamepad(std::uint32_t a_key)
+        {
+            return ParseKeyFromGamepad(static_cast<RE::BSWin32GamepadDevice::Key>(a_key));
+        }
+
         inline void TranslateButtonEvent(ImGuiIO& io, const RE::ButtonEvent* button)
         {
             if (!button->HasIDCode()) {
@@ -250,6 +296,12 @@ namespace ImGui
                         io.AddMouseButtonEvent(key, button->IsPressed());
                         break;
                     }
+                }
+                break;
+            case RE::INPUT_DEVICE::kGamepad:
+                {
+                    auto imKey = ImGui::ParseKeyFromGamepad(button->GetIDCode());
+                    io.AddKeyEvent(imKey, button->IsPressed());
                 }
                 break;
             default:
