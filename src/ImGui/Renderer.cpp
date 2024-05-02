@@ -61,6 +61,8 @@ namespace ImGui
             io.ConfigFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
                              ImGuiConfigFlags_NoMouseCursorChange;
             io.IniFilename = nullptr;
+            io.MouseDrawCursor = true;
+            io.ConfigWindowsMoveFromTitleBarOnly = true;
 
             if (!ImGui_ImplWin32_Init(desc.OutputWindow)) {
                 SKSE::log::error("ImGui initialization failed (Win32)");

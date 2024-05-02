@@ -320,15 +320,15 @@ namespace ImGui
             if (auto button = event->AsButtonEvent()) {
                 TranslateButtonEvent(io, button);
             } else if (auto mouseMove = event->AsMouseMoveEvent()) {
-                if (cursorHandler) {
-                    cursorHandler->ProcessMouseMove(mouseMove);
-                }
+                //if (cursorHandler) {
+                //    cursorHandler->ProcessMouseMove(mouseMove);
+                //}
             } else if (auto charEvent = event->AsCharEvent()) {
                 io.AddInputCharacter(charEvent->keycode);
             } else if (auto thumbstick = event->AsThumbstickEvent()) {
-                if (cursorHandler) {
-                    cursorHandler->ProcessThumbstick(thumbstick);
-                }
+                //if (cursorHandler) {
+                //    cursorHandler->ProcessThumbstick(thumbstick);
+                //}
             }
         }
     }
