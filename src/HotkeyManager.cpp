@@ -2,7 +2,6 @@
 
 #include "CLib/Key.h"
 #include "Configuration.h"
-#include "Menu.h"
 
 namespace
 {
@@ -28,10 +27,10 @@ namespace
             }
         }
 
-        void Finalize(Menu* menu)
+        void Finalize(Menu* a_menu)
         {
             if (hotkey.IsActive()) {
-                menu->Open();
+                a_menu->Open();
             }
         }
 
@@ -62,10 +61,10 @@ namespace
             }
         }
 
-        void Finalize(Menu* menu)
+        void Finalize(Menu* a_menu)
         {
             if (esc.IsActive() || hotkey.IsActive()) {
-                menu->Close();
+                a_menu->Close();
             }
         }
 
@@ -75,7 +74,7 @@ namespace
     };
 
     template <class HotkeyContext>
-    void ProcessMenuOpenClose(const RE::InputEvent* const* a_event, Menu* menu)
+    void ProcessMenuOpenClose(const RE::InputEvent* const* a_event, Menu* a_menu)
     {
         const auto config = Configuration::GetSingleton();
 
@@ -87,16 +86,16 @@ namespace
             }
         }
 
-        ctx.Finalize(menu);
+        ctx.Finalize(a_menu);
     }
 }
 
-void HotkeyManager::Process(const RE::InputEvent* const* a_event)
+void HotkeyManager::ProcessMenuOpen(const RE::InputEvent* const* a_event, Menu* a_menu)
 {
-    auto menu = Menu::GetSingleton();
-    if (!menu->IsOpen()) {
-        ProcessMenuOpenClose<MenuOpenHotkeyContext>(a_event, menu);
-    } else {
-        ProcessMenuOpenClose<MenuCloseHotkeyContext>(a_event, menu);
-    }
+    ProcessMenuOpenClose<MenuOpenHotkeyContext>(a_event, a_menu);
+}
+
+void HotkeyManager::ProcessMenuClose(const RE::InputEvent* const* a_event, Menu* a_menu)
+{
+    ProcessMenuOpenClose<MenuCloseHotkeyContext>(a_event, a_menu);
 }

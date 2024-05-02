@@ -3,6 +3,7 @@ set(sources
     src/Configuration.cpp
     src/Hooks.cpp
     src/HotkeyManager.cpp
+    src/ImGui/Input.cpp
     src/ImGui/Renderer.cpp
     src/InputManager.cpp
     src/Main.cpp
