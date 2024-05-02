@@ -17,7 +17,7 @@ namespace
             }
 
             if (a_button->IsPressed()) {
-                auto key = CLib::ParseKeyCode(a_button->GetIDCode(), a_button->GetDevice());
+                auto key = CLib::ParseKey(a_button->GetIDCode(), a_button->GetDevice());
 
                 hotkey.UpdatePressed(key);
 
@@ -50,7 +50,7 @@ namespace
             }
 
             if (a_button->IsPressed()) {
-                auto key = CLib::ParseKeyCode(a_button->GetIDCode(), a_button->GetDevice());
+                auto key = CLib::ParseKey(a_button->GetIDCode(), a_button->GetDevice());
 
                 hotkey.UpdatePressed(key);
 
