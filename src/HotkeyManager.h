@@ -2,7 +2,7 @@
 
 #include <PCH.h>
 
-#include "Menu.h"
+#include "ImGui/Menu.h"
 
 class HotkeyManager
 {

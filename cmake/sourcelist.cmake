@@ -4,10 +4,10 @@ set(sources
     src/Hooks.cpp
     src/HotkeyManager.cpp
     src/ImGui/Input.cpp
+    src/ImGui/Menu.cpp
     src/ImGui/Renderer.cpp
     src/InputManager.cpp
     src/Main.cpp
-    src/Menu.cpp
     src/Util/Win.cpp
     vendor/imgui.cpp
     vendor/imgui_demo.cpp

@@ -8,7 +8,7 @@
 #include <imgui_internal.h>
 
 #include "../CLib/Hook.h"
-#include "../Menu.h"
+#include "Menu.h"
 
 namespace ImGui
 {

@@ -6,9 +6,9 @@ set(headers
     src/Hooks.h
     src/HotkeyManager.h
     src/ImGui/Input.h
+    src/ImGui/Menu.h
     src/ImGui/Renderer.h
     src/InputManager.h
-    src/Menu.h
     src/PCH.h
     src/Util/Singleton.h
     src/Util/TOML.h

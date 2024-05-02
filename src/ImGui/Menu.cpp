@@ -5,9 +5,9 @@
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 
-#include "Application.h"
-#include "ImGui/Renderer.h"
-#include "InputManager.h"
+#include "../Application.h"
+#include "../InputManager.h"
+#include "Renderer.h"
 
 void Menu::Open()
 {
