@@ -3,7 +3,7 @@
 #include "HotkeyManager.h"
 #include "ImGui/Input.h"
 
-void InputManager::Process(const RE::InputEvent* const* a_event)
+void InputManager::Process(RE::InputEvent* const* a_event)
 {
     auto menu = Menu::GetSingleton();
     if (!menu->IsOpen()) {

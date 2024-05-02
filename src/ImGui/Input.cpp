@@ -310,7 +310,7 @@ namespace ImGui
         }
     }
 
-    void TranslateInputEvent(const RE::InputEvent* const* a_event)
+    void TranslateInputEvent(RE::InputEvent* const* a_event)
     {
         auto& io = ImGui::GetIO();
         auto  cursor = RE::UI::GetSingleton()->GetMenu<RE::CursorMenu>();
@@ -319,12 +319,12 @@ namespace ImGui
         for (auto event = *a_event; event; event = event->next) {
             if (auto button = event->AsButtonEvent()) {
                 TranslateButtonEvent(io, button);
-            } else if (auto mouseMove = const_cast<RE::InputEvent*>(event)->AsMouseMoveEvent()) {
+            } else if (auto mouseMove = event->AsMouseMoveEvent()) {
                 io.AddMousePosEvent(mouseMove->mouseInputX, mouseMove->mouseInputY);
                 if (cursorHandler) {
                     cursorHandler->ProcessMouseMove(mouseMove);
                 }
-            } else if (const auto thumbstick = const_cast<RE::InputEvent*>(event)->AsThumbstickEvent()) {
+            } else if (const auto thumbstick = event->AsThumbstickEvent()) {
                 io.AddMousePosEvent(thumbstick->xValue, thumbstick->yValue);
                 if (cursorHandler) {
                     cursorHandler->ProcessThumbstick(thumbstick);
