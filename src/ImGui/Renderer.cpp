@@ -58,7 +58,8 @@ namespace ImGui
             ImGui::CreateContext();
 
             auto& io = ImGui::GetIO();
-            io.ConfigFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad;
+            io.ConfigFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
+                             ImGuiConfigFlags_NoMouseCursorChange;
             io.IniFilename = nullptr;
 
             if (!ImGui_ImplWin32_Init(desc.OutputWindow)) {

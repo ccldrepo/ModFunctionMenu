@@ -11,6 +11,8 @@
 
 void Menu::Open()
 {
+    auto uiMQ = RE::UIMessageQueue::GetSingleton();
+    uiMQ->AddMessage(RE::CursorMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kShow, nullptr);
     isOpen = true;
     ImGui::shouldRender = true;
     InputManager::SetBlocked();
@@ -18,6 +20,8 @@ void Menu::Open()
 
 void Menu::Close()
 {
+    auto uiMQ = RE::UIMessageQueue::GetSingleton();
+    uiMQ->AddMessage(RE::CursorMenu::MENU_NAME, RE::UI_MESSAGE_TYPE::kHide, nullptr);
     isOpen = false;
     ImGui::shouldRender = false;
     InputManager::SetWantUnblock();
