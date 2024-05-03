@@ -3,6 +3,8 @@ set(headers
     src/CLib/Hook.h
     src/CLib/Key.h
     src/Configuration.h
+    src/Core.h
+    src/Function.h
     src/Hooks.h
     src/HotkeyManager.h
     src/ImGui/Input.h

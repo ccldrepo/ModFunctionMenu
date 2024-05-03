@@ -4,28 +4,20 @@
 #include <imgui_internal.h>
 
 #include "../Application.h"
+#include "../Core.h"
 #include "../InputManager.h"
-#include "../Util/TOML.h"
-#include "../Util/Win.h"
 #include "Renderer.h"
 
-void Invoke(Menu* menu, MFMTree* tree, const MFMNode* node)
+void Invoke(Menu* menu, MFM_Tree* tree, const MFM_Node* node)
 {
     switch (node->type) {
-    case MFMNode::Type::kRegular:
+    case MFM_Node::Type::kRegular:
         {
-            auto        data = LoadTOMLFile(node->path);
-            std::string dll;
-            std::string api;
-            LoadTOMLValue(data, "dll"sv, dll);
-            LoadTOMLValue(data, "api"sv, api);
-            auto dll_path = StrToPath(dll);
-            auto func = GetModuleFunc<void (*)()>(dll_path.c_str(), api.c_str());
+            auto func = MFM_Function::Get(node->path);
             func();
-            menu->Close();
         }
         break;
-    case MFMNode::Type::kDirectory:
+    case MFM_Node::Type::kDirectory:
         {
             tree->CurrentRoot(node);
         }

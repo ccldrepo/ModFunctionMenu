@@ -1,6 +1,7 @@
 set(sources
     src/Application.cpp
     src/Configuration.cpp
+    src/Core.cpp
     src/Hooks.cpp
     src/HotkeyManager.cpp
     src/ImGui/Input.cpp
