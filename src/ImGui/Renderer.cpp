@@ -58,8 +58,9 @@ namespace ImGui
             ImGui::CreateContext();
 
             auto& io = ImGui::GetIO();
-            io.ConfigFlags = ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
-                             ImGuiConfigFlags_NoMouseCursorChange;
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+            io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
             io.IniFilename = nullptr;
             io.MouseDrawCursor = true;
             io.ConfigWindowsMoveFromTitleBarOnly = true;
