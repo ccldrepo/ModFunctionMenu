@@ -5,7 +5,33 @@
 
 #include "../Application.h"
 #include "../InputManager.h"
+#include "../Util/TOML.h"
+#include "../Util/Win.h"
 #include "Renderer.h"
+
+void Invoke(Menu* menu, MFMTree* tree, const MFMNode* node)
+{
+    switch (node->type) {
+    case MFMNode::Type::kRegular:
+        {
+            auto        data = LoadTOMLFile(node->path);
+            std::string dll;
+            std::string api;
+            LoadTOMLValue(data, "dll"sv, dll);
+            LoadTOMLValue(data, "api"sv, api);
+            auto dll_path = StrToPath(dll);
+            auto func = GetModuleFunc<void (*)()>(dll_path.c_str(), api.c_str());
+            func();
+            menu->Close();
+        }
+        break;
+    case MFMNode::Type::kDirectory:
+        {
+            tree->CurrentRoot(node);
+        }
+        break;
+    }
+}
 
 void Menu::Open()
 {
@@ -40,12 +66,12 @@ void Menu::Draw()
         auto& tree = app->modTree;
         ImGui::Text("%s", tree.CurrentRootStr().c_str());
 
-        if (ImGui::BeginTable("Entry Table", 1)) {
+        if (ImGui::BeginTable("Explorer", 1)) {
             auto currentRoot = tree.CurrentRoot();
             for (auto& entry : currentRoot->children) {
                 ImGui::TableNextColumn();
                 if (ImGui::Button(entry.name.c_str())) {
-                    ;
+                    Invoke(this, &tree, &entry);
                 }
             }
             ImGui::EndTable();
