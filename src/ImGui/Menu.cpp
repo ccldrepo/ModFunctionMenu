@@ -19,7 +19,7 @@ void Invoke(Menu* menu, MFM_Tree* tree, const MFM_Node* node)
         break;
     case MFM_Node::Type::kDirectory:
         {
-            tree->CurrentRoot(node);
+            tree->CurrentPath(node);
         }
         break;
     }
@@ -55,15 +55,15 @@ void Menu::Draw()
     window_flags |= ImGuiWindowFlags_MenuBar;
     ImGui::Begin("Mod Function Menu");
     {
-        auto& tree = app->modTree;
-        ImGui::Text("%s", tree.CurrentRootStr().c_str());
+        auto tree = app->CurrentSection();
+        ImGui::Text("%s", tree->CurrentPathStr().c_str());
 
         if (ImGui::BeginTable("Explorer", 1)) {
-            auto currentRoot = tree.CurrentRoot();
-            for (auto& entry : currentRoot->children) {
+            auto node = tree->CurrentPath();
+            for (auto& entry : node->children) {
                 ImGui::TableNextColumn();
                 if (ImGui::Button(entry.name.c_str())) {
-                    Invoke(this, &tree, &entry);
+                    Invoke(this, tree, &entry);
                 }
             }
             ImGui::EndTable();

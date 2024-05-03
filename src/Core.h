@@ -29,11 +29,11 @@ public:
 
     MFM_Node(std::filesystem::path a_path, Type a_type);
 
-    friend bool operator==(const MFM_Node& lhs, const MFM_Node& rhs) noexcept { return lhs.path == rhs.path; }
+    friend bool operator==(const MFM_Node& a_lhs, const MFM_Node& a_rhs) noexcept { return a_lhs.path == a_rhs.path; }
 
-    friend std::strong_ordering operator<=>(const MFM_Node& lhs, const MFM_Node& rhs) noexcept
+    friend std::strong_ordering operator<=>(const MFM_Node& a_lhs, const MFM_Node& a_rhs) noexcept
     {
-        return lhs.path <=> rhs.path;
+        return a_lhs.path <=> a_rhs.path;
     }
 
 private:
@@ -51,23 +51,23 @@ class MFM_Tree
 public:
     explicit MFM_Tree(std::filesystem::path a_root) : root(std::move(a_root), MFM_Node::Type::kDirectory)
     {
-        ResetCurrentRoot();
+        ResetCurrentPath();
     }
 
-    const MFM_Node* CurrentRoot() const noexcept { return currentRoot; }
-    void            CurrentRoot(const MFM_Node& a_root) { CurrentRoot(std::addressof(a_root)); }
-    void            CurrentRoot(const MFM_Node* a_root)
+    const MFM_Node* CurrentPath() const noexcept { return currentPath; }
+    void            CurrentPath(const MFM_Node& a_node) { CurrentPath(std::addressof(a_node)); }
+    void            CurrentPath(const MFM_Node* a_node)
     {
-        currentRoot = a_root;
-        currentRootStr = PathToStr(a_root->path).substr(39);
+        currentPath = a_node;
+        currentPathStr = PathToStr(a_node->path).substr(39);
     }
 
-    const std::string& CurrentRootStr() const noexcept { return currentRootStr; }
+    const std::string& CurrentPathStr() const noexcept { return currentPathStr; }
 
-    void ResetCurrentRoot() { CurrentRoot(root); }
+    void ResetCurrentPath() { CurrentPath(root); }
 
 private:
     const MFM_Node  root;
-    const MFM_Node* currentRoot;
-    std::string     currentRootStr;
+    const MFM_Node* currentPath;
+    std::string     currentPathStr;
 };
