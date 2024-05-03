@@ -37,11 +37,11 @@ void Menu::Draw()
     window_flags |= ImGuiWindowFlags_MenuBar;
     ImGui::Begin("Mod Function Menu");
     {
-        auto& root = app->modRoot;
-        ImGui::Text("%s", root.CurrentRootStr().c_str());
+        auto& tree = app->modTree;
+        ImGui::Text("%s", tree.CurrentRootStr().c_str());
 
         if (ImGui::BeginTable("Entry Table", 1)) {
-            auto currentRoot = root.CurrentRoot();
+            auto currentRoot = tree.CurrentRoot();
             for (auto& entry : currentRoot->children) {
                 ImGui::TableNextColumn();
                 if (ImGui::Button(entry.name.c_str())) {

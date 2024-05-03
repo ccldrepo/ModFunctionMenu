@@ -1,8 +1,8 @@
 #include "Application.h"
 
-void MFMEntry::BuildChild()
+void MFMNode::BuildChildren()
 {
-    if (type != MFMEntryType::kDirectory) {
+    if (type != Type::kDirectory) {
         return;
     }
 
@@ -11,11 +11,11 @@ void MFMEntry::BuildChild()
 #pragma warning(push)
 #pragma warning(disable: 4458)
             if (const auto& path = entry.path(); path.extension().native() == L".toml"sv) {
-                children.emplace_back(path, MFMEntryType::kRegular);
+                children.emplace_back(path, Type::kRegular);
             }
 #pragma warning(pop)
         } else if (entry.is_directory()) {
-            children.emplace_back(entry.path(), MFMEntryType::kDirectory);
+            children.emplace_back(entry.path(), Type::kDirectory);
         }
     }
 

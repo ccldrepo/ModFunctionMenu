@@ -313,8 +313,8 @@ namespace ImGui
     void TranslateInputEvent(RE::InputEvent* const* a_event)
     {
         auto& io = ImGui::GetIO();
-        auto  cursor = RE::UI::GetSingleton()->GetMenu<RE::CursorMenu>();
-        auto  cursorHandler = cursor ? cursor->AsMenuEventHandler() : nullptr;
+        //auto  cursor = RE::UI::GetSingleton()->GetMenu<RE::CursorMenu>();
+        //auto  cursorHandler = cursor ? cursor->AsMenuEventHandler() : nullptr;
 
         for (auto event = *a_event; event; event = event->next) {
             if (auto button = event->AsButtonEvent()) {
