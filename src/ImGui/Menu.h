@@ -13,12 +13,11 @@ public:
 
     void Open();
     void Close();
-    void Toggle();
 
     void Draw();
 
 private:
     Menu() = default;
 
-    bool isOpen{ false };
+    std::atomic<bool> isOpen{ false };
 };
