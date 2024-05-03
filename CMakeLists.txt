@@ -64,6 +64,7 @@ target_compile_definitions(
     PRIVATE
         _UNICODE
         NOMINMAX
+        IMGUI_USER_CONFIG=<imgui_user.h>
 )
 
 target_compile_features(
