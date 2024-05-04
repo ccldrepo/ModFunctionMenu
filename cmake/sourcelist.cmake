@@ -1,5 +1,4 @@
 set(sources
-    src/Application.cpp
     src/Configuration.cpp
     src/Core.cpp
     src/Hooks.cpp

@@ -3,8 +3,6 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-#include "../Application.h"
-#include "../Core.h"
 #include "../InputManager.h"
 #include "Renderer.h"
 
@@ -36,9 +34,7 @@ void Menu::Draw()
     window_flags |= ImGuiWindowFlags_MenuBar;
     ImGui::Begin("Mod Function Menu");
     {
-        auto app = Application::GetSingleton();
-
-        auto tree = app->CurrentSection();
+        auto tree = CurrentSection();
         ImGui::Text("%s", tree->CurrentPathStr().c_str());
 
         if (ImGui::BeginTable("Explorer", 1)) {
