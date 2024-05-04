@@ -16,8 +16,8 @@ struct MFM_Function
 {
     static MFM_Function Get(const std::filesystem::path& a_path);
 
-    void operator()();
-    void operator()(char* a_msg, std::size_t a_len);
+    void operator()() const;
+    void operator()(char* a_msg, std::size_t a_len) const;
 
     std::string       dll;
     std::string       api;

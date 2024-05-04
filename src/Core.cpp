@@ -31,10 +31,12 @@ MFM_Function MFM_Function::Get(const std::filesystem::path& a_path)
     LoadTOMLValue(data, "postAction"sv, postAction);
     func.postAction = MFMAPI_PostAction_StrToEnum(postAction);
 
+    SKSE::log::info("Get function: dll = \"{}\", api = \"{}\", type = \"{}\", preAction = \"{}\", postAction = \"{}\".",
+        func.dll, func.api, type, preAction, postAction);
     return func;
 }
 
-void MFM_Function::operator()()
+void MFM_Function::operator()() const
 {
     auto dllPath = StrToPath(dll);
     auto func = GetModuleFunc<MFMAPI_Void>(dllPath.c_str(), api.c_str());
@@ -45,7 +47,7 @@ void MFM_Function::operator()()
     return func();
 }
 
-void MFM_Function::operator()(char* a_msg, std::size_t a_len)
+void MFM_Function::operator()(char* a_msg, std::size_t a_len) const
 {
     auto dllPath = StrToPath(dll);
     auto func = GetModuleFunc<MFMAPI_Message>(dllPath.c_str(), api.c_str());
