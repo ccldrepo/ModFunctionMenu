@@ -75,7 +75,7 @@ namespace ImGui
                 return;
             }
 
-            initialized.store(true);
+            Renderer::initialized.store(true);
 
             SKSE::log::info("ImGui initialized.");
 
@@ -100,11 +100,11 @@ namespace ImGui
         {
             func(a_timer);
 
-            if (!initialized.load()) {
+            if (!Renderer::initialized.load()) {
                 return;
             }
 
-            if (!shouldRender.load()) {
+            if (!Renderer::shouldRender.load()) {
                 return;
             }
 
@@ -135,7 +135,7 @@ namespace ImGui
         static constexpr REL::VariantOffset offset{ 0x9, 0x9, 0x15 };
     };
 
-    void Install()
+    void Renderer::Install()
     {
         D3DInitHook::Install();
         DXGIPresentHook::Install();

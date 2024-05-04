@@ -64,7 +64,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
     Configuration::Init();
 
-    ImGui::Install();
+    ImGui::Renderer::Install();
 
     SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
 

@@ -4,8 +4,12 @@
 
 namespace ImGui
 {
-    void Install();
+    class Renderer
+    {
+    public:
+        static void Install();
 
-    inline std::atomic<bool> initialized{ false };
-    inline std::atomic<bool> shouldRender{ false };
+        static inline std::atomic<bool> initialized{ false };
+        static inline std::atomic<bool> shouldRender{ false };
+    };
 }
