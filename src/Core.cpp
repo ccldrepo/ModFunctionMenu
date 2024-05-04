@@ -10,7 +10,14 @@ MFM_Function MFM_Function::Get(const std::filesystem::path& a_path)
     auto data = LoadTOMLFile(a_path);
 
     LoadTOMLValue(data, "dll"sv, func.dll);
+    if (func.dll.empty()) {
+        throw TOMLError("'dll' is required");
+    }
+
     LoadTOMLValue(data, "api"sv, func.api);
+    if (func.api.empty()) {
+        throw TOMLError("'api' is required");
+    }
 
     std::string type;
     LoadTOMLValue(data, "type"sv, type);
@@ -38,7 +45,7 @@ void MFM_Function::operator()()
     return func();
 }
 
-void MFM_Function::operator()(char* a_msg, size_t a_len)
+void MFM_Function::operator()(char* a_msg, std::size_t a_len)
 {
     auto dllPath = StrToPath(dll);
     auto func = GetModuleFunc<MFMAPI_Message>(dllPath.c_str(), api.c_str());
