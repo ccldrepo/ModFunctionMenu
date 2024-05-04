@@ -19,9 +19,7 @@ public:
 private:
     Application() { ResetCurrentSection(); };
 
-    MFM_Tree  modTree{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Mod/"sv };
-    MFM_Tree  configTree{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Config/"sv };
+    MFM_Tree  modTree{ MFM_Path::mod };
+    MFM_Tree  configTree{ MFM_Path::config };
     MFM_Tree* currentSection;
-
-    static inline const std::filesystem::path root{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/"sv };
 };

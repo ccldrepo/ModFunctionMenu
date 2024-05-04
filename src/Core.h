@@ -4,6 +4,14 @@
 
 #include "Function.h"
 
+struct MFM_Path
+{
+    static inline const std::filesystem::path root{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/"sv };
+
+    static inline const std::filesystem::path mod{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Mod/"sv };
+    static inline const std::filesystem::path config{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Config/"sv };
+};
+
 struct MFM_Function
 {
     static MFM_Function Get(const std::filesystem::path& a_path);
@@ -61,7 +69,7 @@ public:
     void            CurrentPath(const MFM_Node* a_node)
     {
         currentPath = a_node;
-        currentPathStr = PathToStr(a_node->path).substr(39);
+        currentPathStr = PathToStr(a_node->path).substr(MFM_Path::root.native().size());
     }
 
     const std::string& CurrentPathStr() const noexcept { return currentPathStr; }
