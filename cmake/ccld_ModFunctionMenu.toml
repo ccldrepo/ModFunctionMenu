@@ -5,7 +5,7 @@
 # To disable a hotkey, set iHotkeyXXX and iModifierXXX to 0.
 # To disable a modifier, set iModifierXXX to 0.
 
-# Toggle UI hotkey.
+# Toggle menu hotkey.
 #
 # Default: 59 (F1)
 iHotkey = 59

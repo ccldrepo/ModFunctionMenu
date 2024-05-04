@@ -31,8 +31,9 @@ void Menu::Draw()
     ImGui::SetNextWindowSize(ImVec2{ viewport->Size.x * 0.3f, viewport->Size.y * 0.5f });
 
     ImGuiWindowFlags window_flags = 0;
-    window_flags |= ImGuiWindowFlags_MenuBar;
-    ImGui::Begin("Mod Function Menu");
+    window_flags |= ImGuiWindowFlags_NoCollapse;
+
+    ImGui::Begin("Mod Function Menu", nullptr, window_flags);
     {
         auto tree = CurrentSection();
         ImGui::Text("%s", tree->CurrentPathStr().c_str());
