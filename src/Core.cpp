@@ -56,7 +56,10 @@ void MFM_Function::operator()(char* a_msg, std::size_t a_len)
     return func(a_msg, a_len);
 }
 
-MFM_Node::MFM_Node(std::filesystem::path a_path, Type a_type) : path(std::move(a_path)), type(a_type)
+MFM_Node::MFM_Node(std::filesystem::path a_path, Type a_type) : MFM_Node(std::move(a_path), a_type, this) {}
+
+MFM_Node::MFM_Node(std::filesystem::path a_path, Type a_type, MFM_Node* a_parent) :
+    path(std::move(a_path)), type(a_type), parent(a_parent)
 {
     switch (type) {
     case Type::kRegular:
@@ -76,11 +79,11 @@ void MFM_Node::BuildChildren()
 #pragma warning(push)
 #pragma warning(disable: 4458)
             if (const auto& path = entry.path(); path.extension().native() == L".toml"sv) {
-                children.emplace_back(path, Type::kRegular);
+                children.emplace_back(path, Type::kRegular, this);
             }
 #pragma warning(pop)
         } else if (entry.is_directory()) {
-            children.emplace_back(entry.path(), Type::kDirectory);
+            children.emplace_back(entry.path(), Type::kDirectory, this);
         }
     }
 

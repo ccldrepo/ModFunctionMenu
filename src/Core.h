@@ -28,6 +28,7 @@ public:
     };
 
     MFM_Node(std::filesystem::path a_path, Type a_type);
+    MFM_Node(std::filesystem::path a_path, Type a_type, MFM_Node* a_parent);
 
     friend bool operator==(const MFM_Node& a_lhs, const MFM_Node& a_rhs) noexcept { return a_lhs.path == a_rhs.path; }
 
@@ -44,6 +45,7 @@ public:
     std::string           name;
     Type                  type;
     std::vector<MFM_Node> children;
+    MFM_Node*             parent;
 };
 
 class MFM_Tree
@@ -65,6 +67,8 @@ public:
     const std::string& CurrentPathStr() const noexcept { return currentPathStr; }
 
     void ResetCurrentPath() { CurrentPath(root); }
+
+    void ResetCurrentPathToParent() { CurrentPath(currentPath->parent); }
 
 private:
     const MFM_Node  root;
