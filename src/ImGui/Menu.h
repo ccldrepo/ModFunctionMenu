@@ -2,6 +2,7 @@
 
 #include <PCH.h>
 
+#include "../Core.h"
 #include "../Util/Singleton.h"
 
 class Menu final : public Singleton<Menu>
@@ -18,6 +19,9 @@ public:
 
 private:
     Menu() = default;
+
+    void OnClickParentEntry(MFM_Tree* a_tree);
+    void OnClickEntry(MFM_Tree* a_tree, const MFM_Node* a_node);
 
     std::atomic<bool> isOpen{ false };
 };
