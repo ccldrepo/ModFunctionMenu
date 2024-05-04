@@ -28,7 +28,7 @@ void Menu::Draw()
 {
     auto viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->GetCenter(), ImGuiCond_Always, ImVec2{ 0.5f, 0.5f });
-    ImGui::SetNextWindowSize(ImVec2{ viewport->Size.x * 0.5f, viewport->Size.y * 0.6f });
+    ImGui::SetNextWindowSize(ImVec2{ viewport->Size.x * 0.3f, viewport->Size.y * 0.5f });
 
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_MenuBar;
@@ -36,26 +36,33 @@ void Menu::Draw()
     {
         auto tree = CurrentSection();
         ImGui::Text("%s", tree->CurrentPathStr().c_str());
+        ImGui::Spacing();
 
         if (ImGui::BeginTable("Explorer", 1)) {
+            ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2{ 0.0f, 0.0f });
+
+            ImVec2 sz = ImVec2(-FLT_MIN, 0.0f);
+
             ImGui::TableNextColumn();
-            if (ImGui::Button("..")) {
+            if (ImGui::Button("..", sz)) {
                 OnClickParentEntry(tree);
             }
 
             auto node = tree->CurrentPath();
             for (auto& entry : node->children) {
                 ImGui::TableNextColumn();
-                if (ImGui::Button(entry.name.c_str())) {
+                if (ImGui::Button(entry.name.c_str(), sz)) {
                     OnClickEntry(tree, std::addressof(entry));
                 }
             }
+
+            ImGui::PopStyleVar();
             ImGui::EndTable();
         }
     }
     ImGui::End();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 }
 
 void Menu::OnClickParentEntry(MFM_Tree* a_tree) { a_tree->ResetCurrentPathToParent(); }
