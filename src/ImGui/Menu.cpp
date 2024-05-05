@@ -11,6 +11,7 @@ void Menu::Open()
     isOpen = true;
     ImGui::Renderer::shouldRender = true;
     InputManager::SetBlocked();
+    SKSE::log::debug("Open menu.");
 }
 
 void Menu::Close()
@@ -18,65 +19,78 @@ void Menu::Close()
     isOpen = false;
     ImGui::Renderer::shouldRender = false;
     InputManager::SetWantUnblock();
+    SKSE::log::debug("Close menu.");
 }
 
 void Menu::Draw()
 {
     auto viewport = ImGui::GetMainViewport();
-    ImGui::SetNextWindowPos(viewport->GetCenter(), ImGuiCond_Always, ImVec2{ 0.5f, 0.5f });
-    ImGui::SetNextWindowSize(ImVec2{ viewport->Size.x * 0.3f, viewport->Size.y * 0.5f });
+    ImGui::SetNextWindowPos(viewport->GetCenter(), ImGuiCond_Appearing, ImVec2{ 0.5f, 0.5f });
+    ImGui::SetNextWindowSize(ImVec2{ viewport->Size.x * 0.3f, viewport->Size.y * 0.5f }, ImGuiCond_Appearing);
 
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_NoCollapse;
 
     ImGui::Begin("Mod Function Menu", nullptr, window_flags);
     {
-        auto tree = CurrentSection();
-        ImGui::Text("%s", tree->CurrentPathStr().c_str());
-        ImGui::Spacing();
-
-        if (ImGui::BeginTable("Explorer", 1)) {
-            ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2{ 0.0f, 0.0f });
-
-            ImVec2 sz = ImVec2(-FLT_MIN, 0.0f);
-
-            ImGui::TableNextColumn();
-            if (ImGui::Button("..", sz)) {
-                OnClickParentEntry(tree);
-            }
-
-            auto node = tree->CurrentPath();
-            for (auto& entry : node->children) {
-                ImGui::TableNextColumn();
-                if (ImGui::Button(entry.name.c_str(), sz)) {
-                    OnClickEntry(tree, std::addressof(entry));
-                }
-            }
-
-            ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-            ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-
-            if (ImGui::BeginPopupModal("MessageBox", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-                ImGui::Text("%s", _msg.data());
-
-                if (ImGui::Button("OK", ImVec2(120, 0))) {
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::SetItemDefaultFocus();
-                ImGui::SameLine();
-                if (ImGui::Button("Cancel", ImVec2(120, 0))) {
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::EndPopup();
-            }
-
-            ImGui::PopStyleVar();
-            ImGui::EndTable();
-        }
+        DrawExplorer();
     }
     ImGui::End();
 
     ImGui::ShowDemoWindow();
+}
+
+void Menu::DrawExplorer()
+{
+    auto tree = CurrentSection();
+    ImGui::Text("%s", tree->CurrentPathStr().c_str());
+    ImGui::Spacing();
+
+    if (ImGui::BeginTable("Explorer", 1)) {
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2{ 0.0f, 0.0f });
+
+        ImVec2 sz = ImVec2(-FLT_MIN, 0.0f);
+
+        ImGui::TableNextColumn();
+        if (ImGui::Button("..", sz)) {
+            OnClickParentEntry(tree);
+        }
+
+        auto node = tree->CurrentPath();
+        for (auto& entry : node->children) {
+            ImGui::TableNextColumn();
+            if (ImGui::Button(entry.name.c_str(), sz)) {
+                OnClickEntry(tree, std::addressof(entry));
+            }
+        }
+
+        DrawMessageBox();
+
+        ImGui::PopStyleVar();
+        ImGui::EndTable();
+    }
+}
+
+void Menu::DrawMessageBox()
+{
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+    if (ImGui::BeginPopupModal("MessageBox", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("%s", _msg.data());
+        ImGui::Spacing();
+
+        if (ImGui::Button("OK", ImVec2(120, 0))) {
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SetItemDefaultFocus();
+        ImGui::SameLine();
+        if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
 }
 
 void Menu::OnClickParentEntry(MFM_Tree* a_tree) { a_tree->ResetCurrentPathToParent(); }

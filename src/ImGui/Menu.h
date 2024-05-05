@@ -26,6 +26,9 @@ private:
 
     void ResetCurrentSection() { CurrentSection(modTree); }
 
+    void DrawExplorer();
+    void DrawMessageBox();
+
     void OnClickParentEntry(MFM_Tree* a_tree);
     void OnClickEntry(MFM_Tree* a_tree, const MFM_Node* a_node);
 
