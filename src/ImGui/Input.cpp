@@ -313,22 +313,12 @@ namespace ImGui
     void TranslateInputEvent(RE::InputEvent* const* a_event)
     {
         auto& io = ImGui::GetIO();
-        //auto  cursor = RE::UI::GetSingleton()->GetMenu<RE::CursorMenu>();
-        //auto  cursorHandler = cursor ? cursor->AsMenuEventHandler() : nullptr;
 
         for (auto event = *a_event; event; event = event->next) {
             if (auto button = event->AsButtonEvent()) {
                 TranslateButtonEvent(io, button);
-            } else if (auto mouseMove = event->AsMouseMoveEvent()) {
-                //if (cursorHandler) {
-                //    cursorHandler->ProcessMouseMove(mouseMove);
-                //}
             } else if (auto charEvent = event->AsCharEvent()) {
                 io.AddInputCharacter(charEvent->keycode);
-            } else if (auto thumbstick = event->AsThumbstickEvent()) {
-                //if (cursorHandler) {
-                //    cursorHandler->ProcessThumbstick(thumbstick);
-                //}
             }
         }
     }
