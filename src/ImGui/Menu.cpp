@@ -57,13 +57,30 @@ void Menu::Draw()
                 }
             }
 
+            ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+            ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+            if (ImGui::BeginPopupModal("MessageBox", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+                ImGui::Text("%s", _msg.data());
+
+                if (ImGui::Button("OK", ImVec2(120, 0))) {
+                    ImGui::CloseCurrentPopup();
+                }
+                ImGui::SetItemDefaultFocus();
+                ImGui::SameLine();
+                if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+                    ImGui::CloseCurrentPopup();
+                }
+                ImGui::EndPopup();
+            }
+
             ImGui::PopStyleVar();
             ImGui::EndTable();
         }
     }
     ImGui::End();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 }
 
 void Menu::OnClickParentEntry(MFM_Tree* a_tree) { a_tree->ResetCurrentPathToParent(); }
@@ -87,17 +104,7 @@ void Menu::OnClickEntry(MFM_Tree* a_tree, const MFM_Node* a_node)
                 break;
             }
 
-            switch (func.type) {
-            case MFMAPI_Type::kVoid:
-                func();
-                break;
-            case MFMAPI_Type::kMessage:
-                // TODO
-                break;
-            case MFMAPI_Type::kMessageBox:
-                // TODO
-                break;
-            }
+            InvokeFunction(func);
 
             switch (func.postAction) {
             case MFMAPI_PostAction::kNone:
@@ -115,6 +122,29 @@ void Menu::OnClickEntry(MFM_Tree* a_tree, const MFM_Node* a_node)
     case MFM_Node::Type::kDirectory:
         {
             a_tree->CurrentPath(a_node);
+        }
+        break;
+    }
+}
+
+void Menu::InvokeFunction(const MFM_Function& a_func)
+{
+    switch (a_func.type) {
+    case MFMAPI_Type::kVoid:
+        SKSE::log::debug("Invoke Void function.");
+        a_func();
+        break;
+    case MFMAPI_Type::kMessage:
+        SKSE::log::debug("Invoke Message function.");
+        // TODO
+    case MFMAPI_Type::kMessageBox:
+        SKSE::log::debug("Invoke MessageBox function.");
+        {
+            _msg.resize(0x4000);
+            a_func(_msg.data(), _msg.size());
+            _msg.back() = '\0';
+
+            ImGui::OpenPopup("MessageBox");
         }
         break;
     }

@@ -29,9 +29,13 @@ private:
     void OnClickParentEntry(MFM_Tree* a_tree);
     void OnClickEntry(MFM_Tree* a_tree, const MFM_Node* a_node);
 
+    void InvokeFunction(const MFM_Function& a_func);
+
     std::atomic<bool> isOpen{ false };
 
     MFM_Tree  modTree{ MFM_Path::mod };
     MFM_Tree  configTree{ MFM_Path::config };
     MFM_Tree* currentSection;
+
+    std::vector<char> _msg;
 };
