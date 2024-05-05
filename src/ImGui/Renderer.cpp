@@ -90,7 +90,7 @@ namespace ImGui
 
         static constexpr std::string_view name{ "D3DInit"sv };
 
-        static constexpr REL::RelocationID  id{ 75595, 77226, 0xDC5530 };
+        static constexpr REL::VariantID     id{ 75595, 77226, 0xDC5530 };
         static constexpr REL::VariantOffset offset{ 0x9, 0x275, 0x9 };
     };
 
@@ -131,7 +131,7 @@ namespace ImGui
 
         static constexpr std::string_view name{ "DXGIPresent"sv };
 
-        static constexpr REL::RelocationID  id{ 75461, 77246, 0xDBBDD };
+        static constexpr REL::VariantID     id{ 75461, 77246, 0xDBBDD0 };
         static constexpr REL::VariantOffset offset{ 0x9, 0x9, 0x15 };
     };
 

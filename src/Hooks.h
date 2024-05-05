@@ -12,6 +12,6 @@ struct ProcessInputQueueHook : CLib::CallHook<ProcessInputQueueHook>
 
     static constexpr std::string_view name{ "ProcessInputQueue"sv };
 
-    static constexpr REL::RelocationID id{ 67315, 68617 };
-    static constexpr REL::Offset       offset{ 0x7B };
+    static constexpr REL::VariantID     id{ 67315, 68617, 0xC519E0 };
+    static constexpr REL::VariantOffset offset{ 0x7B, 0x7B, 0x81 };
 };
