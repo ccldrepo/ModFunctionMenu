@@ -33,6 +33,14 @@ void Menu::Draw()
 
     ImGui::Begin("Mod Function Menu", nullptr, window_flags);
     {
+        if (ImGui::Button("Mod")) {
+            CurrentSection(modTree);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Config")) {
+            CurrentSection(configTree);
+        }
+        ImGui::Spacing();
         DrawExplorer();
     }
     ImGui::End();
