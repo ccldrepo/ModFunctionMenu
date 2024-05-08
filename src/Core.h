@@ -14,7 +14,7 @@ struct MFM_Path
 
 struct MFM_Function
 {
-    static MFM_Function Get(const std::filesystem::path& a_path);
+    [[nodiscard]] static MFM_Function Get(const std::filesystem::path& a_path);
 
     void operator()() const;
     void operator()(char* a_msg, std::size_t a_len) const;
@@ -69,7 +69,7 @@ public:
     void            CurrentPath(const MFM_Node* a_node)
     {
         currentPath = a_node;
-        currentPathStr = PathToStr(a_node->path).substr(MFM_Path::root.native().size());
+        currentPathStr = PathToStr(a_node->path).substr(MFM_Path::root.native().size() - 1);
     }
 
     const std::string& CurrentPathStr() const noexcept { return currentPathStr; }

@@ -45,7 +45,9 @@ void Menu::Draw()
     }
     ImGui::End();
 
+#ifdef _DEBUG
     ImGui::ShowDemoWindow();
+#endif
 }
 
 void Menu::DrawExplorer()
