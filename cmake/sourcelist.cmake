@@ -9,11 +9,12 @@ set(sources
     src/InputManager.cpp
     src/Main.cpp
     src/Util/Win.cpp
+    vendor/backends/imgui_impl_dx11.cpp
+    vendor/backends/imgui_impl_win32.cpp
     vendor/imgui.cpp
     vendor/imgui_demo.cpp
     vendor/imgui_draw.cpp
-    vendor/imgui_impl_dx11.cpp
-    vendor/imgui_impl_win32.cpp
     vendor/imgui_tables.cpp
     vendor/imgui_widgets.cpp
+    vendor/misc/freetype/imgui_freetype.cpp
 )

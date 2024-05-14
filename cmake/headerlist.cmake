@@ -14,13 +14,14 @@ set(headers
     src/Util/Singleton.h
     src/Util/TOML.h
     src/Util/Win.h
+    vendor/backends/imgui_impl_dx11.h
+    vendor/backends/imgui_impl_win32.h
     vendor/imconfig.h
     vendor/imgui.h
-    vendor/imgui_impl_dx11.h
-    vendor/imgui_impl_win32.h
     vendor/imgui_internal.h
     vendor/imgui_user.h
     vendor/imstb_rectpack.h
     vendor/imstb_textedit.h
     vendor/imstb_truetype.h
+    vendor/misc/freetype/imgui_freetype.h
 )
