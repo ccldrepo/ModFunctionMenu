@@ -14,4 +14,5 @@ SKSE plugin that provide an elegant interface to invoke mod function.
 - [fmt](https://github.com/fmtlib/fmt)
 - [spdlog](https://github.com/gabime/spdlog)
 - [toml++](https://github.com/marzer/tomlplusplus)
+- [FreeType](https://github.com/freetype/freetype)
 - [Dear ImGui](https://github.com/ocornut/imgui) (vendored)

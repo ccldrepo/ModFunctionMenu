@@ -46,6 +46,7 @@ find_package(CommonLibSSE REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(tomlplusplus REQUIRED)
+find_package(Freetype REQUIRED)
 
 # -- Declare Targets -----------------------------------------------------------
 
@@ -98,6 +99,7 @@ target_link_libraries(
         fmt::fmt
         spdlog::spdlog
         tomlplusplus::tomlplusplus
+        Freetype::Freetype
 )
 
 target_precompile_headers(
