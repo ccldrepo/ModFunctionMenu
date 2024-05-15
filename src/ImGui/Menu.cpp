@@ -24,6 +24,8 @@ void Menu::Close()
 
 void Menu::Draw()
 {
+    auto datastore = Datastore::GetSingleton();
+
     auto viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->GetCenter(), ImGuiCond_Appearing, ImVec2{ 0.5f, 0.5f });
     ImGui::SetNextWindowSize(ImVec2{ viewport->Size.x * 0.3f, viewport->Size.y * 0.5f }, ImGuiCond_Appearing);
@@ -34,14 +36,14 @@ void Menu::Draw()
     ImGui::Begin("Mod Function Menu", nullptr, window_flags);
     {
         if (ImGui::Button("Mod")) {
-            CurrentSection(modTree);
+            datastore->CurrentSection(datastore->modTree);
         }
         ImGui::SameLine();
         if (ImGui::Button("Config")) {
-            CurrentSection(configTree);
+            datastore->CurrentSection(datastore->configTree);
         }
         ImGui::Spacing();
-        DrawExplorer();
+        DrawExplorer(datastore);
     }
     ImGui::End();
 
@@ -50,9 +52,9 @@ void Menu::Draw()
 #endif
 }
 
-void Menu::DrawExplorer()
+void Menu::DrawExplorer(Datastore* datastore)
 {
-    auto tree = CurrentSection();
+    auto tree = datastore->CurrentSection();
     ImGui::Text("%s", tree->CurrentPathStr().c_str());
     ImGui::Spacing();
 
@@ -74,14 +76,14 @@ void Menu::DrawExplorer()
             }
         }
 
-        DrawMessageBox();
+        DrawMessageBox(datastore);
 
         ImGui::PopStyleVar();
         ImGui::EndTable();
     }
 }
 
-void Menu::DrawMessageBox()
+void Menu::DrawMessageBox(Datastore* datastore)
 {
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));

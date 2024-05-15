@@ -3,6 +3,7 @@
 #include <PCH.h>
 
 #include "Function.h"
+#include "Util/Singleton.h"
 
 struct MFM_Path
 {
@@ -82,4 +83,23 @@ private:
     const MFM_Node  root;
     const MFM_Node* currentPath;
     std::string     currentPathStr;
+};
+
+class Datastore final : public Singleton<Datastore>
+{
+    friend class Singleton<Datastore>;
+
+public:
+    MFM_Tree* CurrentSection() noexcept { return currentSection; }
+    void      CurrentSection(MFM_Tree& a_tree) { CurrentSection(std::addressof(a_tree)); }
+    void      CurrentSection(MFM_Tree* a_tree) { currentSection = a_tree; }
+
+    void ResetCurrentSection() { CurrentSection(modTree); }
+
+    MFM_Tree  modTree{ MFM_Path::mod };
+    MFM_Tree  configTree{ MFM_Path::config };
+    MFM_Tree* currentSection;
+
+private:
+    Datastore() { ResetCurrentSection(); };
 };
