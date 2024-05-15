@@ -1,3 +1,4 @@
 #pragma once
 
 #define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
+#define IMGUI_ENABLE_FREETYPE
