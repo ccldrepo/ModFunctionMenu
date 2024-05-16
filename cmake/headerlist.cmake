@@ -17,9 +17,9 @@ set(headers
     vendor/backends/imgui_impl_dx11.h
     vendor/backends/imgui_impl_win32.h
     vendor/imconfig.h
+    vendor/imconfig_user.h
     vendor/imgui.h
     vendor/imgui_internal.h
-    vendor/imgui_user.h
     vendor/imstb_rectpack.h
     vendor/imstb_textedit.h
     vendor/imstb_truetype.h
