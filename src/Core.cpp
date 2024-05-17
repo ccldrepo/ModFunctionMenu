@@ -9,15 +9,9 @@ MFM_Function MFM_Function::Get(const std::filesystem::path& a_path)
 
     auto data = LoadTOMLFile(a_path);
 
-    LoadTOMLValue(data, "dll"sv, func.dll);
-    if (func.dll.empty()) {
-        throw TOMLError("'dll' is required");
-    }
+    LoadTOMLValueRequired(data, "dll"sv, func.dll);
 
-    LoadTOMLValue(data, "api"sv, func.api);
-    if (func.api.empty()) {
-        throw TOMLError("'api' is required");
-    }
+    LoadTOMLValueRequired(data, "api"sv, func.api);
 
     std::string type;
     LoadTOMLValue(data, "type"sv, type);
