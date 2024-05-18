@@ -93,6 +93,8 @@ target_include_directories(
     PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/vendor"
+        "${CMAKE_CURRENT_SOURCE_DIR}/vendor/backends"
+        "${CMAKE_CURRENT_SOURCE_DIR}/vendor/misc/freetype"
 )
 
 target_link_libraries(
