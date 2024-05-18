@@ -10,7 +10,7 @@ class Menu final : public Singleton<Menu>
     friend class Singleton<Menu>;
 
 public:
-    bool IsOpen() const { return isOpen; }
+    bool IsOpen() const { return _isOpen.load(); }
 
     void Open();
     void Close();
@@ -28,7 +28,7 @@ private:
 
     void InvokeFunction(const MFM_Function& a_func);
 
-    std::atomic<bool> isOpen{ false };
+    std::atomic<bool> _isOpen{ false };
 
     std::vector<char> _msg;
 };

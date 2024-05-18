@@ -8,15 +8,15 @@
 
 void Menu::Open()
 {
-    isOpen = true;
-    ImGui::Renderer::ShouldRender(true);
     InputManager::SetBlocked();
+    _isOpen.store(true);
+    ImGui::Renderer::ShouldRender(true);
     SKSE::log::debug("Open menu.");
 }
 
 void Menu::Close()
 {
-    isOpen = false;
+    _isOpen.store(false);
     InputManager::SetWantUnblock();
     SKSE::log::debug("Close menu.");
 }
