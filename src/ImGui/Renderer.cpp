@@ -120,7 +120,11 @@ namespace ImGui
             }
             ImGui::NewFrame();
             {
-                Menu::GetSingleton()->Draw();
+                if (auto menu = Menu::GetSingleton(); menu->IsOpen()) {
+                    menu->Draw();
+                } else {
+                    Renderer::shouldRender.store(false);
+                }
             }
             ImGui::EndFrame();
             ImGui::Render();

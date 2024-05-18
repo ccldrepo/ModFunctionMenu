@@ -17,7 +17,6 @@ void Menu::Open()
 void Menu::Close()
 {
     isOpen = false;
-    ImGui::Renderer::shouldRender = false;
     InputManager::SetWantUnblock();
     SKSE::log::debug("Close menu.");
 }
