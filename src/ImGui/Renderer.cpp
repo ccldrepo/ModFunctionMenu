@@ -75,7 +75,7 @@ namespace ImGui
                 return;
             }
 
-            Renderer::initialized.store(true);
+            Renderer::Initialized(true);
 
             SKSE::log::info("ImGui initialized.");
 
@@ -100,11 +100,11 @@ namespace ImGui
         {
             func(a_timer);
 
-            if (!Renderer::initialized.load()) {
+            if (!Renderer::Initialized()) {
                 return;
             }
 
-            if (!Renderer::shouldRender.load()) {
+            if (!Renderer::ShouldRender()) {
                 return;
             }
 
@@ -123,7 +123,7 @@ namespace ImGui
                 if (auto menu = Menu::GetSingleton(); menu->IsOpen()) {
                     menu->Draw();
                 } else {
-                    Renderer::shouldRender.store(false);
+                    Renderer::ShouldRender(false);
                 }
             }
             ImGui::EndFrame();

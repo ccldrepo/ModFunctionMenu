@@ -9,7 +9,7 @@
 void Menu::Open()
 {
     isOpen = true;
-    ImGui::Renderer::shouldRender = true;
+    ImGui::Renderer::ShouldRender(true);
     InputManager::SetBlocked();
     SKSE::log::debug("Open menu.");
 }
