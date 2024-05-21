@@ -11,8 +11,9 @@ SKSE plugin that provide an elegant interface to invoke mod function.
 ## Dependencies
 
 - [CommonLibSSE NG](https://github.com/CharmedBaryon/CommonLibSSE-NG)
+- [Dear ImGui](https://github.com/ocornut/imgui) (vendored)
 - [fmt](https://github.com/fmtlib/fmt)
 - [spdlog](https://github.com/gabime/spdlog)
 - [toml++](https://github.com/marzer/tomlplusplus)
 - [FreeType](https://github.com/freetype/freetype)
-- [Dear ImGui](https://github.com/ocornut/imgui) (vendored)
+- [Abseil](https://github.com/abseil/abseil-cpp)

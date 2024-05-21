@@ -49,6 +49,7 @@ find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(tomlplusplus REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(absl REQUIRED)
 
 # -- Declare Targets -----------------------------------------------------------
 
@@ -104,6 +105,9 @@ target_link_libraries(
         spdlog::spdlog
         tomlplusplus::tomlplusplus
         Freetype::Freetype
+        absl::cleanup
+        absl::flat_hash_map
+        absl::strings
 )
 
 target_precompile_headers(
