@@ -13,7 +13,7 @@ void Configuration::Init(bool a_abort)
         // Export default config if config file not exists.
         tmp->Save(a_abort);
     }
-    _config = std::move(tmp);
+    _singleton = std::move(tmp);
 }
 
 void Configuration::Load(bool a_abort)
