@@ -5,6 +5,7 @@
 #include "Configuration.h"
 #include "Hooks.h"
 #include "ImGui/Renderer.h"
+#include "Translation.h"
 #include "Util/Win.h"
 
 namespace
@@ -63,6 +64,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
     SKSE::Init(a_skse);
 
     Configuration::Init();
+    Translation::Init();
 
     ImGui::Renderer::Install();
 

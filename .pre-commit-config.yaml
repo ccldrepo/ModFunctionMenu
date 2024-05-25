@@ -1,5 +1,5 @@
 minimum_pre_commit_version: "3.6"
-exclude: ^(vendor/)
+exclude: ^(data/|vendor/)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0

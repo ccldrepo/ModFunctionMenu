@@ -18,16 +18,20 @@ public:
     static void Init(bool a_abort = true);
 
     // Lookup translation text.
-    const std::string& Lookup(const std::string& a_key) const;
+    std::string Lookup(std::string_view a_key) const;
 
 private:
     Translation() = default;
 
     void Load(bool a_abort);
-
     void LoadImpl(const std::filesystem::path& path);
 
     static inline std::unique_ptr<Translation> _singleton;
 
     absl::flat_hash_map<std::string, std::string> _map;
 };
+
+inline std::string operator""_T(const char* a_str, std::size_t a_size)
+{
+    return Translation::GetSingleton()->Lookup(std::string_view{ a_str, a_size });
+}

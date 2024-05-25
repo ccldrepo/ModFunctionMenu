@@ -4,6 +4,7 @@
 #include <imgui_internal.h>
 
 #include "../InputManager.h"
+#include "../Translation.h"
 #include "Renderer.h"
 
 void Menu::Open()
@@ -34,11 +35,11 @@ void Menu::Draw()
 
     ImGui::Begin("Mod Function Menu", nullptr, window_flags);
     {
-        if (ImGui::Button("Mod")) {
+        if (ImGui::Button("$Mod"_T.c_str())) {
             datastore->CurrentSection(datastore->modTree);
         }
         ImGui::SameLine();
-        if (ImGui::Button("Config")) {
+        if (ImGui::Button("$Config"_T.c_str())) {
             datastore->CurrentSection(datastore->configTree);
         }
         ImGui::Spacing();

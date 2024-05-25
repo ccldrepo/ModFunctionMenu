@@ -43,11 +43,11 @@ void Translation::Init(bool a_abort)
     _singleton = std::move(tmp);
 }
 
-const std::string& Translation::Lookup(const std::string& a_key) const
+std::string Translation::Lookup(std::string_view a_key) const
 {
     auto it = _map.find(a_key);
     if (it == _map.end()) {
-        return a_key;
+        return std::string{ a_key };
     }
     return it->second;
 }
