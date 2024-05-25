@@ -8,6 +8,7 @@ set(sources
     src/ImGui/Renderer.cpp
     src/InputManager.cpp
     src/Main.cpp
+    src/Translation.cpp
     src/Util/Win.cpp
     vendor/backends/imgui_impl_dx11.cpp
     vendor/backends/imgui_impl_win32.cpp

@@ -11,6 +11,7 @@ set(headers
     src/ImGui/Renderer.h
     src/InputManager.h
     src/PCH.h
+    src/Translation.h
     src/Util/Singleton.h
     src/Util/TOML.h
     src/Util/Win.h
