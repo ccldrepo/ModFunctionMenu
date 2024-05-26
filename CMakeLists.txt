@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.28)
 
 project(
     ccld_ModFunctionMenu
-    VERSION 0.3.0
+    VERSION 0.4.0
     DESCRIPTION "SKSE plugin that provide an elegant interface to invoke mod function."
     LANGUAGES CXX
 )
