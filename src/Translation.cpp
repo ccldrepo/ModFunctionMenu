@@ -1,6 +1,7 @@
 #include "Translation.h"
 
 #include <absl/strings/ascii.h>
+#include <absl/strings/str_split.h>
 
 namespace
 {
@@ -22,17 +23,36 @@ namespace
         return StrToPath(std::format("Data/Interface/Translations/{}_ENGLISH.txt", a_name));
     }
 
-    inline std::string NormalizeLine(std::wstring_view a_line)
+    inline std::string ReadUTF16LEFile(const std::filesystem::path& a_path)
     {
-        while (a_line.ends_with(L'\r') || a_line.ends_with(L'\n')) {
-            a_line.remove_suffix(1);
-        }
+        const auto size = std::filesystem::file_size(a_path);
 
-        auto text = SKSE::stl::utf16_to_utf8(a_line);
-        if (!text) {
+        if (size == 0) {
             return {};
         }
-        return *std::move(text);
+
+        if (size % 2 != 0) {
+            throw std::runtime_error("Size check failed. File must be encoded in UTF-16 LE");
+        }
+
+        const auto wsize = static_cast<std::size_t>(size / 2);
+        const auto wdata = std::make_unique_for_overwrite<wchar_t[]>(wsize);
+
+        if (std::ifstream file{ a_path, std::ios_base::in | std::ios_base::binary }) {
+            file.read(reinterpret_cast<char*>(wdata.get()), static_cast<std::streamsize>(size));
+        } else {
+            throw std::runtime_error("File could not be opened for reading");
+        }
+
+        if (wdata[0] != static_cast<wchar_t>(0xFEFF)) {
+            throw std::runtime_error("BOM check failed. File must be encoded in UTF-16 LE");
+        }
+
+        std::wstring_view wstr{ wdata.get() + 1, wsize - 1 };
+        if (auto str = SKSE::stl::utf16_to_utf8(wstr)) {
+            return *std::move(str);
+        }
+        return {};
     }
 }
 
@@ -64,36 +84,23 @@ void Translation::Load(bool a_abort)
     }
 }
 
-void Translation::LoadImpl(const std::filesystem::path& path)
+void Translation::LoadImpl(const std::filesystem::path& a_path)
 {
-    std::wifstream file{ path, std::ios_base::in | std::ios_base::binary };
-    if (!file) {
-        throw std::runtime_error("File could not be opened for reading");
-    }
-
-    if (file.get() != 0xFEFF) {
-        throw std::runtime_error("BOM check failed. File must be encoded in UTF-16 LE");
-    }
-
-    for (std::wstring line; std::getline(file, line);) {
-        auto text = NormalizeLine(line);
-        if (text.empty()) {
-            continue;
-        }
-
-        if (text[0] != '$') {
-            auto msg = std::format("Translation key must start with leading '$': {}", text);
+    auto text = ReadUTF16LEFile(a_path);
+    for (std::string_view line : absl::StrSplit(text, "\r\n"sv, absl::SkipWhitespace())) {
+        if (line[0] != '$') {
+            auto msg = std::format("Translation key must start with leading '$': {}", line);
             throw std::runtime_error(msg);
         }
 
-        auto pos = text.find_first_of('\t');
+        auto pos = line.find_first_of('\t');
         if (pos == std::string::npos) {
-            auto msg = std::format("Translation key and value must be seperated with 'TAB': {}", text);
+            auto msg = std::format("Translation key and value must be seperated with 'TAB': {}", line);
             throw std::runtime_error(msg);
         }
 
-        auto key = text.substr(0, pos);
-        auto value = std::move(text).substr(pos + 1);
+        auto key = line.substr(0, pos);
+        auto value = std::move(line).substr(pos + 1);
         _map.insert_or_assign(std::move(key), std::move(value));
     }
 }

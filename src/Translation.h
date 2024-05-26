@@ -24,7 +24,7 @@ private:
     Translation() = default;
 
     void Load(bool a_abort);
-    void LoadImpl(const std::filesystem::path& path);
+    void LoadImpl(const std::filesystem::path& a_path);
 
     static inline std::unique_ptr<Translation> _singleton;
 
