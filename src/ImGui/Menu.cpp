@@ -33,13 +33,13 @@ void Menu::Draw()
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_NoCollapse;
 
-    ImGui::Begin("Mod Function Menu", nullptr, window_flags);
+    ImGui::Begin("$ModName"_T.c_str(), nullptr, window_flags);
     {
-        if (ImGui::Button("$Mod"_T.c_str())) {
+        if (ImGui::Button("$Section_Mod"_T.c_str())) {
             datastore->CurrentSection(datastore->modTree);
         }
         ImGui::SameLine();
-        if (ImGui::Button("$Config"_T.c_str())) {
+        if (ImGui::Button("$Section_Config"_T.c_str())) {
             datastore->CurrentSection(datastore->configTree);
         }
         ImGui::Spacing();
