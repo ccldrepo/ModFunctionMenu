@@ -13,3 +13,7 @@ indent_style = space
 [*.{json,yaml,yml}]
 indent_size = 2
 indent_style = space
+
+[data/Interface/Translations/*]
+charset = utf-16le
+trim_trailing_whitespace = false
