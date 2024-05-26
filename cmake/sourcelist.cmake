@@ -1,21 +1,21 @@
-set(sources
-    src/Configuration.cpp
-    src/Core.cpp
-    src/Hooks.cpp
-    src/HotkeyManager.cpp
-    src/ImGui/Input.cpp
-    src/ImGui/Menu.cpp
-    src/ImGui/Renderer.cpp
-    src/InputManager.cpp
-    src/Main.cpp
-    src/Translation.cpp
-    src/Util/Win.cpp
-    vendor/backends/imgui_impl_dx11.cpp
-    vendor/backends/imgui_impl_win32.cpp
-    vendor/imgui.cpp
-    vendor/imgui_demo.cpp
-    vendor/imgui_draw.cpp
-    vendor/imgui_tables.cpp
-    vendor/imgui_widgets.cpp
-    vendor/misc/freetype/imgui_freetype.cpp
+set(PROJECT_SOURCES
+    "src/Configuration.cpp"
+    "src/Core.cpp"
+    "src/Hooks.cpp"
+    "src/HotkeyManager.cpp"
+    "src/ImGui/Input.cpp"
+    "src/ImGui/Menu.cpp"
+    "src/ImGui/Renderer.cpp"
+    "src/InputManager.cpp"
+    "src/Main.cpp"
+    "src/Translation.cpp"
+    "src/Util/Win.cpp"
+    "vendor/backends/imgui_impl_dx11.cpp"
+    "vendor/backends/imgui_impl_win32.cpp"
+    "vendor/imgui.cpp"
+    "vendor/imgui_demo.cpp"
+    "vendor/imgui_draw.cpp"
+    "vendor/imgui_tables.cpp"
+    "vendor/imgui_widgets.cpp"
+    "vendor/misc/freetype/imgui_freetype.cpp"
 )
