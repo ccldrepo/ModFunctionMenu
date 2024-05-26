@@ -70,12 +70,14 @@ MFM_Node::MFM_Node(std::filesystem::path a_path, Type a_type, MFM_Node* a_parent
 
 void MFM_Node::BuildChildren()
 {
-    if (!std::filesystem::exists(path)) {
+    auto st = std::filesystem::status(path);
+
+    if (!std::filesystem::exists(st)) {
         SKSE::log::warn("\"{}\" does not exist.", PathToStr(path));
         return;
     }
 
-    if (!std::filesystem::is_directory(path)) {
+    if (!std::filesystem::is_directory(st)) {
         SKSE::log::error("\"{}\" is not a directory.", PathToStr(path));
         return;
     }
