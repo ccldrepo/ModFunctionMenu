@@ -8,7 +8,10 @@ namespace
     class MenuOpenHotkeyContext
     {
     public:
-        explicit MenuOpenHotkeyContext(const Configuration* config) : hotkey(config->iHotkey, config->iModifier) {}
+        explicit MenuOpenHotkeyContext(const Configuration* config) :
+            keyboard(config->controls.keyboard.iHotkey, config->controls.keyboard.iModifier),
+            gamepad(config->controls.gamepad.iHotkey, config->controls.gamepad.iModifier)
+        {}
 
         void Update(const RE::ButtonEvent* a_button)
         {
@@ -19,29 +22,35 @@ namespace
             if (a_button->IsPressed()) {
                 auto key = CLib::ParseKey(a_button->GetIDCode(), a_button->GetDevice());
 
-                hotkey.UpdatePressed(key);
+                keyboard.UpdatePressed(key);
+                gamepad.UpdatePressed(key);
 
                 if (a_button->IsDown()) {
-                    hotkey.UpdateDown(key);
+                    keyboard.UpdateDown(key);
+                    gamepad.UpdateDown(key);
                 }
             }
         }
 
         void Finalize(Menu* a_menu)
         {
-            if (hotkey.IsActive()) {
+            if (keyboard.IsActive() || gamepad.IsActive()) {
                 a_menu->Open();
             }
         }
 
     private:
-        CLib::KeyCombo hotkey;
+        CLib::KeyCombo keyboard;
+        CLib::KeyCombo gamepad;
     };
 
     class MenuCloseHotkeyContext
     {
     public:
-        explicit MenuCloseHotkeyContext(const Configuration* config) : hotkey(config->iHotkey, config->iModifier) {}
+        explicit MenuCloseHotkeyContext(const Configuration* config) :
+            keyboard(config->controls.keyboard.iHotkey, config->controls.keyboard.iModifier),
+            gamepad(config->controls.gamepad.iHotkey, config->controls.gamepad.iModifier)
+        {}
 
         void Update(const RE::ButtonEvent* a_button)
         {
@@ -52,10 +61,12 @@ namespace
             if (a_button->IsPressed()) {
                 auto key = CLib::ParseKey(a_button->GetIDCode(), a_button->GetDevice());
 
-                hotkey.UpdatePressed(key);
+                keyboard.UpdatePressed(key);
+                gamepad.UpdatePressed(key);
 
                 if (a_button->IsDown()) {
-                    hotkey.UpdateDown(key);
+                    keyboard.UpdateDown(key);
+                    gamepad.UpdateDown(key);
                     esc.Update(key);
                 }
             }
@@ -63,13 +74,14 @@ namespace
 
         void Finalize(Menu* a_menu)
         {
-            if (esc.IsActive() || hotkey.IsActive()) {
+            if (esc.IsActive() || keyboard.IsActive() || gamepad.IsActive()) {
                 a_menu->Close();
             }
         }
 
     private:
-        CLib::KeyCombo hotkey;
+        CLib::KeyCombo keyboard;
+        CLib::KeyCombo gamepad;
         CLib::Key      esc{ REX::W32::DIK_ESCAPE };
     };
 

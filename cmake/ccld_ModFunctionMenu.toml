@@ -1,3 +1,8 @@
+[General]
+#sLanguage = "chinese"
+#sFont = ""
+
+[Controls]
 # For hotkey code reference, see:
 # https://wiki.nexusmods.com/index.php/DirectX_Scancodes_And_How_To_Use_Them
 # https://ck.uesp.net/wiki/Input_Script
@@ -5,9 +10,18 @@
 # To disable a hotkey, set iHotkeyXXX and iModifierXXX to 0.
 # To disable a modifier, set iModifierXXX to 0.
 
+[Controls.Keyboard]
 # Toggle menu hotkey.
 #
 # Default: 59 (F1)
 iHotkey = 59
+# Default: 0 (Disabled)
+iModifier = 0
+
+[Controls.Gamepad]
+# Toggle menu hotkey.
+#
+# Default: 0 (Disabled)
+iHotkey = 0
 # Default: 0 (Disabled)
 iModifier = 0

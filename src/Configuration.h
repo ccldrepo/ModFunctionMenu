@@ -15,14 +15,32 @@ public:
     // Initialize or reload configuration.
     static void Init(bool a_abort = true);
 
-    struct Default
+    struct General
     {
-        static constexpr std::uint32_t iHotkey{ REX::W32::DIK_F1 };
-        static constexpr std::uint32_t iModifier{ 0 };
+        std::string sLanguage;
+        std::string sFont;
     };
 
-    std::uint32_t iHotkey{ Default::iHotkey };
-    std::uint32_t iModifier{ Default::iModifier };
+    struct Controls
+    {
+        struct Keyboard
+        {
+            std::uint32_t iHotkey{ REX::W32::DIK_F1 };
+            std::uint32_t iModifier{ 0 };
+        };
+
+        struct Gamepad
+        {
+            std::uint32_t iHotkey{ 0 };
+            std::uint32_t iModifier{ 0 };
+        };
+
+        Keyboard keyboard;
+        Gamepad  gamepad;
+    };
+
+    General  general;
+    Controls controls;
 
 private:
     Configuration() = default;

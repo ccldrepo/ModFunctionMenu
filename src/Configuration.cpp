@@ -46,16 +46,48 @@ void Configuration::LoadImpl()
 {
     auto data = LoadTOMLFile(_path);
 
-    LoadTOMLValue(data, "iHotkey"sv, iHotkey);
-    LoadTOMLValue(data, "iModifier"sv, iModifier);
+    if (auto section = GetTOMLSection(data, "General"sv)) {
+        LoadTOMLValue(*section, "sLanguage"sv, general.sLanguage);
+        LoadTOMLValue(*section, "sFont"sv, general.sFont);
+    }
+
+    if (auto section = GetTOMLSection(data, "Controls"sv)) {
+        if (auto subsection = GetTOMLSection(*section, "Keyboard"sv)) {
+            LoadTOMLValue(*subsection, "iHotkey"sv, controls.keyboard.iHotkey);
+            LoadTOMLValue(*subsection, "iModifier"sv, controls.keyboard.iModifier);
+        }
+
+        if (auto subsection = GetTOMLSection(*section, "Gamepad"sv)) {
+            LoadTOMLValue(*subsection, "iHotkey"sv, controls.gamepad.iHotkey);
+            LoadTOMLValue(*subsection, "iModifier"sv, controls.gamepad.iModifier);
+        }
+    }
 }
 
 void Configuration::SaveImpl() const
 {
     toml::table data;
-
-    SaveTOMLValue(data, "iHotkey"sv, iHotkey);
-    SaveTOMLValue(data, "iModifier"sv, iModifier);
-
+    {
+        toml::table section;
+        SaveTOMLValue(section, "sLanguage"sv, general.sLanguage);
+        SaveTOMLValue(section, "sFont"sv, general.sFont);
+        SetTOMLSection(data, "General"sv, std::move(section));
+    }
+    {
+        toml::table section;
+        {
+            toml::table subsection;
+            SaveTOMLValue(subsection, "iHotkey"sv, controls.keyboard.iHotkey);
+            SaveTOMLValue(subsection, "iModifier"sv, controls.keyboard.iModifier);
+            SetTOMLSection(section, "Keyboard"sv, std::move(subsection));
+        }
+        {
+            toml::table subsection;
+            SaveTOMLValue(subsection, "iHotkey"sv, controls.gamepad.iHotkey);
+            SaveTOMLValue(subsection, "iModifier"sv, controls.gamepad.iModifier);
+            SetTOMLSection(section, "Gamepad"sv, std::move(subsection));
+        }
+        SetTOMLSection(data, "Controls"sv, std::move(section));
+    }
     SaveTOMLFile(_path, data);
 }
