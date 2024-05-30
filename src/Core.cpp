@@ -9,20 +9,20 @@ MFM_Function MFM_Function::Get(const std::filesystem::path& a_path)
 
     auto data = LoadTOMLFile(a_path);
 
-    LoadTOMLValueRequired(data, "dll"sv, func.dll);
+    GetTOMLValueRequired(data, "dll"sv, func.dll);
 
-    LoadTOMLValueRequired(data, "api"sv, func.api);
+    GetTOMLValueRequired(data, "api"sv, func.api);
 
     std::string type;
-    LoadTOMLValue(data, "type"sv, type);
+    GetTOMLValue(data, "type"sv, type);
     func.type = MFMAPI_Type_StrToEnum(type);
 
     std::string preAction;
-    LoadTOMLValue(data, "preAction"sv, preAction);
+    GetTOMLValue(data, "preAction"sv, preAction);
     func.preAction = MFMAPI_PreAction_StrToEnum(preAction);
 
     std::string postAction;
-    LoadTOMLValue(data, "postAction"sv, postAction);
+    GetTOMLValue(data, "postAction"sv, postAction);
     func.postAction = MFMAPI_PostAction_StrToEnum(postAction);
 
     SKSE::log::info("Get function: dll = \"{}\", api = \"{}\", type = \"{}\", preAction = \"{}\", postAction = \"{}\".",

@@ -88,7 +88,7 @@ inline void SetTOMLSection(toml::table& a_table, std::string_view a_key, toml::t
 }
 
 template <TOMLScalar T, bool required = false>
-inline void LoadTOMLValue(const toml::table& a_table, std::string_view a_key, T& a_target)
+inline void GetTOMLValue(const toml::table& a_table, std::string_view a_key, T& a_target)
 {
     auto node = a_table.get(a_key);
     if (!node) {
@@ -107,7 +107,7 @@ inline void LoadTOMLValue(const toml::table& a_table, std::string_view a_key, T&
 }
 
 template <TOMLScalar T, bool required = false>
-inline void LoadTOMLValue(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
+inline void GetTOMLValue(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
 {
     auto node = a_table.get(a_key);
     if (!node) {
@@ -135,28 +135,28 @@ inline void LoadTOMLValue(const toml::table& a_table, std::string_view a_key, st
 }
 
 template <TOMLScalar T>
-inline void LoadTOMLValueRequired(const toml::table& a_table, std::string_view a_key, T& a_target)
+inline void GetTOMLValueRequired(const toml::table& a_table, std::string_view a_key, T& a_target)
 {
-    return LoadTOMLValue<T, true>(a_table, a_key, a_target);
+    return GetTOMLValue<T, true>(a_table, a_key, a_target);
 }
 
 template <TOMLScalar T>
-inline void LoadTOMLValueRequired(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
+inline void GetTOMLValueRequired(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
 {
-    return LoadTOMLValue<T, true>(a_table, a_key, a_target);
+    return GetTOMLValue<T, true>(a_table, a_key, a_target);
 }
 
 template <TOMLScalar T>
-inline void SaveTOMLValue(toml::table& a_table, std::string_view a_key, const T& a_source)
+inline void SetTOMLValue(toml::table& a_table, std::string_view a_key, const T& a_source)
 {
-    auto [pos, ok] = a_table.insert(a_key, a_source);
+    auto [pos, ok] = a_table.emplace(a_key, a_source);
     if (!ok) {
         throw TOMLError(std::format("'{}' exists", a_key));
     }
 }
 
 template <TOMLScalar T>
-inline void SaveTOMLValue(toml::table& a_table, std::string_view a_key, const std::vector<T>& a_source)
+inline void SetTOMLValue(toml::table& a_table, std::string_view a_key, const std::vector<T>& a_source)
 {
     toml::array arr;
     arr.reserve(a_source.size());
@@ -164,7 +164,7 @@ inline void SaveTOMLValue(toml::table& a_table, std::string_view a_key, const st
         arr.push_back(ele);
     }
 
-    auto [pos, ok] = a_table.insert(a_key, std::move(arr));
+    auto [pos, ok] = a_table.emplace(a_key, std::move(arr));
     if (!ok) {
         throw TOMLError(std::format("'{}' exists", a_key));
     }

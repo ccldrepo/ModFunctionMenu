@@ -47,19 +47,19 @@ void Configuration::LoadImpl()
     auto data = LoadTOMLFile(_path);
 
     if (auto section = GetTOMLSection(data, "General"sv)) {
-        LoadTOMLValue(*section, "sLanguage"sv, general.sLanguage);
-        LoadTOMLValue(*section, "sFont"sv, general.sFont);
+        GetTOMLValue(*section, "sLanguage"sv, general.sLanguage);
+        GetTOMLValue(*section, "sFont"sv, general.sFont);
     }
 
     if (auto section = GetTOMLSection(data, "Controls"sv)) {
         if (auto subsection = GetTOMLSection(*section, "Keyboard"sv)) {
-            LoadTOMLValue(*subsection, "iHotkey"sv, controls.keyboard.iHotkey);
-            LoadTOMLValue(*subsection, "iModifier"sv, controls.keyboard.iModifier);
+            GetTOMLValue(*subsection, "iHotkey"sv, controls.keyboard.iHotkey);
+            GetTOMLValue(*subsection, "iModifier"sv, controls.keyboard.iModifier);
         }
 
         if (auto subsection = GetTOMLSection(*section, "Gamepad"sv)) {
-            LoadTOMLValue(*subsection, "iHotkey"sv, controls.gamepad.iHotkey);
-            LoadTOMLValue(*subsection, "iModifier"sv, controls.gamepad.iModifier);
+            GetTOMLValue(*subsection, "iHotkey"sv, controls.gamepad.iHotkey);
+            GetTOMLValue(*subsection, "iModifier"sv, controls.gamepad.iModifier);
         }
     }
 }
@@ -69,22 +69,22 @@ void Configuration::SaveImpl() const
     toml::table data;
     {
         toml::table section;
-        SaveTOMLValue(section, "sLanguage"sv, general.sLanguage);
-        SaveTOMLValue(section, "sFont"sv, general.sFont);
+        SetTOMLValue(section, "sLanguage"sv, general.sLanguage);
+        SetTOMLValue(section, "sFont"sv, general.sFont);
         SetTOMLSection(data, "General"sv, std::move(section));
     }
     {
         toml::table section;
         {
             toml::table subsection;
-            SaveTOMLValue(subsection, "iHotkey"sv, controls.keyboard.iHotkey);
-            SaveTOMLValue(subsection, "iModifier"sv, controls.keyboard.iModifier);
+            SetTOMLValue(subsection, "iHotkey"sv, controls.keyboard.iHotkey);
+            SetTOMLValue(subsection, "iModifier"sv, controls.keyboard.iModifier);
             SetTOMLSection(section, "Keyboard"sv, std::move(subsection));
         }
         {
             toml::table subsection;
-            SaveTOMLValue(subsection, "iHotkey"sv, controls.gamepad.iHotkey);
-            SaveTOMLValue(subsection, "iModifier"sv, controls.gamepad.iModifier);
+            SetTOMLValue(subsection, "iHotkey"sv, controls.gamepad.iHotkey);
+            SetTOMLValue(subsection, "iModifier"sv, controls.gamepad.iModifier);
             SetTOMLSection(section, "Gamepad"sv, std::move(subsection));
         }
         SetTOMLSection(data, "Controls"sv, std::move(section));
