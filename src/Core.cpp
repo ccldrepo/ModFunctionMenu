@@ -33,7 +33,7 @@ MFM_Function MFM_Function::Get(const std::filesystem::path& a_path)
 void MFM_Function::operator()() const
 {
     auto dllPath = StrToPath(dll);
-    auto func = GetModuleFunc<MFMAPI_Void>(dllPath.c_str(), api.c_str());
+    auto func = Win::GetModuleFunc<MFMAPI_Void>(dllPath.c_str(), api.c_str());
     if (!func) {
         auto msg = std::format("Invalid function: dll = \"{}\", api = \"{}\"", dll, api);
         throw std::runtime_error(msg);
@@ -44,7 +44,7 @@ void MFM_Function::operator()() const
 void MFM_Function::operator()(char* a_msg, std::size_t a_len) const
 {
     auto dllPath = StrToPath(dll);
-    auto func = GetModuleFunc<MFMAPI_Message>(dllPath.c_str(), api.c_str());
+    auto func = Win::GetModuleFunc<MFMAPI_Message>(dllPath.c_str(), api.c_str());
     if (!func) {
         auto msg = std::format("Invalid function: dll = \"{}\", api = \"{}\"", dll, api);
         throw std::runtime_error(msg);
