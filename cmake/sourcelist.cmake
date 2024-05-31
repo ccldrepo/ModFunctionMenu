@@ -1,6 +1,7 @@
 set(PROJECT_SOURCES
     "src/Configuration.cpp"
     "src/Core.cpp"
+    "src/Function.cpp"
     "src/Hooks.cpp"
     "src/HotkeyManager.cpp"
     "src/ImGui/Input.cpp"
