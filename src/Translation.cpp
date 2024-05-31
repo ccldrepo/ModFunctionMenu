@@ -3,15 +3,26 @@
 #include <absl/strings/ascii.h>
 #include <absl/strings/str_split.h>
 
+#include "Configuration.h"
+
 namespace
 {
     inline std::string GetGameLanguage()
     {
         auto setting = RE::GetINISetting("sLanguage:General");
         if (setting && setting->GetType() == RE::Setting::Type::kString) {
-            return absl::AsciiStrToUpper(setting->GetString());
+            return absl::AsciiStrToLower(setting->GetString());
         }
-        return "ENGLISH";
+        return "english";
+    }
+
+    inline std::string GetUserLanguage()
+    {
+        auto config = Configuration::GetSingleton();
+        if (!config->general.sLanguage.empty()) {
+            return absl::AsciiStrToLower(config->general.sLanguage);
+        }
+        return GetGameLanguage();
     }
 
     inline std::filesystem::path GetTranslationPath(std::string_view a_name, std::string_view a_language)
@@ -20,7 +31,7 @@ namespace
         if (std::filesystem::exists(path)) {
             return path;
         }
-        return StrToPath(std::format("Data/Interface/Translations/{}_ENGLISH.txt", a_name));
+        return StrToPath(std::format("Data/Interface/Translations/{}_english.txt", a_name));
     }
 
     inline std::string ReadUTF16LEFile(const std::filesystem::path& a_path)
@@ -74,7 +85,7 @@ std::string Translation::Lookup(std::string_view a_key) const
 
 void Translation::Load(bool a_abort)
 {
-    auto path = GetTranslationPath("ccld_ModFunctionMenu"sv, GetGameLanguage());
+    auto path = GetTranslationPath("ccld_ModFunctionMenu"sv, GetUserLanguage());
     try {
         LoadImpl(path);
         SKSE::log::info("Successfully loaded translation from \"{}\".", PathToStr(path));
