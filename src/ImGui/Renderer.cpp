@@ -31,59 +31,7 @@ namespace ImGui
         static void thunk()
         {
             func();
-
-            const auto renderer = RE::BSGraphics::Renderer::GetSingleton();
-            if (!renderer) {
-                SKSE::log::error("couldn't find renderer");
-                return;
-            }
-
-            const auto swapChain = (IDXGISwapChain*)renderer->data.renderWindows[0].swapChain;
-            if (!swapChain) {
-                SKSE::log::error("couldn't find swapChain");
-                return;
-            }
-
-            DXGI_SWAP_CHAIN_DESC desc{};
-            if (FAILED(swapChain->GetDesc(std::addressof(desc)))) {
-                SKSE::log::error("IDXGISwapChain::GetDesc failed.");
-                return;
-            }
-
-            const auto device = (ID3D11Device*)renderer->data.forwarder;
-            const auto context = (ID3D11DeviceContext*)renderer->data.context;
-
-            SKSE::log::info("Initializing ImGui...");
-
-            ImGui::CreateContext();
-
-            auto& io = ImGui::GetIO();
-            io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-            io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-            io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-            io.IniFilename = nullptr;
-            io.MouseDrawCursor = true;
-            io.ConfigWindowsMoveFromTitleBarOnly = true;
-
-            if (!ImGui_ImplWin32_Init(desc.OutputWindow)) {
-                SKSE::log::error("ImGui initialization failed (Win32)");
-                return;
-            }
-
-            if (!ImGui_ImplDX11_Init(device, context)) {
-                SKSE::log::error("ImGui initialization failed (DX11)");
-                return;
-            }
-
-            Renderer::Initialized(true);
-
-            SKSE::log::info("ImGui initialized.");
-
-            WndProcHook::func = reinterpret_cast<WNDPROC>(
-                SetWindowLongPtrA(desc.OutputWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WndProcHook::thunk)));
-            if (!WndProcHook::func) {
-                SKSE::log::error("SetWindowLongPtrA failed!");
-            }
+            Renderer::Init();
         }
 
         static inline REL::Relocation<decltype(thunk)> func;
@@ -99,38 +47,7 @@ namespace ImGui
         static void thunk(std::uint32_t a_timer)
         {
             func(a_timer);
-
-            if (!Renderer::Initialized()) {
-                return;
-            }
-
-            if (!Renderer::ShouldRender()) {
-                return;
-            }
-
-            auto& io = ImGui::GetIO();
-
-            ImGui_ImplDX11_NewFrame();
-            ImGui_ImplWin32_NewFrame();
-            {
-                // trick imgui into rendering at game's real resolution (ie. if upscaled with Display Tweaks)
-                static const auto screenSize = RE::BSGraphics::Renderer::GetScreenSize();
-
-                io.DisplaySize.x = static_cast<float>(screenSize.width);
-                io.DisplaySize.y = static_cast<float>(screenSize.height);
-            }
-            ImGui::NewFrame();
-            {
-                if (auto menu = Menu::GetSingleton(); menu->IsOpen()) {
-                    menu->Draw();
-                } else {
-                    io.ClearInputKeys();
-                    Renderer::ShouldRender(false);
-                }
-            }
-            ImGui::EndFrame();
-            ImGui::Render();
-            ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+            Renderer::Run();
         }
 
         static inline REL::Relocation<decltype(thunk)> func;
@@ -145,5 +62,95 @@ namespace ImGui
     {
         D3DInitHook::Install();
         DXGIPresentHook::Install();
+    }
+
+    void Renderer::Init()
+    {
+        SKSE::log::info("Initializing ImGui...");
+
+        const auto renderer = RE::BSGraphics::Renderer::GetSingleton();
+        if (!renderer) {
+            SKSE::log::error("couldn't find renderer");
+            return;
+        }
+
+        const auto swapChain = (IDXGISwapChain*)renderer->data.renderWindows[0].swapChain;
+        if (!swapChain) {
+            SKSE::log::error("couldn't find swapChain");
+            return;
+        }
+
+        DXGI_SWAP_CHAIN_DESC desc{};
+        if (FAILED(swapChain->GetDesc(std::addressof(desc)))) {
+            SKSE::log::error("IDXGISwapChain::GetDesc failed.");
+            return;
+        }
+
+        const auto device = (ID3D11Device*)renderer->data.forwarder;
+        const auto context = (ID3D11DeviceContext*)renderer->data.context;
+
+        ImGui::CreateContext();
+
+        auto& io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+        io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+        io.IniFilename = nullptr;
+        io.MouseDrawCursor = true;
+        io.ConfigWindowsMoveFromTitleBarOnly = true;
+
+        if (!ImGui_ImplWin32_Init(desc.OutputWindow)) {
+            SKSE::log::error("ImGui initialization failed (Win32)");
+            return;
+        }
+
+        if (!ImGui_ImplDX11_Init(device, context)) {
+            SKSE::log::error("ImGui initialization failed (DX11)");
+            return;
+        }
+
+        WndProcHook::func = reinterpret_cast<WNDPROC>(
+            SetWindowLongPtrA(desc.OutputWindow, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(WndProcHook::thunk)));
+        if (!WndProcHook::func) {
+            SKSE::log::warn("SetWindowLongPtrA failed!");
+        }
+
+        _isInit.store(true);
+        SKSE::log::info("ImGui initialized.");
+    }
+
+    void Renderer::Run()
+    {
+        if (!_isInit.load()) {
+            return;
+        }
+
+        if (!IsEnable()) {
+            return;
+        }
+
+        auto& io = ImGui::GetIO();
+
+        ImGui_ImplDX11_NewFrame();
+        ImGui_ImplWin32_NewFrame();
+        {
+            // trick imgui into rendering at game's real resolution (ie. if upscaled with Display Tweaks)
+            static const auto screenSize = RE::BSGraphics::Renderer::GetScreenSize();
+
+            io.DisplaySize.x = static_cast<float>(screenSize.width);
+            io.DisplaySize.y = static_cast<float>(screenSize.height);
+        }
+        ImGui::NewFrame();
+        {
+            if (auto menu = Menu::GetSingleton(); menu->IsOpen()) {
+                menu->Draw();
+            } else {
+                io.ClearInputKeys();
+                Disable();
+            }
+        }
+        ImGui::EndFrame();
+        ImGui::Render();
+        ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     }
 }

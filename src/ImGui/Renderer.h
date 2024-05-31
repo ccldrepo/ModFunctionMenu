@@ -9,13 +9,16 @@ namespace ImGui
     public:
         static void Install();
 
-        static bool Initialized() noexcept { return _initialized.load(); }
-        static void Initialized(bool a_initialized) noexcept { _initialized.store(a_initialized); }
-        static bool ShouldRender() noexcept { return _shouldRender.load(); }
-        static void ShouldRender(bool a_shouldRender) noexcept { _shouldRender.store(a_shouldRender); }
+        static void Init();
+        static void Run();
+
+        static bool IsEnable() noexcept { return _isEnable.load(); }
+
+        static void Enable() noexcept { _isEnable.store(true); }
+        static void Disable() noexcept { _isEnable.store(false); }
 
     private:
-        static inline std::atomic<bool> _initialized{ false };
-        static inline std::atomic<bool> _shouldRender{ false };
+        static inline std::atomic<bool> _isInit{ false };
+        static inline std::atomic<bool> _isEnable{ false };
     };
 }

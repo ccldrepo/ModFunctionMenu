@@ -11,7 +11,7 @@ void Menu::Open()
 {
     InputManager::SetBlocked();
     _isOpen.store(true);
-    ImGui::Renderer::ShouldRender(true);
+    ImGui::Renderer::Enable();
     SKSE::log::debug("Open menu.");
 }
 
