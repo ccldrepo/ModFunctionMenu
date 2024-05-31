@@ -77,15 +77,15 @@ void Translation::Init(bool a_abort)
 std::string Translation::Lookup(std::string_view a_key) const
 {
     auto it = _map.find(a_key);
-    if (it == _map.end()) {
-        return std::string{ a_key };
+    if (it != _map.end()) {
+        return it->second;
     }
-    return it->second;
+    return std::string{ a_key };
 }
 
 void Translation::Load(bool a_abort)
 {
-    auto path = GetTranslationPath("ccld_ModFunctionMenu"sv, GetUserLanguage());
+    auto path = GetTranslationPath(SKSE::PluginDeclaration::GetSingleton()->GetName(), GetUserLanguage());
     try {
         LoadImpl(path);
         SKSE::log::info("Successfully loaded translation from \"{}\".", PathToStr(path));
@@ -100,7 +100,7 @@ void Translation::LoadImpl(const std::filesystem::path& a_path)
     auto text = ReadUTF16LEFile(a_path);
     for (std::string_view line : absl::StrSplit(text, "\r\n"sv, absl::SkipWhitespace())) {
         if (line[0] != '$') {
-            auto msg = std::format("Translation key must start with leading '$': {}", line);
+            auto msg = std::format("Translation key must start with '$': {}", line);
             throw std::runtime_error(msg);
         }
 
@@ -111,7 +111,7 @@ void Translation::LoadImpl(const std::filesystem::path& a_path)
         }
 
         auto key = line.substr(0, pos);
-        auto value = std::move(line).substr(pos + 1);
-        _map.insert_or_assign(std::move(key), std::move(value));
+        auto value = line.substr(pos + 1);
+        _map.insert_or_assign(key, value);
     }
 }
