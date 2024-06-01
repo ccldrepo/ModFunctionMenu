@@ -33,7 +33,7 @@ void Menu::Draw()
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_NoCollapse;
 
-    ImGui::Begin("$ModName"_T.c_str(), nullptr, window_flags);
+    ImGui::Begin("$Title"_T.c_str(), nullptr, window_flags);
     {
         if (ImGui::Button("$Section_Mod"_T.c_str())) {
             datastore->CurrentSection(datastore->modTree);
