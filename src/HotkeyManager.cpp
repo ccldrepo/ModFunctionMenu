@@ -88,7 +88,7 @@ namespace
     template <class HotkeyContext>
     void ProcessMenuOpenClose(const RE::InputEvent* const* a_event, Menu* a_menu)
     {
-        const auto config = Configuration::GetSingleton();
+        auto config = Configuration::GetSingleton();
 
         HotkeyContext ctx{ config };
 

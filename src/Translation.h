@@ -31,7 +31,7 @@ private:
     absl::flat_hash_map<std::string, std::string> _map;
 };
 
-inline std::string operator""_T(const char* a_str, std::size_t a_size)
+inline std::string operator""_T(const char* a_str, std::size_t a_len)
 {
-    return Translation::GetSingleton()->Lookup(std::string_view{ a_str, a_size });
+    return Translation::GetSingleton()->Lookup(std::string_view{ a_str, a_len });
 }
