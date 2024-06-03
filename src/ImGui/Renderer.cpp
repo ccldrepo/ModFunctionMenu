@@ -121,7 +121,7 @@ namespace ImGui
 
     void Renderer::Run()
     {
-        if (!_isInit.load()) {
+        if (!IsInit()) {
             return;
         }
 

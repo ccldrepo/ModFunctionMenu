@@ -12,6 +12,7 @@ namespace ImGui
         static void Init();
         static void Run();
 
+        static bool IsInit() noexcept { return _isInit.load(); }
         static bool IsEnable() noexcept { return _isEnable.load(); }
 
         static void Enable() noexcept { _isEnable.store(true); }
