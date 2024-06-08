@@ -26,6 +26,7 @@ namespace ImGui
                 io.Fonts->Clear();
                 io.Fonts->AddFontDefault();
                 io.Fonts->Build();
+                useDefault = true;
                 SKSE::log::info("Successfully loaded font from ImGui's default.");
             } else {
                 LoadImpl(config->general.sFont.c_str());
@@ -41,6 +42,16 @@ namespace ImGui
 
     void FontManager::LoadImpl(const char* a_path)
     {
+        auto st = std::filesystem::status(StrToPath(a_path));
+
+        if (!std::filesystem::exists(st)) {
+            throw std::runtime_error("File does not exist");
+        }
+
+        if (!std::filesystem::is_regular_file(st)) {
+            throw std::runtime_error("File is not a regular file");
+        }
+
         auto& io = ImGui::GetIO();
         io.Fonts->Clear();
 
@@ -84,7 +95,7 @@ namespace ImGui
             return;
         }
 
-        auto cleanup = [this]() { needRefresh = false; };
+        absl::Cleanup cleanup = [this]() { needRefresh = false; };
 
         auto& io = ImGui::GetIO();
         io.Fonts->Clear();
@@ -98,5 +109,7 @@ namespace ImGui
 
         ImGui_ImplDX11_InvalidateDeviceObjects();
         ImGui_ImplDX11_CreateDeviceObjects();
+
+        SKSE::log::debug("Refresh font.");
     }
 }

@@ -124,11 +124,7 @@ namespace ImGui
 
     void Renderer::Run()
     {
-        if (!IsInit()) {
-            return;
-        }
-
-        if (!IsEnable()) {
+        if (!IsInit() || !IsEnable()) {
             return;
         }
 
