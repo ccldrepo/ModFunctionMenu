@@ -5,6 +5,7 @@
 
 #include "../InputManager.h"
 #include "../Translation.h"
+#include "FontManager.h"
 #include "Renderer.h"
 
 void Menu::Open()
@@ -54,6 +55,8 @@ void Menu::Draw()
 
 void Menu::DrawExplorer(Datastore* datastore)
 {
+    auto fontManager = ImGui::FontManager::GetSingleton();
+
     auto tree = datastore->CurrentSection();
     ImGui::Text("%s", tree->CurrentPathStr().c_str());
     ImGui::Spacing();
@@ -71,6 +74,7 @@ void Menu::DrawExplorer(Datastore* datastore)
         auto node = tree->CurrentPath();
         for (auto& entry : node->children) {
             ImGui::TableNextColumn();
+            fontManager->Feed(entry.name);
             if (ImGui::Button(entry.name.c_str(), sz)) {
                 OnClickEntry(tree, std::addressof(entry));
             }

@@ -18,7 +18,23 @@ public:
     static void Init(bool a_abort = true);
 
     // Lookup translation text.
-    std::string Lookup(std::string_view a_key) const;
+    std::string Lookup(std::string_view a_key) const
+    {
+        auto it = _map.find(a_key);
+        if (it != _map.end()) {
+            return it->second;
+        }
+        return std::string{ a_key };
+    }
+
+    // Visit translation map.
+    template <class Visitor>
+    void Visit(Visitor&& a_visitor) const
+    {
+        for (auto&& [key, value] : _map) {
+            a_visitor(key, value);
+        }
+    }
 
 private:
     Translation() = default;

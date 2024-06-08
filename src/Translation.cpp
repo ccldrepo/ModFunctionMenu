@@ -74,15 +74,6 @@ void Translation::Init(bool a_abort)
     _singleton = std::move(tmp);
 }
 
-std::string Translation::Lookup(std::string_view a_key) const
-{
-    auto it = _map.find(a_key);
-    if (it != _map.end()) {
-        return it->second;
-    }
-    return std::string{ a_key };
-}
-
 void Translation::Load(bool a_abort)
 {
     auto path = GetTranslationPath(SKSE::PluginDeclaration::GetSingleton()->GetName(), GetUserLanguage());
