@@ -8,6 +8,7 @@
 #include <imgui_internal.h>
 
 #include "../CLib/Hook.h"
+#include "FontManager.h"
 #include "Menu.h"
 
 namespace ImGui
@@ -115,6 +116,8 @@ namespace ImGui
             SKSE::log::warn("SetWindowLongPtrA failed!");
         }
 
+        FontManager::Init();
+
         _isInit.store(true);
         SKSE::log::info("ImGui initialized.");
     }
@@ -130,6 +133,8 @@ namespace ImGui
         }
 
         auto& io = ImGui::GetIO();
+
+        FontManager::GetSingleton()->Refresh();
 
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();

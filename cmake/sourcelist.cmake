@@ -4,6 +4,7 @@ set(PROJECT_SOURCES
     "src/Function.cpp"
     "src/Hooks.cpp"
     "src/HotkeyManager.cpp"
+    "src/ImGui/FontManager.cpp"
     "src/ImGui/Input.cpp"
     "src/ImGui/Menu.cpp"
     "src/ImGui/Renderer.cpp"
