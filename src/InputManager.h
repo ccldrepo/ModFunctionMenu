@@ -12,7 +12,7 @@ public:
         kWantUnblock = 2,
     };
 
-    static bool IsNotBlocked() noexcept { return _state.load() == BlockState::kNotBlocked; }
+    [[nodiscard]] static bool IsNotBlocked() noexcept { return _state.load() == BlockState::kNotBlocked; }
 
     static void SetBlocked() noexcept { _state.store(BlockState::kBlocked); }
 

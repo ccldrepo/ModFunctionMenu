@@ -17,7 +17,7 @@ namespace ImGui
         // Initialize or reload font.
         static void Init(bool a_abort = true);
 
-        static bool IsWantReload() noexcept { return wantReload.load(); }
+        [[nodiscard]] static bool IsWantReload() noexcept { return wantReload.load(); }
 
         static void SetWantReload() noexcept { wantReload.store(true); }
 
