@@ -25,11 +25,11 @@ namespace ImGui
         FontManager() = default;
 
         void Load(bool a_abort);
-        void LoadImpl(const std::filesystem::path& a_path);
+        void LoadImpl(const char* a_path);
 
         static inline std::unique_ptr<FontManager> _singleton;
 
-        std::vector<char>        fontData;
+        ImFontConfig             fontConfig;
         ImFontGlyphRangesBuilder rangesBuilder;
         bool                     useDefault{ false };
         bool                     needRefresh{ false };

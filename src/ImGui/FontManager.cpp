@@ -9,22 +9,6 @@
 
 namespace ImGui
 {
-    namespace
-    {
-        std::vector<char> ReadFile(const std::filesystem::path& a_path)
-        {
-            const auto        size = static_cast<std::size_t>(std::filesystem::file_size(a_path));
-            std::vector<char> data(size);
-
-            if (std::ifstream file{ a_path, std::ios_base::in | std::ios_base::binary }) {
-                file.read(data.data(), static_cast<std::streamsize>(size));
-            } else {
-                throw std::runtime_error("File could not be opened for reading");
-            }
-            return data;
-        }
-    }
-
     void FontManager::Init(bool a_abort)
     {
         auto tmp = std::unique_ptr<FontManager>{ new FontManager };
@@ -54,11 +38,8 @@ namespace ImGui
         }
     }
 
-    void FontManager::LoadImpl(const std::filesystem::path& a_path)
+    void FontManager::LoadImpl(const char* a_path)
     {
-        // Cache font data in memory.
-        fontData = ReadFile(a_path);
-
         auto& io = ImGui::GetIO();
         io.Fonts->Clear();
 
@@ -67,7 +48,8 @@ namespace ImGui
 
         ImVector<ImWchar> ranges;
         rangesBuilder.BuildRanges(&ranges);
-        io.Fonts->AddFontFromMemoryTTF(fontData.data(), fontData.size(), 20, nullptr, ranges.Data);
+
+        auto font = io.Fonts->AddFontFromFileTTF(a_path, 20, &fontConfig, ranges.Data);
         io.Fonts->Build();
     }
 
@@ -106,7 +88,9 @@ namespace ImGui
 
         ImVector<ImWchar> ranges;
         rangesBuilder.BuildRanges(&ranges);
-        io.Fonts->AddFontFromMemoryTTF(fontData.data(), fontData.size(), 20, nullptr, ranges.Data);
+
+        auto config = Configuration::GetSingleton();
+        io.Fonts->AddFontFromFileTTF(config->general.sFont.c_str(), 20, &fontConfig, ranges.Data);
         io.Fonts->Build();
 
         ImGui_ImplDX11_InvalidateDeviceObjects();
