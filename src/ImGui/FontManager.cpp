@@ -84,18 +84,24 @@ namespace ImGui
             }
             if (!rangesBuilder.GetBit(c)) {
                 rangesBuilder.SetBit(c);
-                needRefresh = true;
+                wantRefresh = true;
             }
         }
     }
 
     void FontManager::Refresh()
     {
-        if (!needRefresh) {
+        // Delegate reload task to refresh task.
+        if (IsWantReload()) {
+            HandleWantReload();
             return;
         }
 
-        absl::Cleanup cleanup = [this]() { needRefresh = false; };
+        if (!wantRefresh) {
+            return;
+        }
+
+        absl::Cleanup cleanup = [this]() { wantRefresh = false; };
 
         auto& io = ImGui::GetIO();
         io.Fonts->Clear();
