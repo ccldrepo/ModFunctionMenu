@@ -57,8 +57,10 @@ namespace ImGui
 
         // Feed default ranges.
         rangesBuilder.AddRanges(io.Fonts->GetGlyphRangesDefault());
-        Translation::GetSingleton()->Visit(
-            [this](const std::string& key, const std::string& value) { rangesBuilder.AddText(value.c_str()); });
+        Translation::GetSingleton()->Visit(  //
+            [this]([[maybe_unused]] const std::string& key, const std::string& value) {
+                rangesBuilder.AddText(value.c_str());
+            });
 
         ImVector<ImWchar> ranges;
         rangesBuilder.BuildRanges(&ranges);
