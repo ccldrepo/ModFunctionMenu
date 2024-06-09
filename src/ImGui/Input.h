@@ -2,5 +2,5 @@
 
 namespace ImGui
 {
-    void TranslateInputEvent(RE::InputEvent* const* a_event);
+    void TranslateInputEvent(const RE::InputEvent* const* a_event);
 }

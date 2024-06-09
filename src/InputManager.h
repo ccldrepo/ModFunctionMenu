@@ -1,6 +1,6 @@
 #pragma once
 
-class InputManager
+class InputBlocker
 {
 public:
     enum class BlockState : std::uint32_t
@@ -28,8 +28,12 @@ public:
         }
     }
 
-    static void Process(RE::InputEvent* const* a_event);
-
 private:
     static inline std::atomic<BlockState> _state{ BlockState ::kNotBlocked };
+};
+
+class InputManager
+{
+public:
+    static void Process(const RE::InputEvent* const* a_event);
 };

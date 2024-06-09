@@ -5,7 +5,6 @@ set(PROJECT_HEADERS
     "src/Core.h"
     "src/Function.h"
     "src/Hooks.h"
-    "src/HotkeyManager.h"
     "src/ImGui/FontManager.h"
     "src/ImGui/Input.h"
     "src/ImGui/Menu.h"

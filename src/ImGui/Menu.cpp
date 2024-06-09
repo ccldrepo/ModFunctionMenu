@@ -10,7 +10,7 @@
 
 void Menu::Open()
 {
-    InputManager::SetBlocked();
+    InputBlocker::SetBlocked();
     _isOpen.store(true);
     ImGui::Renderer::Enable();
     SKSE::log::debug("Open menu.");
@@ -19,7 +19,7 @@ void Menu::Open()
 void Menu::Close()
 {
     _isOpen.store(false);
-    InputManager::SetWantUnblock();
+    InputBlocker::SetWantUnblock();
     SKSE::log::debug("Close menu.");
 }
 

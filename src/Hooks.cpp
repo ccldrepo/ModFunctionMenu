@@ -8,12 +8,12 @@ void ProcessInputQueueHook::thunk(RE::BSTEventSource<RE::InputEvent*>* a_dispatc
         InputManager::Process(a_event);
     }
 
-    if (InputManager::IsNotBlocked()) {
+    if (InputBlocker::IsNotBlocked()) {
         func(a_dispatcher, a_event);
     } else {
         constexpr RE::InputEvent* const dummy[] = { nullptr };
         func(a_dispatcher, dummy);
     }
 
-    InputManager::HandleWantUnblock();
+    InputBlocker::HandleWantUnblock();
 }
