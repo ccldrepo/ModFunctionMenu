@@ -17,13 +17,13 @@ namespace ImGui
         // Initialize or reload font.
         static void Init(bool a_abort = true);
 
-        [[nodiscard]] static bool IsWantReload() noexcept { return wantReload.load(); }
+        [[nodiscard]] static bool IsWantReload() noexcept { return _wantReload.load(); }
 
-        static void SetWantReload() noexcept { wantReload.store(true); }
+        static void SetWantReload() noexcept { _wantReload.store(true); }
 
         static void HandleWantReload()
         {
-            wantReload.store(false);
+            _wantReload.store(false);
             Init(false);
         }
 
@@ -39,7 +39,7 @@ namespace ImGui
 
         static inline std::unique_ptr<FontManager> _singleton;
 
-        static inline std::atomic<bool> wantReload{ false };
+        static inline std::atomic<bool> _wantReload{ false };
 
         ImFontConfig             fontConfig;
         ImFontGlyphRangesBuilder rangesBuilder;
