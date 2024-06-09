@@ -99,14 +99,17 @@ void Translation::LoadImpl(const std::filesystem::path& a_path)
             throw std::runtime_error(msg);
         }
 
-        auto pos = line.find_first_of('\t');
-        if (pos == std::string::npos) {
+        auto tab_pos = line.find_first_of('\t');
+        if (tab_pos == std::string::npos) {
             auto msg = std::format("Translation key and value must be seperated with 'TAB': {}", line);
             throw std::runtime_error(msg);
         }
 
-        auto key = line.substr(0, pos);
-        auto value = line.substr(pos + 1);
-        _map.insert_or_assign(key, value);
+        auto key = line.substr(0, tab_pos);
+        auto value = line.substr(tab_pos + 1);
+        auto [pos, ok] = _map.try_emplace(key, value);
+        if (!ok) {
+            throw std::runtime_error(std::format("Translation key '{}' exists", key));
+        }
     }
 }
