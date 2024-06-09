@@ -21,19 +21,8 @@ namespace ImGui
     {
         auto config = Configuration::GetSingleton();
         try {
-            if (config->general.sFont.empty()) {
-                auto& io = ImGui::GetIO();
-                io.Fonts->Clear();
-                io.Fonts->AddFontDefault();
-                io.Fonts->Build();
-                useDefault = true;
-                SKSE::log::info("Successfully loaded font from ImGui's default.");
-            } else {
-                LoadImpl(config->general.sFont.c_str());
-                SKSE::log::info("Successfully loaded font from \"{}\".", config->general.sFont);
-            }
-            ImGui_ImplDX11_InvalidateDeviceObjects();
-            ImGui_ImplDX11_CreateDeviceObjects();
+            LoadImpl(config->general.sFont.c_str());
+            SKSE::log::info("Successfully loaded font from \"{}\".", config->general.sFont);
         } catch (const std::exception& e) {
             auto msg = std::format("Failed to load font from \"{}\": {}.", config->general.sFont, e.what());
             SKSE::stl::report_fatal_error(msg, a_abort);
@@ -67,14 +56,13 @@ namespace ImGui
 
         auto font = io.Fonts->AddFontFromFileTTF(a_path, 20, &fontConfig, ranges.Data);
         io.Fonts->Build();
+
+        ImGui_ImplDX11_InvalidateDeviceObjects();
+        ImGui_ImplDX11_CreateDeviceObjects();
     }
 
     void FontManager::Feed(std::string_view a_text)
     {
-        if (useDefault) {
-            return;
-        }
-
         auto text = a_text.data();
         auto text_end = text + a_text.size();
         while (text < text_end) {
