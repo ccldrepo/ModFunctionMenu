@@ -1,7 +1,5 @@
 #pragma once
 
-#include <PCH.h>
-
 #include "CLib/Hook.h"
 
 struct ProcessInputQueueHook : CLib::CallHook<ProcessInputQueueHook>

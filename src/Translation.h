@@ -1,7 +1,5 @@
 #pragma once
 
-#include <PCH.h>
-
 #include <absl/container/flat_hash_map.h>
 
 class Translation
