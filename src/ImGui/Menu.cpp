@@ -3,23 +3,20 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-#include "../InputManager.h"
 #include "../Translation.h"
 #include "FontManager.h"
 #include "Renderer.h"
 
 void Menu::Open()
 {
-    InputBlocker::SetBlocked();
-    _isOpen.store(true);
     ImGui::Renderer::Enable();
+    _isOpen.store(true);
     SKSE::log::debug("Open menu.");
 }
 
 void Menu::Close()
 {
     _isOpen.store(false);
-    InputBlocker::SetWantUnblock();
     SKSE::log::debug("Close menu.");
 }
 

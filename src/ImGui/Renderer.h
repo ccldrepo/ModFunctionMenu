@@ -13,8 +13,8 @@ namespace ImGui
         static bool IsInit() noexcept { return _isInit.load(); }
         static bool IsEnable() noexcept { return _isEnable.load(); }
 
-        static void Enable() noexcept { _isEnable.store(true); }
-        static void Disable() noexcept { _isEnable.store(false); }
+        static void Enable() noexcept;
+        static void Disable() noexcept;
 
     private:
         static inline std::atomic<bool> _isInit{ false };

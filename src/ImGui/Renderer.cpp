@@ -8,6 +8,7 @@
 #include <imgui_internal.h>
 
 #include "../CLib/Hook.h"
+#include "../InputManager.h"
 #include "FontManager.h"
 #include "Menu.h"
 
@@ -146,12 +147,24 @@ namespace ImGui
             if (auto menu = Menu::GetSingleton(); menu->IsOpen()) {
                 menu->Draw();
             } else {
-                io.ClearInputKeys();
                 Disable();
+                io.ClearInputKeys();
             }
         }
         ImGui::EndFrame();
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+    }
+
+    void Renderer::Enable() noexcept
+    {
+        InputBlocker::SetBlocked();
+        _isEnable.store(true);
+    }
+
+    void Renderer::Disable() noexcept
+    {
+        _isEnable.store(false);
+        InputBlocker::SetWantUnblock();
     }
 }
