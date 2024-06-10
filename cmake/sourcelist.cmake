@@ -7,6 +7,7 @@ set(PROJECT_SOURCES
     "src/ImGui/Input.cpp"
     "src/ImGui/Menu.cpp"
     "src/ImGui/Renderer.cpp"
+    "src/ImGui/StyleManager.cpp"
     "src/InputManager.cpp"
     "src/Main.cpp"
     "src/Translation.cpp"

@@ -9,6 +9,7 @@ set(PROJECT_HEADERS
     "src/ImGui/Input.h"
     "src/ImGui/Menu.h"
     "src/ImGui/Renderer.h"
+    "src/ImGui/StyleManager.h"
     "src/InputManager.h"
     "src/PCH.h"
     "src/Translation.h"

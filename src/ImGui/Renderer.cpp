@@ -11,6 +11,7 @@
 #include "../InputManager.h"
 #include "FontManager.h"
 #include "Menu.h"
+#include "StyleManager.h"
 
 namespace ImGui
 {
@@ -118,6 +119,7 @@ namespace ImGui
         }
 
         FontManager::Init();
+        StyleManager::Init();
 
         _isInit.store(true);
         SKSE::log::info("ImGui initialized.");
@@ -128,6 +130,8 @@ namespace ImGui
         if (!IsInit() || !IsEnable()) {
             return;
         }
+
+        StyleManager::Init();
 
         auto& io = ImGui::GetIO();
 
