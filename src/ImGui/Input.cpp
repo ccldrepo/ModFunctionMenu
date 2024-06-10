@@ -322,4 +322,10 @@ namespace ImGui
             }
         }
     }
+
+    void ClearInputEvent()
+    {
+        auto& io = ImGui::GetIO();
+        io.ClearInputKeys();
+    }
 }

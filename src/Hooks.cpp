@@ -15,5 +15,7 @@ void ProcessInputQueueHook::thunk(RE::BSTEventSource<RE::InputEvent*>* a_dispatc
         func(a_dispatcher, dummy);
     }
 
-    InputBlocker::HandleWantUnblock();
+    if (InputBlocker::HandleWantUnblock()) {
+        InputManager::Cleanup();
+    }
 }

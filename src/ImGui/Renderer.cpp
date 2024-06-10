@@ -152,7 +152,6 @@ namespace ImGui
                 menu->Draw();
             } else {
                 Disable();
-                io.ClearInputKeys();
             }
         }
         ImGui::EndFrame();
@@ -169,6 +168,6 @@ namespace ImGui
     void Renderer::Disable() noexcept
     {
         _isEnable.store(false);
-        InputBlocker::SetWantUnblock();
+        InputBlocker::TryWantUnblock();
     }
 }

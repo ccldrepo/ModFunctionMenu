@@ -111,3 +111,9 @@ void InputManager::Process(const RE::InputEvent* const* a_event)
         ProcessMenuOpenClose<MenuCloseHotkeyContext>(a_event, menu);
     }
 }
+
+void InputManager::Cleanup()
+{
+    // Clear input buffer for ImGui.
+    ImGui::ClearInputEvent();
+}

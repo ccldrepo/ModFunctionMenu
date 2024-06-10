@@ -14,18 +14,19 @@ public:
 
     static void SetBlocked() noexcept { _state.store(BlockState::kBlocked); }
 
-    static void SetWantUnblock() noexcept
+    static void TryWantUnblock() noexcept
     {
         auto expected = BlockState::kBlocked;
         _state.compare_exchange_strong(expected, BlockState::kWantUnblock);
     }
 
-    static void HandleWantUnblock() noexcept
+    [[nodiscard]] static bool HandleWantUnblock() noexcept
     {
         auto currentState = _state.load();
         if (currentState == BlockState::kWantUnblock) {
-            _state.compare_exchange_strong(currentState, BlockState::kNotBlocked);
+            return _state.compare_exchange_strong(currentState, BlockState::kNotBlocked);
         }
+        return false;
     }
 
 private:
@@ -36,4 +37,5 @@ class InputManager
 {
 public:
     static void Process(const RE::InputEvent* const* a_event);
+    static void Cleanup();
 };
