@@ -8,51 +8,51 @@ void Configuration::Init(bool a_abort)
 {
     auto tmp = std::unique_ptr<Configuration>{ new Configuration };
     if (std::filesystem::exists(_path)) {
-        tmp->Load(a_abort);
+        tmp->Load(_path, &Configuration::LoadImpl, a_abort);
     } else {
         // Export default config if config file not exists.
-        tmp->Save(a_abort);
+        tmp->Save(_path, &Configuration::SaveImpl, a_abort);
     }
     _singleton = std::move(tmp);
 }
 
-void Configuration::Load(bool a_abort)
+void Configuration::Load(const std::filesystem::path& a_path, LoadImplFunc a_func, bool a_abort)
 {
     try {
-        LoadImpl();
-        SKSE::log::info("Successfully loaded configuration from \"{}\".", PathToStr(_path));
+        (this->*a_func)(a_path);
+        SKSE::log::info("Successfully loaded configuration from \"{}\".", PathToStr(a_path));
     } catch (const toml::parse_error& e) {
         auto msg = std::format("Failed to load configuration from \"{}\" (error occurred at line {}, column {}): {}.",
-            PathToStr(_path), e.source().begin.line, e.source().begin.column, e.what());
+            PathToStr(a_path), e.source().begin.line, e.source().begin.column, e.what());
         SKSE::stl::report_fatal_error(msg, a_abort);
     } catch (const std::system_error& e) {
-        auto msg = std::format("Failed to load configuration from \"{}\": {}.", PathToStr(_path),
+        auto msg = std::format("Failed to load configuration from \"{}\": {}.", PathToStr(a_path),
             SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
         SKSE::stl::report_fatal_error(msg, a_abort);
     } catch (const std::exception& e) {
-        auto msg = std::format("Failed to load configuration from \"{}\": {}.", PathToStr(_path), e.what());
+        auto msg = std::format("Failed to load configuration from \"{}\": {}.", PathToStr(a_path), e.what());
         SKSE::stl::report_fatal_error(msg, a_abort);
     }
 }
 
-void Configuration::Save(bool a_abort) const
+void Configuration::Save(const std::filesystem::path& a_path, SaveImplFunc a_func, bool a_abort) const
 {
     try {
-        SaveImpl();
-        SKSE::log::info("Successfully saved configuration to \"{}\".", PathToStr(_path));
+        (this->*a_func)(a_path);
+        SKSE::log::info("Successfully saved configuration to \"{}\".", PathToStr(a_path));
     } catch (const std::system_error& e) {
-        auto msg = std::format("Failed to save configuration to \"{}\": {}.", PathToStr(_path),
+        auto msg = std::format("Failed to save configuration to \"{}\": {}.", PathToStr(a_path),
             SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
         SKSE::stl::report_fatal_error(msg, a_abort);
     } catch (const std::exception& e) {
-        auto msg = std::format("Failed to save configuration to \"{}\": {}.", PathToStr(_path), e.what());
+        auto msg = std::format("Failed to save configuration to \"{}\": {}.", PathToStr(a_path), e.what());
         SKSE::stl::report_fatal_error(msg, a_abort);
     }
 }
 
-void Configuration::LoadImpl()
+void Configuration::LoadImpl(const std::filesystem::path& a_path)
 {
-    auto data = LoadTOMLFile(_path);
+    auto data = LoadTOMLFile(a_path);
 
     if (auto section = GetTOMLSection(data, "General"sv)) {
         GetTOMLValue(*section, "sLanguage"sv, general.sLanguage);
@@ -72,7 +72,7 @@ void Configuration::LoadImpl()
     }
 }
 
-void Configuration::SaveImpl() const
+void Configuration::SaveImpl(const std::filesystem::path& a_path) const
 {
     toml::table data;
     {
@@ -97,5 +97,5 @@ void Configuration::SaveImpl() const
         }
         SetTOMLSection(data, "Controls"sv, std::move(section));
     }
-    SaveTOMLFile(_path, data);
+    SaveTOMLFile(a_path, data);
 }

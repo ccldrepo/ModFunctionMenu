@@ -43,11 +43,14 @@ public:
 private:
     Configuration() = default;
 
-    void Load(bool a_abort);
-    void Save(bool a_abort) const;
+    using LoadImplFunc = void (Configuration::*)(const std::filesystem::path&);
+    using SaveImplFunc = void (Configuration::*)(const std::filesystem::path&) const;
 
-    void LoadImpl();
-    void SaveImpl() const;
+    void Load(const std::filesystem::path& a_path, LoadImplFunc a_func, bool a_abort);
+    void Save(const std::filesystem::path& a_path, SaveImplFunc a_func, bool a_abort) const;
+
+    void LoadImpl(const std::filesystem::path& a_path);
+    void SaveImpl(const std::filesystem::path& a_path) const;
 
     static inline std::unique_ptr<Configuration> _singleton;
 
