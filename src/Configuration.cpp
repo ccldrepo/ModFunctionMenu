@@ -8,13 +8,13 @@ void Configuration::Init(bool a_abort)
 {
     auto tmp = std::unique_ptr<Configuration>{ new Configuration };
     if (std::filesystem::exists(_path)) {
-        tmp->Load(_path, &Configuration::LoadImpl, a_abort);
+        tmp->Load(&Configuration::LoadImpl, _path, a_abort);
     } else {
         // Export default config if config file not exists.
-        tmp->Save(_path, &Configuration::SaveImpl, a_abort);
+        tmp->Save(&Configuration::SaveImpl, _path, a_abort);
     }
     if (std::filesystem::exists(_path_styles)) {
-        tmp->Load(_path_styles, &Configuration::LoadImpl_Styles, a_abort);
+        tmp->Load(&Configuration::LoadImpl_Styles, _path_styles, a_abort);
     } else {
         // Export default config if config file not exists.
         //tmp->Save(_path_styles, &Configuration::SaveImpl, a_abort);
@@ -22,7 +22,7 @@ void Configuration::Init(bool a_abort)
     _singleton = std::move(tmp);
 }
 
-void Configuration::Load(const std::filesystem::path& a_path, LoadImplFunc a_func, bool a_abort)
+void Configuration::Load(LoadImplFunc a_func, const std::filesystem::path& a_path, bool a_abort)
 {
     try {
         (this->*a_func)(a_path);
@@ -41,7 +41,7 @@ void Configuration::Load(const std::filesystem::path& a_path, LoadImplFunc a_fun
     }
 }
 
-void Configuration::Save(const std::filesystem::path& a_path, SaveImplFunc a_func, bool a_abort) const
+void Configuration::Save(SaveImplFunc a_func, const std::filesystem::path& a_path, bool a_abort) const
 {
     try {
         (this->*a_func)(a_path);
