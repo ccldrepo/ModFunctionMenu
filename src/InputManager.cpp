@@ -34,10 +34,10 @@ namespace
             }
         }
 
-        void Finalize(Menu* a_menu)
+        void Finalize()
         {
             if (keyboard.IsActive() || gamepad.IsActive()) {
-                a_menu->Open();
+                Menu::GetSingleton()->Open();
             }
         }
 
@@ -74,10 +74,10 @@ namespace
             }
         }
 
-        void Finalize(Menu* a_menu)
+        void Finalize()
         {
             if (esc.IsActive() || keyboard.IsActive() || gamepad.IsActive()) {
-                a_menu->Close();
+                Menu::GetSingleton()->Close();
             }
         }
 
@@ -88,7 +88,7 @@ namespace
     };
 
     template <class HotkeyContext>
-    void ProcessMenuOpenClose(const RE::InputEvent* const* a_event, Menu* a_menu)
+    void ProcessHotkey(const RE::InputEvent* const* a_event)
     {
         HotkeyContext ctx{ Configuration::GetSingleton() };
         for (auto event = *a_event; event; event = event->next) {
@@ -96,24 +96,18 @@ namespace
                 ctx.Update(button);
             }
         }
-        ctx.Finalize(a_menu);
+        ctx.Finalize();
     }
 }
 
 void InputManager::Process(const RE::InputEvent* const* a_event)
 {
-    auto menu = Menu::GetSingleton();
-    if (!menu->IsOpen()) {
-        ProcessMenuOpenClose<MenuOpenHotkeyContext>(a_event, menu);
+    if (InputBlocker::IsNotBlocked()) {
+        ProcessHotkey<MenuOpenHotkeyContext>(a_event);
     } else {
-        // Forward input event to ImGui while menu is open.
         ImGui::TranslateInputEvent(a_event);
-        ProcessMenuOpenClose<MenuCloseHotkeyContext>(a_event, menu);
+        ProcessHotkey<MenuCloseHotkeyContext>(a_event);
     }
 }
 
-void InputManager::Cleanup()
-{
-    // Clear input buffer for ImGui.
-    ImGui::ClearInputEvent();
-}
+void InputManager::Cleanup() { ImGui::ClearInputEvent(); }
