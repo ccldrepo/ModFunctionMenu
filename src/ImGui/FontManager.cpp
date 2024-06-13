@@ -54,7 +54,7 @@ namespace ImGui
         ImVector<ImWchar> ranges;
         rangesBuilder.BuildRanges(&ranges);
 
-        auto font = io.Fonts->AddFontFromFileTTF(a_path, 20, &fontConfig, ranges.Data);
+        auto font = io.Fonts->AddFontFromFileTTF(a_path, 28, &fontConfig, ranges.Data);
         io.Fonts->Build();
 
         ImGui_ImplDX11_InvalidateDeviceObjects();
@@ -81,12 +81,6 @@ namespace ImGui
 
     void FontManager::Refresh()
     {
-        // Delegate reload task to refresh task.
-        if (IsWantReload()) {
-            HandleWantReload();
-            return;
-        }
-
         if (!wantRefresh) {
             return;
         }
@@ -100,7 +94,7 @@ namespace ImGui
         rangesBuilder.BuildRanges(&ranges);
 
         auto config = Configuration::GetSingleton();
-        io.Fonts->AddFontFromFileTTF(config->general.sFont.c_str(), 20, &fontConfig, ranges.Data);
+        io.Fonts->AddFontFromFileTTF(config->general.sFont.c_str(), 28, &fontConfig, ranges.Data);
         io.Fonts->Build();
 
         ImGui_ImplDX11_InvalidateDeviceObjects();

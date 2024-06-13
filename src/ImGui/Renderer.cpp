@@ -131,11 +131,15 @@ namespace ImGui
             return;
         }
 
-        StyleManager::Init();
+        if (_wantReload.load()) {
+            FontManager::Init(false);
+            StyleManager::Init();
+            _wantReload.store(false);
+        } else {
+            FontManager::GetSingleton()->Refresh();
+        }
 
         auto& io = ImGui::GetIO();
-
-        FontManager::GetSingleton()->Refresh();
 
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();

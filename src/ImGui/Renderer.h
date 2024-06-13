@@ -16,8 +16,12 @@ namespace ImGui
         static void Enable() noexcept;
         static void Disable() noexcept;
 
+        static void SetWantReload() noexcept { _wantReload.store(true); }
+
     private:
         static inline std::atomic<bool> _isInit{ false };
         static inline std::atomic<bool> _isEnable{ false };
+
+        static inline std::atomic<bool> _wantReload{ false };
     };
 }

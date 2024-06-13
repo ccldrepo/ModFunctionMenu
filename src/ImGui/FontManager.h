@@ -17,16 +17,6 @@ namespace ImGui
         // Initialize or reload font.
         static void Init(bool a_abort = true);
 
-        [[nodiscard]] static bool IsWantReload() noexcept { return _wantReload.load(); }
-
-        static void SetWantReload() noexcept { _wantReload.store(true); }
-
-        static void HandleWantReload()
-        {
-            _wantReload.store(false);
-            Init(false);
-        }
-
         // Dynamically collect text and rebuild font atlas.
         void Feed(std::string_view a_text);
         void Refresh();
@@ -38,8 +28,6 @@ namespace ImGui
         void LoadImpl(const char* a_path);
 
         static inline std::unique_ptr<FontManager> _singleton;
-
-        static inline std::atomic<bool> _wantReload{ false };
 
         ImFontConfig             fontConfig;
         ImFontGlyphRangesBuilder rangesBuilder;
