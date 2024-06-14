@@ -23,6 +23,12 @@ configure_file(
     COPYONLY
 )
 
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/ccld_ModFunctionMenu_styles.toml"
+    "${CMAKE_CURRENT_BINARY_DIR}/ccld_ModFunctionMenu_styles.toml"
+    COPYONLY
+)
+
 # -- Declare Sources -----------------------------------------------------------
 
 include(cmake/headerlist.cmake)
