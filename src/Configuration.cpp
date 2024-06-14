@@ -17,7 +17,7 @@ void Configuration::Init(bool a_abort)
         tmp->Load(&Configuration::LoadImpl_Styles, _path_styles, a_abort);
     } else {
         // Export default config if config file not exists.
-        //tmp->Save(_path_styles, &Configuration::SaveImpl, a_abort);
+        tmp->Save(&Configuration::SaveImpl_Styles, _path_styles, a_abort);
     }
     _singleton = std::move(tmp);
 }
@@ -165,4 +165,67 @@ void Configuration::LoadImpl_Styles(const std::filesystem::path& a_path)
         GetTOMLValue(*section, "iNavWindowingDimBg"sv, styles.colors.iNavWindowingDimBg);
         GetTOMLValue(*section, "iModalWindowDimBg"sv, styles.colors.iModalWindowDimBg);
     }
+}
+
+void Configuration::SaveImpl_Styles(const std::filesystem::path& a_path) const
+{
+    toml::table data;
+    {
+        toml::table section;
+        SetTOMLValue(section, "iText"sv, styles.colors.iText);
+        SetTOMLValue(section, "iTextDisabled"sv, styles.colors.iTextDisabled);
+        SetTOMLValue(section, "iWindowBg"sv, styles.colors.iWindowBg);
+        SetTOMLValue(section, "iChildBg"sv, styles.colors.iChildBg);
+        SetTOMLValue(section, "iPopupBg"sv, styles.colors.iPopupBg);
+        SetTOMLValue(section, "iBorder"sv, styles.colors.iBorder);
+        SetTOMLValue(section, "iBorderShadow"sv, styles.colors.iBorderShadow);
+        SetTOMLValue(section, "iFrameBg"sv, styles.colors.iFrameBg);
+        SetTOMLValue(section, "iFrameBgHovered"sv, styles.colors.iFrameBgHovered);
+        SetTOMLValue(section, "iFrameBgActive"sv, styles.colors.iFrameBgActive);
+        SetTOMLValue(section, "iTitleBg"sv, styles.colors.iTitleBg);
+        SetTOMLValue(section, "iTitleBgActive"sv, styles.colors.iTitleBgActive);
+        SetTOMLValue(section, "iTitleBgCollapsed"sv, styles.colors.iTitleBgCollapsed);
+        SetTOMLValue(section, "iMenuBarBg"sv, styles.colors.iMenuBarBg);
+        SetTOMLValue(section, "iScrollbarBg"sv, styles.colors.iScrollbarBg);
+        SetTOMLValue(section, "iScrollbarGrab"sv, styles.colors.iScrollbarGrab);
+        SetTOMLValue(section, "iScrollbarGrabHovered"sv, styles.colors.iScrollbarGrabHovered);
+        SetTOMLValue(section, "iScrollbarGrabActive"sv, styles.colors.iScrollbarGrabActive);
+        SetTOMLValue(section, "iCheckMark"sv, styles.colors.iCheckMark);
+        SetTOMLValue(section, "iSliderGrab"sv, styles.colors.iSliderGrab);
+        SetTOMLValue(section, "iSliderGrabActive"sv, styles.colors.iSliderGrabActive);
+        SetTOMLValue(section, "iButton"sv, styles.colors.iButton);
+        SetTOMLValue(section, "iButtonHovered"sv, styles.colors.iButtonHovered);
+        SetTOMLValue(section, "iButtonActive"sv, styles.colors.iButtonActive);
+        SetTOMLValue(section, "iHeader"sv, styles.colors.iHeader);
+        SetTOMLValue(section, "iHeaderHovered"sv, styles.colors.iHeaderHovered);
+        SetTOMLValue(section, "iHeaderActive"sv, styles.colors.iHeaderActive);
+        SetTOMLValue(section, "iSeparator"sv, styles.colors.iSeparator);
+        SetTOMLValue(section, "iSeparatorHovered"sv, styles.colors.iSeparatorHovered);
+        SetTOMLValue(section, "iSeparatorActive"sv, styles.colors.iSeparatorActive);
+        SetTOMLValue(section, "iResizeGrip"sv, styles.colors.iResizeGrip);
+        SetTOMLValue(section, "iResizeGripHovered"sv, styles.colors.iResizeGripHovered);
+        SetTOMLValue(section, "iResizeGripActive"sv, styles.colors.iResizeGripActive);
+        SetTOMLValue(section, "iTab"sv, styles.colors.iTab);
+        SetTOMLValue(section, "iTabHovered"sv, styles.colors.iTabHovered);
+        SetTOMLValue(section, "iTabActive"sv, styles.colors.iTabActive);
+        SetTOMLValue(section, "iTabUnfocused"sv, styles.colors.iTabUnfocused);
+        SetTOMLValue(section, "iTabUnfocusedActive"sv, styles.colors.iTabUnfocusedActive);
+        SetTOMLValue(section, "iPlotLines"sv, styles.colors.iPlotLines);
+        SetTOMLValue(section, "iPlotLinesHovered"sv, styles.colors.iPlotLinesHovered);
+        SetTOMLValue(section, "iPlotHistogram"sv, styles.colors.iPlotHistogram);
+        SetTOMLValue(section, "iPlotHistogramHovered"sv, styles.colors.iPlotHistogramHovered);
+        SetTOMLValue(section, "iTableHeaderBg"sv, styles.colors.iTableHeaderBg);
+        SetTOMLValue(section, "iTableBorderStrong"sv, styles.colors.iTableBorderStrong);
+        SetTOMLValue(section, "iTableBorderLight"sv, styles.colors.iTableBorderLight);
+        SetTOMLValue(section, "iTableRowBg"sv, styles.colors.iTableRowBg);
+        SetTOMLValue(section, "iTableRowBgAlt"sv, styles.colors.iTableRowBgAlt);
+        SetTOMLValue(section, "iTextSelectedBg"sv, styles.colors.iTextSelectedBg);
+        SetTOMLValue(section, "iDragDropTarget"sv, styles.colors.iDragDropTarget);
+        SetTOMLValue(section, "iNavHighlight"sv, styles.colors.iNavHighlight);
+        SetTOMLValue(section, "iNavWindowingHighlight"sv, styles.colors.iNavWindowingHighlight);
+        SetTOMLValue(section, "iNavWindowingDimBg"sv, styles.colors.iNavWindowingDimBg);
+        SetTOMLValue(section, "iModalWindowDimBg"sv, styles.colors.iModalWindowDimBg);
+        SetTOMLSection(data, "Colors"sv, std::move(section));
+    }
+    SaveTOMLFile(a_path, data);
 }

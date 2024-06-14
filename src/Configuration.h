@@ -116,7 +116,7 @@ private:
     void SaveImpl(const std::filesystem::path& a_path) const;
 
     void LoadImpl_Styles(const std::filesystem::path& a_path);
-    //void SaveImpl(const std::filesystem::path& a_path) const;
+    void SaveImpl_Styles(const std::filesystem::path& a_path) const;
 
     static inline std::unique_ptr<Configuration> _singleton;
 
