@@ -76,7 +76,7 @@ using namespace std::literals::string_view_literals;
 
 namespace SKSE::stl
 {
-    [[nodiscard]] inline auto narrow_to_wide(uint32_t a_codePage, std::string_view a_in) noexcept
+    [[nodiscard]] inline auto narrow_to_wide(std::uint32_t a_codePage, std::string_view a_in) noexcept
         -> std::optional<std::wstring>
     {
         const auto cvt = [&](wchar_t* a_dst, std::size_t a_length) {
@@ -96,7 +96,7 @@ namespace SKSE::stl
         return out;
     }
 
-    [[nodiscard]] inline auto wide_to_narrow(uint32_t a_codePage, std::wstring_view a_in) noexcept
+    [[nodiscard]] inline auto wide_to_narrow(std::uint32_t a_codePage, std::wstring_view a_in) noexcept
         -> std::optional<std::string>
     {
         const auto cvt = [&](char* a_dst, std::size_t a_length) {
