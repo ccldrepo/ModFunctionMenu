@@ -25,12 +25,14 @@ public:
         {
             std::uint32_t iHotkey{ REX::W32::DIK_F1 };
             std::uint32_t iModifier{ 0 };
+            std::uint32_t iExtraExit{ REX::W32::DIK_ESCAPE };
         };
 
         struct Gamepad
         {
             std::uint32_t iHotkey{ 0 };
             std::uint32_t iModifier{ 0 };
+            std::uint32_t iExtraExit{ 0 };
         };
 
         Keyboard keyboard;

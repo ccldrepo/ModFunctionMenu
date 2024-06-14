@@ -69,11 +69,13 @@ void Configuration::LoadImpl(const std::filesystem::path& a_path)
         if (auto subsection = GetTOMLSection(*section, "Keyboard"sv)) {
             GetTOMLValue(*subsection, "iHotkey"sv, controls.keyboard.iHotkey);
             GetTOMLValue(*subsection, "iModifier"sv, controls.keyboard.iModifier);
+            GetTOMLValue(*subsection, "iExtraExit"sv, controls.keyboard.iExtraExit);
         }
 
         if (auto subsection = GetTOMLSection(*section, "Gamepad"sv)) {
             GetTOMLValue(*subsection, "iHotkey"sv, controls.gamepad.iHotkey);
             GetTOMLValue(*subsection, "iModifier"sv, controls.gamepad.iModifier);
+            GetTOMLValue(*subsection, "iExtraExit"sv, controls.gamepad.iExtraExit);
         }
     }
 }
@@ -93,12 +95,14 @@ void Configuration::SaveImpl(const std::filesystem::path& a_path) const
             toml::table subsection;
             SetTOMLValue(subsection, "iHotkey"sv, controls.keyboard.iHotkey);
             SetTOMLValue(subsection, "iModifier"sv, controls.keyboard.iModifier);
+            SetTOMLValue(subsection, "iExtraExit"sv, controls.keyboard.iExtraExit);
             SetTOMLSection(section, "Keyboard"sv, std::move(subsection));
         }
         {
             toml::table subsection;
             SetTOMLValue(subsection, "iHotkey"sv, controls.gamepad.iHotkey);
             SetTOMLValue(subsection, "iModifier"sv, controls.gamepad.iModifier);
+            SetTOMLValue(subsection, "iExtraExit"sv, controls.gamepad.iExtraExit);
             SetTOMLSection(section, "Gamepad"sv, std::move(subsection));
         }
         SetTOMLSection(data, "Controls"sv, std::move(section));

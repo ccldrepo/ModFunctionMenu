@@ -51,7 +51,9 @@ namespace
     public:
         explicit MenuCloseHotkeyContext(const Configuration* config) :
             keyboard(config->controls.keyboard.iHotkey, config->controls.keyboard.iModifier),
-            gamepad(config->controls.gamepad.iHotkey, config->controls.gamepad.iModifier)
+            gamepad(config->controls.gamepad.iHotkey, config->controls.gamepad.iModifier),
+            kbExtraExit(config->controls.keyboard.iExtraExit),  //
+            gpExtraExit(config->controls.gamepad.iExtraExit)    //
         {}
 
         void Update(const RE::ButtonEvent* a_button)
@@ -69,14 +71,15 @@ namespace
                 if (a_button->IsDown()) {
                     keyboard.UpdateDown(key);
                     gamepad.UpdateDown(key);
-                    esc.Update(key);
+                    kbExtraExit.Update(key);
+                    gpExtraExit.Update(key);
                 }
             }
         }
 
         void Finalize()
         {
-            if (esc.IsActive() || keyboard.IsActive() || gamepad.IsActive()) {
+            if (kbExtraExit.IsActive() || keyboard.IsActive() || gpExtraExit.IsActive() || gamepad.IsActive()) {
                 Menu::GetSingleton()->Close();
             }
         }
@@ -84,7 +87,8 @@ namespace
     private:
         CLib::KeyCombo keyboard;
         CLib::KeyCombo gamepad;
-        CLib::Key      esc{ REX::W32::DIK_ESCAPE };
+        CLib::Key      kbExtraExit;
+        CLib::Key      gpExtraExit;
     };
 
     template <class HotkeyContext>
