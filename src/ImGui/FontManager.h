@@ -31,6 +31,7 @@ namespace ImGui
 
         ImFontConfig             fontConfig;
         ImFontGlyphRangesBuilder rangesBuilder;
-        bool                     wantRefresh{ false };
+
+        bool _wantRefresh{ false };
     };
 }

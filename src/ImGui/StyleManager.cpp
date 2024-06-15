@@ -2,16 +2,19 @@
 
 #include <imgui.h>
 
-#include "Configuration.h"
+#include "../Configuration.h"
 
 namespace ImGui
 {
-    inline float ByteToFloat(std::uint32_t a_int) { return static_cast<float>(a_int & 0xFF) / 255.0f; }
-
-    inline ImVec4 IntToColor(std::uint32_t a_int)
+    namespace
     {
-        return ImVec4{ ByteToFloat(a_int >> 24), ByteToFloat(a_int >> 16), ByteToFloat(a_int >> 8),
-            ByteToFloat(a_int) };
+        inline float ByteToFloat(std::uint32_t a_int) { return static_cast<float>(a_int & 0xFF) / 255.0f; }
+
+        inline ImVec4 IntToColor(std::uint32_t a_int)
+        {
+            return ImVec4{ ByteToFloat(a_int >> 24), ByteToFloat(a_int >> 16), ByteToFloat(a_int >> 8),
+                ByteToFloat(a_int) };
+        }
     }
 
     void StyleManager::Init()

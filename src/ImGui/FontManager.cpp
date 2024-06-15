@@ -23,6 +23,10 @@ namespace ImGui
         try {
             LoadImpl(config->general.sFont.c_str());
             SKSE::log::info("Successfully loaded font from \"{}\".", config->general.sFont);
+        } catch (const std::system_error& e) {
+            auto msg = std::format("Failed to load font from \"{}\": {}.", config->general.sFont,
+                SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
+            SKSE::stl::report_fatal_error(msg, a_abort);
         } catch (const std::exception& e) {
             auto msg = std::format("Failed to load font from \"{}\": {}.", config->general.sFont, e.what());
             SKSE::stl::report_fatal_error(msg, a_abort);
@@ -74,18 +78,18 @@ namespace ImGui
             }
             if (!rangesBuilder.GetBit(c)) {
                 rangesBuilder.SetBit(c);
-                wantRefresh = true;
+                _wantRefresh = true;
             }
         }
     }
 
     void FontManager::Refresh()
     {
-        if (!wantRefresh) {
+        if (!_wantRefresh) {
             return;
         }
 
-        absl::Cleanup cleanup = [this]() { wantRefresh = false; };
+        absl::Cleanup cleanup = [this]() { _wantRefresh = false; };
 
         auto& io = ImGui::GetIO();
         io.Fonts->Clear();
