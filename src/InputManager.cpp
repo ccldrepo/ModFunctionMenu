@@ -10,9 +10,9 @@ namespace
     class MenuOpenHotkeyContext
     {
     public:
-        explicit MenuOpenHotkeyContext(const Configuration* config) :
-            keyboard(config->controls.keyboard.iHotkey, config->controls.keyboard.iModifier),
-            gamepad(config->controls.gamepad.iHotkey, config->controls.gamepad.iModifier)
+        explicit MenuOpenHotkeyContext(const Configuration* a_config) :
+            keyboard(a_config->controls.keyboard.iHotkey, a_config->controls.keyboard.iModifier),
+            gamepad(a_config->controls.gamepad.iHotkey, a_config->controls.gamepad.iModifier)
         {}
 
         void Update(const RE::ButtonEvent* a_button)
@@ -37,7 +37,7 @@ namespace
         void Finalize()
         {
             if (keyboard.IsActive() || gamepad.IsActive()) {
-                Menu::GetSingleton()->Open();
+                ImGui::Menu::GetSingleton()->Open();
             }
         }
 
@@ -49,11 +49,11 @@ namespace
     class MenuCloseHotkeyContext
     {
     public:
-        explicit MenuCloseHotkeyContext(const Configuration* config) :
-            keyboard(config->controls.keyboard.iHotkey, config->controls.keyboard.iModifier),
-            gamepad(config->controls.gamepad.iHotkey, config->controls.gamepad.iModifier),
-            kbExtraExit(config->controls.keyboard.iExtraExit),  //
-            gpExtraExit(config->controls.gamepad.iExtraExit)    //
+        explicit MenuCloseHotkeyContext(const Configuration* a_config) :
+            keyboard(a_config->controls.keyboard.iHotkey, a_config->controls.keyboard.iModifier),
+            gamepad(a_config->controls.gamepad.iHotkey, a_config->controls.gamepad.iModifier),
+            kbExtraExit(a_config->controls.keyboard.iExtraExit),  //
+            gpExtraExit(a_config->controls.gamepad.iExtraExit)    //
         {}
 
         void Update(const RE::ButtonEvent* a_button)
@@ -80,7 +80,7 @@ namespace
         void Finalize()
         {
             if (kbExtraExit.IsActive() || keyboard.IsActive() || gpExtraExit.IsActive() || gamepad.IsActive()) {
-                Menu::GetSingleton()->Close();
+                ImGui::Menu::GetSingleton()->Close();
             }
         }
 

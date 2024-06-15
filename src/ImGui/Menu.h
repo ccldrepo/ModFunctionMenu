@@ -3,30 +3,33 @@
 #include "../Core.h"
 #include "../Util/Singleton.h"
 
-class Menu final : public Singleton<Menu>
+namespace ImGui
 {
-    friend class Singleton<Menu>;
+    class Menu final : public Singleton<Menu>
+    {
+        friend class Singleton<Menu>;
 
-public:
-    bool IsOpen() const { return _isOpen.load(); }
+    public:
+        [[nodiscard]] bool IsOpen() const noexcept { return _isOpen.load(); }
 
-    void Open();
-    void Close();
+        void Open();
+        void Close();
 
-    void Draw();
+        void Draw();
 
-private:
-    Menu() = default;
+    private:
+        Menu() = default;
 
-    void DrawExplorer(Datastore* datastore);
-    void DrawMessageBox(Datastore* datastore);
+        void DrawExplorer(Datastore* datastore);
+        void DrawMessageBox(Datastore* datastore);
 
-    void OnClickParentEntry(MFM_Tree* a_tree);
-    void OnClickEntry(MFM_Tree* a_tree, const MFM_Node* a_node);
+        void OnClickParentEntry(MFM_Tree* a_tree);
+        void OnClickEntry(MFM_Tree* a_tree, const MFM_Node* a_node);
 
-    void InvokeFunction(const MFM_Function& a_func);
+        void InvokeFunction(const MFM_Function& a_func);
 
-    std::atomic<bool> _isOpen{ false };
+        std::atomic<bool> _isOpen{ false };
 
-    std::vector<char> _msg;
-};
+        std::vector<char> _msg;
+    };
+}
