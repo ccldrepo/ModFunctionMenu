@@ -35,14 +35,18 @@ namespace ImGui
 
         ImGui::Begin("$Title"_T.c_str(), nullptr, window_flags);
         {
-            if (ImGui::Button("$Section_Mod"_T.c_str())) {
-                datastore->CurrentSection(datastore->modTree);
+            ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
+            if (ImGui::BeginTabBar("TabBar", tab_bar_flags)) {
+                if (ImGui::BeginTabItem("$Section_Mod"_T.c_str())) {
+                    datastore->CurrentSection(datastore->modTree);
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("$Section_Config"_T.c_str())) {
+                    datastore->CurrentSection(datastore->configTree);
+                    ImGui::EndTabItem();
+                }
+                ImGui::EndTabBar();
             }
-            ImGui::SameLine();
-            if (ImGui::Button("$Section_Config"_T.c_str())) {
-                datastore->CurrentSection(datastore->configTree);
-            }
-            ImGui::Spacing();
             DrawExplorer(datastore);
         }
         ImGui::End();
