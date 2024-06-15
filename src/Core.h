@@ -34,8 +34,8 @@ public:
         kDirectory = 1,
     };
 
-    MFM_Node(std::filesystem::path a_path, Type a_type);
-    MFM_Node(std::filesystem::path a_path, Type a_type, MFM_Node* a_parent);
+    MFM_Node(const std::filesystem::path& a_path, Type a_type);
+    MFM_Node(const std::filesystem::path& a_path, Type a_type, MFM_Node* a_parent);
 
     friend bool operator==(const MFM_Node& a_lhs, const MFM_Node& a_rhs) noexcept { return a_lhs.path == a_rhs.path; }
 

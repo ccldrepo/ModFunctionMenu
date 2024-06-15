@@ -52,10 +52,10 @@ void MFM_Function::operator()(char* a_msg, std::size_t a_len) const
     return func(a_msg, a_len);
 }
 
-MFM_Node::MFM_Node(std::filesystem::path a_path, Type a_type) : MFM_Node(std::move(a_path), a_type, this) {}
+MFM_Node::MFM_Node(const std::filesystem::path& a_path, Type a_type) : MFM_Node(a_path, a_type, this) {}
 
-MFM_Node::MFM_Node(std::filesystem::path a_path, Type a_type, MFM_Node* a_parent) :
-    path(std::move(a_path)), type(a_type), parent(a_parent)
+MFM_Node::MFM_Node(const std::filesystem::path& a_path, Type a_type, MFM_Node* a_parent) :
+    path(a_path.generic_wstring()), type(a_type), parent(a_parent)
 {
     switch (type) {
     case Type::kRegular:
