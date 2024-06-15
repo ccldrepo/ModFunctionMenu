@@ -270,38 +270,39 @@ namespace ImGui
             return ParseKeyFromGamepad(static_cast<RE::BSWin32GamepadDevice::Key>(a_key));
         }
 
-        inline void TranslateButtonEvent(ImGuiIO& io, const RE::ButtonEvent* button)
+        inline void TranslateButtonEvent(ImGuiIO& a_io, const RE::ButtonEvent* a_button)
         {
-            if (!button->HasIDCode()) {
+            if (!a_button->HasIDCode()) {
                 return;
             }
 
-            switch (button->GetDevice()) {
+            switch (a_button->GetDevice()) {
             case RE::INPUT_DEVICE::kKeyboard:
                 {
-                    auto imKey = ImGui::ParseKeyFromKeyboard(button->GetIDCode());
-                    io.AddKeyEvent(imKey, button->IsPressed());
+                    auto imKey = ImGui::ParseKeyFromKeyboard(a_button->GetIDCode());
+                    a_io.AddKeyEvent(imKey, a_button->IsPressed());
                 }
                 break;
             case RE::INPUT_DEVICE::kMouse:
                 {
-                    switch (auto key = static_cast<RE::BSWin32MouseDevice::Key>(button->GetIDCode())) {
+                    auto key = static_cast<RE::BSWin32MouseDevice::Key>(a_button->GetIDCode());
+                    switch (key) {
                     case RE::BSWin32MouseDevice::Key::kWheelUp:
-                        io.AddMouseWheelEvent(0, button->Value());
+                        a_io.AddMouseWheelEvent(0, a_button->Value());
                         break;
                     case RE::BSWin32MouseDevice::Key::kWheelDown:
-                        io.AddMouseWheelEvent(0, button->Value() * -1);
+                        a_io.AddMouseWheelEvent(0, a_button->Value() * -1);
                         break;
                     default:
-                        io.AddMouseButtonEvent(key, button->IsPressed());
+                        a_io.AddMouseButtonEvent(key, a_button->IsPressed());
                         break;
                     }
                 }
                 break;
             case RE::INPUT_DEVICE::kGamepad:
                 {
-                    auto imKey = ImGui::ParseKeyFromGamepad(button->GetIDCode());
-                    io.AddKeyEvent(imKey, button->IsPressed());
+                    auto imKey = ImGui::ParseKeyFromGamepad(a_button->GetIDCode());
+                    a_io.AddKeyEvent(imKey, a_button->IsPressed());
                 }
                 break;
             default:
@@ -313,7 +314,6 @@ namespace ImGui
     void TranslateInputEvent(const RE::InputEvent* const* a_event)
     {
         auto& io = ImGui::GetIO();
-
         for (auto event = *a_event; event; event = event->next) {
             if (auto button = event->AsButtonEvent()) {
                 TranslateButtonEvent(io, button);
