@@ -87,13 +87,13 @@ void MFM_Node::BuildChildren()
 #pragma warning(push)
 #pragma warning(disable: 4458)
             if (const auto& path = entry.path(); path.extension().native() == L".toml"sv) {
-                children.emplace_back(path, Type::kRegular, this);
+                children.push_back(std::make_unique<MFM_Node>(path, Type::kRegular, this));
             }
 #pragma warning(pop)
         } else if (entry.is_directory()) {
-            children.emplace_back(entry.path(), Type::kDirectory, this);
+            children.push_back(std::make_unique<MFM_Node>(entry.path(), Type::kDirectory, this));
         }
     }
 
-    std::ranges::sort(children);
+    std::ranges::sort(children, [](auto&& lhs, auto&& rhs) { return *lhs < *rhs; });
 }

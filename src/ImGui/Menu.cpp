@@ -71,9 +71,9 @@ void Menu::DrawExplorer(Datastore* datastore)
         auto node = tree->CurrentPath();
         for (auto& entry : node->children) {
             ImGui::TableNextColumn();
-            fontManager->Feed(entry.name);
-            if (ImGui::Button(entry.name.c_str(), sz)) {
-                OnClickEntry(tree, std::addressof(entry));
+            fontManager->Feed(entry->name);
+            if (ImGui::Button(entry->name.c_str(), sz)) {
+                OnClickEntry(tree, entry.get());
             }
         }
 

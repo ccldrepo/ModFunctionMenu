@@ -7,8 +7,8 @@ struct MFM_Path
 {
     static inline const std::filesystem::path root{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/"sv };
 
-    static inline const std::filesystem::path mod{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Mod/"sv };
-    static inline const std::filesystem::path config{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Config/"sv };
+    static inline const std::filesystem::path mod{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Mod"sv };
+    static inline const std::filesystem::path config{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu/Config"sv };
 };
 
 struct MFM_Function
@@ -48,11 +48,11 @@ private:
     void BuildChildren();
 
 public:
-    std::filesystem::path path;
-    std::string           name;
-    Type                  type;
-    std::vector<MFM_Node> children;
-    MFM_Node*             parent;
+    std::filesystem::path                  path;
+    std::string                            name;
+    Type                                   type;
+    std::vector<std::unique_ptr<MFM_Node>> children;
+    MFM_Node*                              parent;
 };
 
 class MFM_Tree
