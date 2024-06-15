@@ -137,7 +137,7 @@ namespace SKSE::stl
     {
         // Abort or throw when error occurred.
         if (a_abort) {
-            SKSE::stl::report_and_fail(a_msg, a_loc);
+            report_and_fail(a_msg, a_loc);
         } else {
             spdlog::log(spdlog::source_loc{ a_loc.file_name(), static_cast<int>(a_loc.line()), a_loc.function_name() },
                 spdlog::level::err, a_msg);
