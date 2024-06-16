@@ -20,6 +20,8 @@ namespace ImGui
     private:
         Menu() = default;
 
+        ~Menu() = default;
+
         void DrawExplorer(Datastore* datastore);
         void DrawMessageBox(Datastore* datastore);
 

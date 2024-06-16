@@ -20,4 +20,6 @@ public:
 
 protected:
     Singleton() = default;
+
+    ~Singleton() = default;
 };

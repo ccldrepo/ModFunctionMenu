@@ -100,4 +100,6 @@ public:
 
 private:
     Datastore() { ResetCurrentSection(); };
+
+    ~Datastore() = default;
 };
