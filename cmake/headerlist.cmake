@@ -1,6 +1,4 @@
 set(PROJECT_HEADERS
-    "src/CLib/Hook.h"
-    "src/CLib/Key.h"
     "src/Configuration.h"
     "src/Core.h"
     "src/Function.h"
@@ -13,6 +11,8 @@ set(PROJECT_HEADERS
     "src/InputManager.h"
     "src/PCH.h"
     "src/Translation.h"
+    "src/Util/CLib/Hook.h"
+    "src/Util/CLib/Key.h"
     "src/Util/Singleton.h"
     "src/Util/TOML.h"
     "src/Util/Win.h"

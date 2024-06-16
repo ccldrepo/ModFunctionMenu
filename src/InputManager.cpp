@@ -1,9 +1,9 @@
 #include "InputManager.h"
 
-#include "CLib/Key.h"
 #include "Configuration.h"
 #include "ImGui/Input.h"
 #include "ImGui/Menu.h"
+#include "Util/CLib/Key.h"
 
 namespace
 {
