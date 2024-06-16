@@ -1,6 +1,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 #include "Configuration.h"
+#include "Core.h"
 #include "Hooks.h"
 #include "ImGui/Renderer.h"
 #include "Translation.h"
@@ -33,6 +34,13 @@ namespace
     void OnMessage(SKSE::MessagingInterface::Message* a_message)
     {
         switch (a_message->type) {
+        case SKSE::MessagingInterface::kPostLoad:
+            {
+                // Speed up first datastore access.
+                std::thread t{ []() { (void)Datastore::GetSingleton(); } };
+                t.detach();
+            }
+            break;
         case SKSE::MessagingInterface::kPostPostLoad:
             ProcessInputQueueHook::Install();
             break;
