@@ -6,7 +6,7 @@
 
 void Configuration::Init(bool a_abort)
 {
-    auto tmp = std::unique_ptr<Configuration>{ new Configuration };
+    auto tmp = std::unique_ptr<Configuration, Deleter>{ new Configuration };
     if (std::filesystem::exists(_path)) {
         tmp->Load(&Configuration::LoadImpl, _path, a_abort);
     } else {

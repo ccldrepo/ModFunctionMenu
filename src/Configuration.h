@@ -1,15 +1,12 @@
 #pragma once
 
-class Configuration
+#include "Util/Singleton.h"
+
+class Configuration final : public SingletonEx<Configuration>
 {
+    friend class SingletonEx<Configuration>;
+
 public:
-    [[nodiscard]] static const Configuration* GetSingleton() { return _singleton.get(); }
-
-    Configuration(const Configuration&) = delete;
-    Configuration(Configuration&&) = delete;
-    Configuration& operator=(const Configuration&) = delete;
-    Configuration& operator=(Configuration&&) = delete;
-
     // Initialize or reload configuration.
     static void Init(bool a_abort = true);
 
@@ -108,6 +105,9 @@ public:
 private:
     Configuration() = default;
 
+    ~Configuration() = default;
+
+private:
     using LoadImplFunc = void (Configuration::*)(const std::filesystem::path&);
     using SaveImplFunc = void (Configuration::*)(const std::filesystem::path&) const;
 
@@ -119,8 +119,6 @@ private:
 
     void LoadImpl_Styles(const std::filesystem::path& a_path);
     void SaveImpl_Styles(const std::filesystem::path& a_path) const;
-
-    static inline std::unique_ptr<Configuration> _singleton;
 
     static inline const std::filesystem::path _path{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu.toml"sv };
     static inline const std::filesystem::path _path_styles{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu_styles.toml"sv };

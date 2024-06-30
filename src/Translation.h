@@ -2,16 +2,13 @@
 
 #include <absl/container/flat_hash_map.h>
 
-class Translation
+#include "Util/Singleton.h"
+
+class Translation final : public SingletonEx<Translation>
 {
+    friend class SingletonEx<Translation>;
+
 public:
-    [[nodiscard]] static const Translation* GetSingleton() { return _singleton.get(); }
-
-    Translation(const Translation&) = delete;
-    Translation(Translation&&) = delete;
-    Translation& operator=(const Translation&) = delete;
-    Translation& operator=(Translation&&) = delete;
-
     // Initialize or reload translation.
     static void Init(bool a_abort = true);
 
@@ -37,10 +34,11 @@ public:
 private:
     Translation() = default;
 
+    ~Translation() = default;
+
+private:
     void Load(bool a_abort);
     void LoadImpl(const std::filesystem::path& a_path);
-
-    static inline std::unique_ptr<Translation> _singleton;
 
     absl::flat_hash_map<std::string, std::string> _map;
 };

@@ -69,7 +69,7 @@ namespace
 
 void Translation::Init(bool a_abort)
 {
-    auto tmp = std::unique_ptr<Translation>{ new Translation };
+    auto tmp = std::unique_ptr<Translation, Deleter>{ new Translation };
     tmp->Load(a_abort);
     _singleton = std::move(tmp);
 }

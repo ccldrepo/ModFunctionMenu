@@ -23,3 +23,29 @@ protected:
 
     ~Singleton() = default;
 };
+
+// The extended singleton base class.
+template <class T>
+class SingletonEx
+{
+public:
+    [[nodiscard]] static T* GetSingleton() { return _singleton.get(); }
+
+    SingletonEx(const SingletonEx&) = delete;
+    SingletonEx(SingletonEx&&) = delete;
+    SingletonEx& operator=(const SingletonEx&) = delete;
+    SingletonEx& operator=(SingletonEx&&) = delete;
+
+protected:
+    SingletonEx() = default;
+
+    ~SingletonEx() = default;
+
+    class Deleter
+    {
+    public:
+        void operator()(T* a_ptr) const { delete a_ptr; }
+    };
+
+    static inline std::unique_ptr<T, Deleter> _singleton;
+};
