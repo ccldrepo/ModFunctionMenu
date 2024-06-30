@@ -98,9 +98,9 @@ public:
         Colors colors;
     };
 
-    General  general;
-    Controls controls;
-    Styles   styles;
+    alignas(std::hardware_destructive_interference_size) General general;
+    alignas(std::hardware_destructive_interference_size) Controls controls;
+    alignas(std::hardware_destructive_interference_size) Styles styles;
 
 private:
     Configuration() = default;
