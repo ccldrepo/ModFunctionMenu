@@ -12,7 +12,7 @@ namespace ImGui
 {
     void FontManager::Init(bool a_abort)
     {
-        auto tmp = std::unique_ptr<FontManager>{ new FontManager };
+        auto tmp = std::unique_ptr<FontManager, Deleter>{ new FontManager };
         tmp->Load(a_abort);
         _singleton = std::move(tmp);
     }

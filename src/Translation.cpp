@@ -107,9 +107,11 @@ void Translation::LoadImpl(const std::filesystem::path& a_path)
 
         auto key = line.substr(0, tab_pos);
         auto value = line.substr(tab_pos + 1);
+
         auto [pos, ok] = _map.try_emplace(key, value);
         if (!ok) {
-            throw std::runtime_error(std::format("Translation key '{}' exists", key));
+            auto msg = std::format("Translation key '{}' exists", key);
+            throw std::runtime_error(msg);
         }
     }
 }
