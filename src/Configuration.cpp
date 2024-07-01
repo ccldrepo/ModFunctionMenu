@@ -13,6 +13,12 @@ void Configuration::Init(bool a_abort)
         // Export default config if config file not exists.
         tmp->Save(&Configuration::SaveImpl, _path, a_abort);
     }
+    if (std::filesystem::exists(_path_fonts)) {
+        tmp->Load(&Configuration::LoadImpl_Fonts, _path_fonts, a_abort);
+    } else {
+        // Export default config if config file not exists.
+        tmp->Save(&Configuration::SaveImpl_Fonts, _path_fonts, a_abort);
+    }
     if (std::filesystem::exists(_path_styles)) {
         tmp->Load(&Configuration::LoadImpl_Styles, _path_styles, a_abort);
     } else {
@@ -62,7 +68,6 @@ void Configuration::LoadImpl(const std::filesystem::path& a_path)
 
     if (auto section = GetTOMLSection(data, "General"sv)) {
         GetTOMLValue(*section, "sLanguage"sv, general.sLanguage);
-        GetTOMLValue(*section, "sFont"sv, general.sFont);
     }
 
     if (auto section = GetTOMLSection(data, "Controls"sv)) {
@@ -86,7 +91,6 @@ void Configuration::SaveImpl(const std::filesystem::path& a_path) const
     {
         toml::table section;
         SetTOMLValue(section, "sLanguage"sv, general.sLanguage);
-        SetTOMLValue(section, "sFont"sv, general.sFont);
         SetTOMLSection(data, "General"sv, std::move(section));
     }
     {
@@ -106,6 +110,28 @@ void Configuration::SaveImpl(const std::filesystem::path& a_path) const
             SetTOMLSection(section, "Gamepad"sv, std::move(subsection));
         }
         SetTOMLSection(data, "Controls"sv, std::move(section));
+    }
+    SaveTOMLFile(a_path, data);
+}
+
+void Configuration::LoadImpl_Fonts(const std::filesystem::path& a_path)
+{
+    auto data = LoadTOMLFile(a_path);
+
+    if (auto section = GetTOMLSection(data, "General"sv)) {
+        GetTOMLValue(*section, "sFont"sv, fonts.general.sFont);
+        GetTOMLValue(*section, "fSize"sv, fonts.general.fSize);
+    }
+}
+
+void Configuration::SaveImpl_Fonts(const std::filesystem::path& a_path) const
+{
+    toml::table data;
+    {
+        toml::table section;
+        SetTOMLValue(section, "sFont"sv, fonts.general.sFont);
+        SetTOMLValue(section, "fSize"sv, fonts.general.fSize);
+        SetTOMLSection(data, "General"sv, std::move(section));
     }
     SaveTOMLFile(a_path, data);
 }

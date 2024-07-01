@@ -13,7 +13,6 @@ public:
     struct General
     {
         std::string sLanguage;
-        std::string sFont;
     };
 
     struct Controls
@@ -34,6 +33,17 @@ public:
 
         Keyboard keyboard;
         Gamepad  gamepad;
+    };
+
+    struct Fonts
+    {
+        struct General
+        {
+            std::string sFont;
+            float       fSize;
+        };
+
+        General general;
     };
 
     struct Styles
@@ -100,6 +110,7 @@ public:
 
     alignas(std::hardware_destructive_interference_size) General general;
     alignas(std::hardware_destructive_interference_size) Controls controls;
+    alignas(std::hardware_destructive_interference_size) Fonts fonts;
     alignas(std::hardware_destructive_interference_size) Styles styles;
 
 private:
@@ -117,9 +128,13 @@ private:
     void LoadImpl(const std::filesystem::path& a_path);
     void SaveImpl(const std::filesystem::path& a_path) const;
 
+    void LoadImpl_Fonts(const std::filesystem::path& a_path);
+    void SaveImpl_Fonts(const std::filesystem::path& a_path) const;
+
     void LoadImpl_Styles(const std::filesystem::path& a_path);
     void SaveImpl_Styles(const std::filesystem::path& a_path) const;
 
     static inline const std::filesystem::path _path{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu.toml"sv };
+    static inline const std::filesystem::path _path_fonts{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu_fonts.toml"sv };
     static inline const std::filesystem::path _path_styles{ L"Data/SKSE/Plugins/ccld_ModFunctionMenu_styles.toml"sv };
 };

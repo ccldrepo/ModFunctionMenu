@@ -19,16 +19,16 @@ namespace ImGui
 
     void FontManager::Load(bool a_abort)
     {
-        auto config = Configuration::GetSingleton();
+        auto& cfgFonts = Configuration::GetSingleton()->fonts;
         try {
-            LoadImpl(config->general.sFont.c_str());
-            SKSE::log::info("Successfully loaded font from \"{}\".", config->general.sFont);
+            LoadImpl(cfgFonts.general.sFont.c_str());
+            SKSE::log::info("Successfully loaded font from \"{}\".", cfgFonts.general.sFont);
         } catch (const std::system_error& e) {
-            auto msg = std::format("Failed to load font from \"{}\": {}.", config->general.sFont,
+            auto msg = std::format("Failed to load font from \"{}\": {}.", cfgFonts.general.sFont,
                 SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
             SKSE::stl::report_fatal_error(msg, a_abort);
         } catch (const std::exception& e) {
-            auto msg = std::format("Failed to load font from \"{}\": {}.", config->general.sFont, e.what());
+            auto msg = std::format("Failed to load font from \"{}\": {}.", cfgFonts.general.sFont, e.what());
             SKSE::stl::report_fatal_error(msg, a_abort);
         }
     }
@@ -45,6 +45,8 @@ namespace ImGui
             throw std::runtime_error("File is not a regular file");
         }
 
+        auto& cfgFonts = Configuration::GetSingleton()->fonts;
+
         auto& io = ImGui::GetIO();
         io.Fonts->Clear();
 
@@ -58,7 +60,7 @@ namespace ImGui
         ImVector<ImWchar> ranges;
         rangesBuilder.BuildRanges(&ranges);
 
-        auto font = io.Fonts->AddFontFromFileTTF(a_path, 28, &fontConfig, ranges.Data);
+        auto font = io.Fonts->AddFontFromFileTTF(a_path, cfgFonts.general.fSize, &fontConfig, ranges.Data);
         io.Fonts->Build();
 
         ImGui_ImplDX11_InvalidateDeviceObjects();
@@ -97,8 +99,8 @@ namespace ImGui
         ImVector<ImWchar> ranges;
         rangesBuilder.BuildRanges(&ranges);
 
-        auto config = Configuration::GetSingleton();
-        io.Fonts->AddFontFromFileTTF(config->general.sFont.c_str(), 28, &fontConfig, ranges.Data);
+        auto& cfgFonts = Configuration::GetSingleton()->fonts;
+        io.Fonts->AddFontFromFileTTF(cfgFonts.general.sFont.c_str(), cfgFonts.general.fSize, &fontConfig, ranges.Data);
         io.Fonts->Build();
 
         ImGui_ImplDX11_InvalidateDeviceObjects();

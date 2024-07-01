@@ -1,8 +1,6 @@
 [General]
 # The language used in this mod. If not specified, use game language.
 #sLanguage = "chinese"
-# The file path of font used in this mod.
-sFont = "Data/Interface/ImGuiResources/Fonts/LXGWWenKaiMono-Regular.ttf"
 
 [Controls]
 # For hotkey code reference, see:
