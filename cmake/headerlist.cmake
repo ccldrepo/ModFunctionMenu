@@ -1,5 +1,6 @@
 set(PROJECT_HEADERS
-    "src/XSEPlugin/Configuration.h"
+    "src/XSEPlugin/Base/Configuration.h"
+    "src/XSEPlugin/Base/Translation.h"
     "src/XSEPlugin/Core.h"
     "src/XSEPlugin/Function.h"
     "src/XSEPlugin/Hooks.h"
@@ -10,7 +11,6 @@ set(PROJECT_HEADERS
     "src/XSEPlugin/ImGui/StyleManager.h"
     "src/XSEPlugin/InputManager.h"
     "src/XSEPlugin/PCH.h"
-    "src/XSEPlugin/Translation.h"
     "src/XSEPlugin/Util/CLib/Hook.h"
     "src/XSEPlugin/Util/CLib/Key.h"
     "src/XSEPlugin/Util/Singleton.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Function.h"
-#include "Util/Singleton.h"
+#include <XSEPlugin/Util/Singleton.h>
 
 struct MFM_Path
 {

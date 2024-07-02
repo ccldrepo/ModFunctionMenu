@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-#include "../Configuration.h"
+#include <XSEPlugin/Base/Configuration.h>
 
 namespace ImGui
 {

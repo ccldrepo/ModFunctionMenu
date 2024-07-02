@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-#include "../Util/Singleton.h"
+#include <XSEPlugin/Util/Singleton.h>
 
 namespace ImGui
 {

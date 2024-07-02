@@ -1,5 +1,6 @@
 set(PROJECT_SOURCES
-    "src/XSEPlugin/Configuration.cpp"
+    "src/XSEPlugin/Base/Configuration.cpp"
+    "src/XSEPlugin/Base/Translation.cpp"
     "src/XSEPlugin/Core.cpp"
     "src/XSEPlugin/Function.cpp"
     "src/XSEPlugin/Hooks.cpp"
@@ -10,7 +11,6 @@ set(PROJECT_SOURCES
     "src/XSEPlugin/ImGui/StyleManager.cpp"
     "src/XSEPlugin/InputManager.cpp"
     "src/XSEPlugin/Main.cpp"
-    "src/XSEPlugin/Translation.cpp"
     "src/XSEPlugin/Util/Win.cpp"
     "vendor/backends/imgui_impl_dx11.cpp"
     "vendor/backends/imgui_impl_win32.cpp"

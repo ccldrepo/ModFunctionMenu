@@ -2,7 +2,7 @@
 
 #include <absl/container/flat_hash_map.h>
 
-#include "Util/Singleton.h"
+#include <XSEPlugin/Util/Singleton.h>
 
 class Translation final : public SingletonEx<Translation>
 {

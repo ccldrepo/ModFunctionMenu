@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util/CLib/Hook.h"
+#include <XSEPlugin/Util/CLib/Hook.h>
 
 struct ProcessInputQueueHook : CLib::CallHook<ProcessInputQueueHook>
 {

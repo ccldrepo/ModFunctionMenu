@@ -3,7 +3,7 @@
 #include <absl/strings/ascii.h>
 #include <absl/strings/str_split.h>
 
-#include "Configuration.h"
+#include <XSEPlugin/Base/Configuration.h>
 
 namespace
 {

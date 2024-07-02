@@ -5,8 +5,8 @@
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 
-#include "../Configuration.h"
-#include "../Translation.h"
+#include <XSEPlugin/Base/Configuration.h>
+#include <XSEPlugin/Base/Translation.h>
 
 namespace ImGui
 {

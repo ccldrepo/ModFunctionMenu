@@ -1,7 +1,7 @@
 #include "Core.h"
 
-#include "Util/TOML.h"
-#include "Util/Win.h"
+#include <XSEPlugin/Util/TOML.h>
+#include <XSEPlugin/Util/Win.h>
 
 MFM_Function MFM_Function::Get(const std::filesystem::path& a_path)
 {

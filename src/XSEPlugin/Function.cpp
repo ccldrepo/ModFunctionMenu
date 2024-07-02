@@ -2,9 +2,9 @@
 
 #include <spdlog/sinks/ostream_sink.h>
 
-#include "Configuration.h"
 #include "ImGui/Renderer.h"
-#include "Translation.h"
+#include <XSEPlugin/Base/Configuration.h>
+#include <XSEPlugin/Base/Translation.h>
 
 MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util/Singleton.h"
+#include <XSEPlugin/Util/Singleton.h>
 
 class Configuration final : public SingletonEx<Configuration>
 {

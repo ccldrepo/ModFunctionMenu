@@ -8,10 +8,10 @@
 #include <imgui_internal.h>
 
 #include "../InputManager.h"
-#include "../Util/CLib/Hook.h"
 #include "FontManager.h"
 #include "Menu.h"
 #include "StyleManager.h"
+#include <XSEPlugin/Util/CLib/Hook.h>
 
 namespace ImGui
 {
