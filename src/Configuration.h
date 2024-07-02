@@ -108,10 +108,13 @@ public:
         Colors colors;
     };
 
+#pragma warning(push)
+#pragma warning(disable: 4324)
     alignas(std::hardware_destructive_interference_size) General general;
     alignas(std::hardware_destructive_interference_size) Controls controls;
     alignas(std::hardware_destructive_interference_size) Fonts fonts;
     alignas(std::hardware_destructive_interference_size) Styles styles;
+#pragma warning(pop)
 
 private:
     Configuration() = default;
