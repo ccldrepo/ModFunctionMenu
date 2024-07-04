@@ -83,9 +83,13 @@ public:
             std::uint32_t iResizeGrip;
             std::uint32_t iResizeGripHovered;
             std::uint32_t iResizeGripActive;
-            std::uint32_t iTab;
             std::uint32_t iTabHovered;
-            std::uint32_t iTabActive;
+            std::uint32_t iTab;
+            std::uint32_t iTabSelected;
+            std::uint32_t iTabSelectedOverline;
+            std::uint32_t iTabDimmed;
+            std::uint32_t iTabDimmedSelected;
+            std::uint32_t iTabDimmedSelectedOverline;
             std::uint32_t iTabUnfocused;
             std::uint32_t iTabUnfocusedActive;
             std::uint32_t iPlotLines;

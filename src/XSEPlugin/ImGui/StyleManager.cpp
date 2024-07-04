@@ -57,11 +57,13 @@ namespace ImGui
         colors[ImGuiCol_ResizeGrip] = IntToColor(config->styles.colors.iResizeGrip);
         colors[ImGuiCol_ResizeGripHovered] = IntToColor(config->styles.colors.iResizeGripHovered);
         colors[ImGuiCol_ResizeGripActive] = IntToColor(config->styles.colors.iResizeGripActive);
-        colors[ImGuiCol_Tab] = IntToColor(config->styles.colors.iTab);
         colors[ImGuiCol_TabHovered] = IntToColor(config->styles.colors.iTabHovered);
-        colors[ImGuiCol_TabActive] = IntToColor(config->styles.colors.iTabActive);
-        colors[ImGuiCol_TabUnfocused] = IntToColor(config->styles.colors.iTabUnfocused);
-        colors[ImGuiCol_TabUnfocusedActive] = IntToColor(config->styles.colors.iTabUnfocusedActive);
+        colors[ImGuiCol_Tab] = IntToColor(config->styles.colors.iTab);
+        colors[ImGuiCol_TabSelected] = IntToColor(config->styles.colors.iTabSelected);
+        colors[ImGuiCol_TabSelectedOverline] = IntToColor(config->styles.colors.iTabSelectedOverline);
+        colors[ImGuiCol_TabDimmed] = IntToColor(config->styles.colors.iTabDimmed);
+        colors[ImGuiCol_TabDimmedSelected] = IntToColor(config->styles.colors.iTabDimmedSelected);
+        colors[ImGuiCol_TabDimmedSelectedOverline] = IntToColor(config->styles.colors.iTabDimmedSelectedOverline);
         colors[ImGuiCol_PlotLines] = IntToColor(config->styles.colors.iPlotLines);
         colors[ImGuiCol_PlotLinesHovered] = IntToColor(config->styles.colors.iPlotLinesHovered);
         colors[ImGuiCol_PlotHistogram] = IntToColor(config->styles.colors.iPlotHistogram);
