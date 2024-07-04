@@ -25,6 +25,8 @@ void Configuration::Init(bool a_abort)
         // Export default config if config file not exists.
         tmp->Save(&Configuration::SaveImpl_Styles, _path_styles, a_abort);
     }
+
+    auto lock = LockUnique();
     _singleton = std::move(tmp);
 }
 
