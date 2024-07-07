@@ -1,6 +1,6 @@
 #include "Hooks.h"
 
-#include "InputManager.h"
+#include <XSEPlugin/InputManager.h>
 
 void ProcessInputQueueHook::thunk(RE::BSTEventSource<RE::InputEvent*>* a_dispatcher, RE::InputEvent* const* a_event)
 {

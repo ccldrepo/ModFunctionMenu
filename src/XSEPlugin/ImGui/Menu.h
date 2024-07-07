@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Core.h"
+#include <XSEPlugin/Core.h>
 #include <XSEPlugin/Util/Singleton.h>
 
 namespace ImGui

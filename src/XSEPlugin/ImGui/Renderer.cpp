@@ -7,10 +7,10 @@
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 
-#include "../InputManager.h"
-#include "FontManager.h"
-#include "Menu.h"
-#include "StyleManager.h"
+#include <XSEPlugin/ImGui/FontManager.h>
+#include <XSEPlugin/ImGui/Menu.h>
+#include <XSEPlugin/ImGui/StyleManager.h>
+#include <XSEPlugin/InputManager.h>
 #include <XSEPlugin/Util/CLib/Hook.h>
 
 namespace ImGui

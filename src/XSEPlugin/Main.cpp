@@ -1,10 +1,10 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
-#include "Core.h"
-#include "Hooks.h"
-#include "ImGui/Renderer.h"
 #include <XSEPlugin/Base/Configuration.h>
 #include <XSEPlugin/Base/Translation.h>
+#include <XSEPlugin/Core.h>
+#include <XSEPlugin/Hooks.h>
+#include <XSEPlugin/ImGui/Renderer.h>
 #include <XSEPlugin/Util/Win.h>
 
 namespace

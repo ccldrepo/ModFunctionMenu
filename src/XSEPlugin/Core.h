@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Function.h"
+#include <XSEPlugin/Function.h>
 #include <XSEPlugin/Util/Singleton.h>
 
 struct MFM_Path

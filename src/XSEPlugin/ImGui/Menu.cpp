@@ -3,9 +3,9 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-#include "FontManager.h"
-#include "Renderer.h"
 #include <XSEPlugin/Base/Translation.h>
+#include <XSEPlugin/ImGui/FontManager.h>
+#include <XSEPlugin/ImGui/Renderer.h>
 
 namespace ImGui
 {

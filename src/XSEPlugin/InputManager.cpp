@@ -1,8 +1,8 @@
 #include "InputManager.h"
 
-#include "ImGui/Input.h"
-#include "ImGui/Menu.h"
 #include <XSEPlugin/Base/Configuration.h>
+#include <XSEPlugin/ImGui/Input.h>
+#include <XSEPlugin/ImGui/Menu.h>
 #include <XSEPlugin/Util/CLib/Key.h>
 
 namespace
