@@ -1,5 +1,6 @@
 set(PROJECT_HEADERS
     "src/XSEPlugin/Base/Configuration.h"
+    "src/XSEPlugin/Base/StringTable.h"
     "src/XSEPlugin/Base/Translation.h"
     "src/XSEPlugin/Core.h"
     "src/XSEPlugin/Function.h"

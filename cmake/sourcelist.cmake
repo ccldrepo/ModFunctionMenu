@@ -1,5 +1,6 @@
 set(PROJECT_SOURCES
     "src/XSEPlugin/Base/Configuration.cpp"
+    "src/XSEPlugin/Base/StringTable.cpp"
     "src/XSEPlugin/Base/Translation.cpp"
     "src/XSEPlugin/Core.cpp"
     "src/XSEPlugin/Function.cpp"
