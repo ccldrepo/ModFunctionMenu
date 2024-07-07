@@ -70,10 +70,12 @@ namespace
 void Translation::Init(bool a_abort)
 {
     auto tmp = std::unique_ptr<Translation, Deleter>{ new Translation };
+
     tmp->Load(a_abort);
 
     auto lock = LockUnique();
     _singleton = std::move(tmp);
+    IncrementVersion();
 }
 
 void Translation::Load(bool a_abort)

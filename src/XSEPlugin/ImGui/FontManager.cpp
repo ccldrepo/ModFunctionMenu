@@ -13,10 +13,12 @@ namespace ImGui
     void FontManager::Init(bool a_abort)
     {
         auto tmp = std::unique_ptr<FontManager, Deleter>{ new FontManager };
+
         tmp->Load(a_abort);
 
         auto lock = LockUnique();
         _singleton = std::move(tmp);
+        IncrementVersion();
     }
 
     void FontManager::Load(bool a_abort)

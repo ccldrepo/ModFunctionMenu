@@ -25,7 +25,8 @@ namespace ImGui
     void Menu::Draw()
     {
         auto stbl = StringTable::GetSingleton();
-        stbl->Init();  // TODO
+        stbl->CheckReload();
+
         auto datastore = Datastore::GetSingleton();
 
         auto viewport = ImGui::GetMainViewport();

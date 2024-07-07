@@ -7,18 +7,21 @@
 void Configuration::Init(bool a_abort)
 {
     auto tmp = std::unique_ptr<Configuration, Deleter>{ new Configuration };
+
     if (std::filesystem::exists(_path)) {
         tmp->Load(&Configuration::LoadImpl, _path, a_abort);
     } else {
         // Export default config if config file not exists.
         tmp->Save(&Configuration::SaveImpl, _path, a_abort);
     }
+
     if (std::filesystem::exists(_path_fonts)) {
         tmp->Load(&Configuration::LoadImpl_Fonts, _path_fonts, a_abort);
     } else {
         // Export default config if config file not exists.
         tmp->Save(&Configuration::SaveImpl_Fonts, _path_fonts, a_abort);
     }
+
     if (std::filesystem::exists(_path_styles)) {
         tmp->Load(&Configuration::LoadImpl_Styles, _path_styles, a_abort);
     } else {
@@ -28,6 +31,7 @@ void Configuration::Init(bool a_abort)
 
     auto lock = LockUnique();
     _singleton = std::move(tmp);
+    IncrementVersion();
 }
 
 void Configuration::Load(LoadImplFunc a_func, const std::filesystem::path& a_path, bool a_abort)

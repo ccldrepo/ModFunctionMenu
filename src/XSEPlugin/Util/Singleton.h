@@ -31,10 +31,26 @@ template <class T>
 class SingletonEx
 {
 public:
-    [[nodiscard]] static T* GetSingleton() { return _singleton.get(); }
+    [[nodiscard]] static T* GetSingleton() noexcept { return _singleton.get(); }
 
-    [[nodiscard]] static std::shared_lock<std::shared_mutex> LockShared() { return std::shared_lock{ _mutex }; }
-    [[nodiscard]] static std::unique_lock<std::shared_mutex> LockUnique() { return std::unique_lock{ _mutex }; }
+    [[nodiscard]] static std::shared_lock<std::shared_mutex> LockShared() noexcept
+    {
+        return std::shared_lock{ _mutex };
+    }
+
+    [[nodiscard]] static std::unique_lock<std::shared_mutex> LockUnique() noexcept
+    {
+        return std::unique_lock{ _mutex };
+    }
+
+    [[nodiscard]] static bool IsVersionChanged(std::uint32_t a_version) noexcept
+    {
+        return _version.load() != a_version;
+    }
+
+    [[nodiscard]] static std::uint32_t LatestVersion() noexcept { return _version.load(); }
+
+    static void IncrementVersion() noexcept { _version.fetch_add(1); }
 
     SingletonEx(const SingletonEx&) = delete;
     SingletonEx(SingletonEx&&) = delete;
@@ -54,4 +70,6 @@ protected:
     static inline std::unique_ptr<T, Deleter> _singleton;
 
     static inline std::shared_mutex _mutex;
+
+    static inline std::atomic<std::uint32_t> _version{ 0 };
 };
