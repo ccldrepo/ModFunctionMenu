@@ -120,7 +120,7 @@ inline void GetTOMLValue(const toml::table& a_table, std::string_view a_key, T& 
         }
         throw TOMLError(std::format("Invalid '{}'", a_key));
     }
-    a_target = std::move(*value);
+    a_target = *std::move(value);
 }
 
 template <TOMLScalar T, bool required = false>
@@ -164,7 +164,7 @@ inline void GetTOMLValue(const toml::table& a_table, std::string_view a_key, std
             }
             throw TOMLError(std::format("Invalid '{}'", a_key));
         }
-        a_target.push_back(std::move(*value));
+        a_target.push_back(*std::move(value));
     }
 }
 
