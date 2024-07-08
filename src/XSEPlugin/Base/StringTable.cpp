@@ -2,14 +2,9 @@
 
 #include <XSEPlugin/Base/Translation.h>
 
-namespace
-{
-    std::uint32_t transVersion = 0;
-}
-
 void StringTable::CheckReload()
 {
-    if (!Translation::IsVersionChanged(transVersion)) {
+    if (!Translation::IsVersionChanged(_transVersion)) {
         return;
     }
 
@@ -20,6 +15,8 @@ void StringTable::CheckReload()
     Section_Mod = trans->Lookup("$Section_Mod"sv);
     Section_Config = trans->Lookup("$Section_Config"sv);
 
-    transVersion = Translation::GetVersion();
-    SKSE::log::debug("StringTable: Upgrade to transVersion {}.", transVersion);
+    _transVersion = Translation::GetVersion();
+    SKSE::log::debug("StringTable: Upgrade to Translation Version {}.", _transVersion);
 }
+
+StringTable StringTable::_singleton;
