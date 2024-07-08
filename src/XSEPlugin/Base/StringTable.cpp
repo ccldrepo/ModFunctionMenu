@@ -20,6 +20,6 @@ void StringTable::CheckReload()
     Section_Mod = trans->Lookup("$Section_Mod"sv);
     Section_Config = trans->Lookup("$Section_Config"sv);
 
-    transVersion = Translation::LatestVersion();
+    transVersion = Translation::GetVersion();
     SKSE::log::debug("StringTable: Upgrade to transVersion {}.", transVersion);
 }

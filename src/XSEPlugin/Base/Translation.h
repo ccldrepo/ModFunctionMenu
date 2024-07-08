@@ -15,8 +15,7 @@ public:
     // Lookup translation text.
     [[nodiscard]] std::string Lookup(std::string_view a_key) const
     {
-        auto it = _map.find(a_key);
-        if (it != _map.end()) {
+        if (auto it = _map.find(a_key); it != _map.end()) {
             return it->second;
         }
         return std::string{ a_key };
@@ -42,8 +41,3 @@ private:
 
     absl::flat_hash_map<std::string, std::string> _map;
 };
-
-[[nodiscard]] inline std::string operator""_T(const char* a_str, std::size_t a_len)
-{
-    return Translation::GetSingleton()->Lookup(std::string_view{ a_str, a_len });
-}
