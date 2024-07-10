@@ -4,7 +4,6 @@
 
 #include <XSEPlugin/Base/Configuration.h>
 #include <XSEPlugin/Base/Translation.h>
-#include <XSEPlugin/ImGui/Renderer.h>
 
 MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
 {
@@ -18,7 +17,6 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
     try {
         Configuration::Init(false);
         Translation::Init(false);
-        ImGui::Renderer::SetWantReload();
     } catch (const std::exception&) {
         // Suppress exception.
     }

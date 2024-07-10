@@ -7,6 +7,8 @@
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
 
+#include <XSEPlugin/Base/Configuration.h>
+#include <XSEPlugin/Base/Translation.h>
 #include <XSEPlugin/ImGui/FontManager.h>
 #include <XSEPlugin/ImGui/Menu.h>
 #include <XSEPlugin/ImGui/StyleManager.h>
@@ -131,10 +133,19 @@ namespace ImGui
             return;
         }
 
-        if (_wantReload.load()) {
+        if (Configuration::IsVersionChanged(_configVersion)) {
+            auto configLock = Configuration::LockShared();
+            auto transLock = Translation::LockShared();
             FontManager::Init(false);
             StyleManager::Init();
-            _wantReload.store(false);
+            _configVersion = Configuration::GetVersion();
+            _transVersion = Translation::GetVersion();
+        } else if (Translation::IsVersionChanged(_transVersion)) {
+            auto configLock = Configuration::LockShared();
+            auto transLock = Translation::LockShared();
+            FontManager::Init(false);
+            _configVersion = Configuration::GetVersion();
+            _transVersion = Translation::GetVersion();
         } else {
             FontManager::GetSingleton()->Refresh();
         }
