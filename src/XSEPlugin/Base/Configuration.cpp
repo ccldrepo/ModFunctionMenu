@@ -2,6 +2,7 @@
 
 #include <toml++/toml.hpp>
 
+#include <XSEPlugin/Util/File.h>
 #include <XSEPlugin/Util/TOML.h>
 
 void Configuration::Init(bool a_abort)
@@ -126,6 +127,7 @@ void Configuration::LoadImpl_Fonts(const std::filesystem::path& a_path)
 
     if (auto section = GetTOMLSection(data, "General"sv)) {
         GetTOMLValue(*section, "sFont"sv, fonts.general.sFont);
+        CheckRegularFile(StrToPath(fonts.general.sFont));
         GetTOMLValue(*section, "fSize"sv, fonts.general.fSize);
     }
 }

@@ -39,8 +39,8 @@ public:
     {
         struct General
         {
-            std::string sFont;
-            float       fSize;
+            std::string sFont{ "Data/Interface/ImGuiResources/Fonts/LXGWWenKaiMono-Regular.ttf"sv };
+            float       fSize{ 32.0f };
         };
 
         General general;

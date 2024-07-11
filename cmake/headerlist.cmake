@@ -14,6 +14,7 @@ set(PROJECT_HEADERS
     "src/XSEPlugin/PCH.h"
     "src/XSEPlugin/Util/CLib/Hook.h"
     "src/XSEPlugin/Util/CLib/Key.h"
+    "src/XSEPlugin/Util/File.h"
     "src/XSEPlugin/Util/Singleton.h"
     "src/XSEPlugin/Util/TOML.h"
     "src/XSEPlugin/Util/Win.h"
