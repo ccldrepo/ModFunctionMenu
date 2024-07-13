@@ -7,7 +7,14 @@ class Configuration final : public SingletonEx<Configuration>
     friend class SingletonEx<Configuration>;
 
 public:
-    // Initialize or reload configuration.
+    /// Initialize configuration and replace internal singleton.
+    ///
+    /// Assume caller has already acquired unique lock before calling,
+    /// and will increase version after calling.
+    ///
+    /// @param a_abort
+    ///   If true, terminate this process when error occurred;
+    ///   otherwise, throw exception.
     static void Init(bool a_abort = true);
 
     struct General
@@ -125,7 +132,6 @@ private:
 
     ~Configuration() = default;
 
-private:
     using LoadImplFunc = void (Configuration::*)(const std::filesystem::path&);
     using SaveImplFunc = void (Configuration::*)(const std::filesystem::path&) const;
 
