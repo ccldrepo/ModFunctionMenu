@@ -3,7 +3,6 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-#include <XSEPlugin/Base/StringTable.h>
 #include <XSEPlugin/ImGui/Renderer.h>
 
 namespace ImGui
@@ -23,8 +22,9 @@ namespace ImGui
 
     void Menu::Draw()
     {
-        auto stbl = StringTable::GetSingleton();
-        stbl->CheckReload();
+        auto renderer = Renderer::GetSingleton();
+
+        auto& texts = renderer->texts;
 
         auto datastore = Datastore::GetSingleton();
 
@@ -35,15 +35,15 @@ namespace ImGui
         ImGuiWindowFlags window_flags = 0;
         window_flags |= ImGuiWindowFlags_NoCollapse;
 
-        ImGui::Begin(stbl->Title.c_str(), nullptr, window_flags);
+        ImGui::Begin(texts.Title.c_str(), nullptr, window_flags);
         {
             ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
             if (ImGui::BeginTabBar("TabBar", tab_bar_flags)) {
-                if (ImGui::BeginTabItem(stbl->Section_Mod.c_str())) {
+                if (ImGui::BeginTabItem(texts.Section_Mod.c_str())) {
                     datastore->CurrentSection(datastore->modTree);
                     ImGui::EndTabItem();
                 }
-                if (ImGui::BeginTabItem(stbl->Section_Config.c_str())) {
+                if (ImGui::BeginTabItem(texts.Section_Config.c_str())) {
                     datastore->CurrentSection(datastore->configTree);
                     ImGui::EndTabItem();
                 }

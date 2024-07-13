@@ -5,7 +5,7 @@ namespace ImGui::Impl
     class Styles
     {
     public:
-        // Initialize or reload style.
+        // Initialize or reload styles.
         void Load();
     };
 }

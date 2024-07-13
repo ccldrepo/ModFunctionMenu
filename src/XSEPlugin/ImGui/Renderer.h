@@ -2,6 +2,7 @@
 
 #include <XSEPlugin/ImGui/Impl/Fonts.h>
 #include <XSEPlugin/ImGui/Impl/Styles.h>
+#include <XSEPlugin/ImGui/Impl/Texts.h>
 
 namespace ImGui
 {
@@ -28,6 +29,7 @@ namespace ImGui
 
         Impl::Fonts  fonts;
         Impl::Styles styles;
+        Impl::Texts  texts;
 
     private:
         Renderer() = default;

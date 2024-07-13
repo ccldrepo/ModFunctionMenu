@@ -179,6 +179,7 @@ namespace ImGui
 
         fonts.Load();
         styles.Load();
+        texts.Load();
 
         _configVersion = Configuration::GetVersion();
         _transVersion = Translation::GetVersion();

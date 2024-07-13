@@ -1,12 +1,12 @@
 set(PROJECT_HEADERS
     "src/XSEPlugin/Base/Configuration.h"
-    "src/XSEPlugin/Base/StringTable.h"
     "src/XSEPlugin/Base/Translation.h"
     "src/XSEPlugin/Core.h"
     "src/XSEPlugin/Function.h"
     "src/XSEPlugin/Hooks.h"
     "src/XSEPlugin/ImGui/Impl/Fonts.h"
     "src/XSEPlugin/ImGui/Impl/Styles.h"
+    "src/XSEPlugin/ImGui/Impl/Texts.h"
     "src/XSEPlugin/ImGui/Input.h"
     "src/XSEPlugin/ImGui/Menu.h"
     "src/XSEPlugin/ImGui/Renderer.h"

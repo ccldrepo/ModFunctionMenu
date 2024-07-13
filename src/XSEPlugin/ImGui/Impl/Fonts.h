@@ -7,7 +7,7 @@ namespace ImGui::Impl
     class Fonts
     {
     public:
-        // Initialize or reload font.
+        // Initialize or reload fonts.
         void Load();
 
         // Dynamically collect text and rebuild font atlas.

@@ -1,12 +1,12 @@
 set(PROJECT_SOURCES
     "src/XSEPlugin/Base/Configuration.cpp"
-    "src/XSEPlugin/Base/StringTable.cpp"
     "src/XSEPlugin/Base/Translation.cpp"
     "src/XSEPlugin/Core.cpp"
     "src/XSEPlugin/Function.cpp"
     "src/XSEPlugin/Hooks.cpp"
     "src/XSEPlugin/ImGui/Impl/Fonts.cpp"
     "src/XSEPlugin/ImGui/Impl/Styles.cpp"
+    "src/XSEPlugin/ImGui/Impl/Texts.cpp"
     "src/XSEPlugin/ImGui/Input.cpp"
     "src/XSEPlugin/ImGui/Menu.cpp"
     "src/XSEPlugin/ImGui/Renderer.cpp"
