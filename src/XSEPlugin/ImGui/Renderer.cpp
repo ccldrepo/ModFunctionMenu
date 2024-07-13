@@ -9,9 +9,7 @@
 
 #include <XSEPlugin/Base/Configuration.h>
 #include <XSEPlugin/Base/Translation.h>
-#include <XSEPlugin/ImGui/FontManager.h>
 #include <XSEPlugin/ImGui/Menu.h>
-#include <XSEPlugin/ImGui/StyleManager.h>
 #include <XSEPlugin/InputManager.h>
 #include <XSEPlugin/Util/CLib/Hook.h>
 

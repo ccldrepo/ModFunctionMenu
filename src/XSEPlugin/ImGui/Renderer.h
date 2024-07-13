@@ -1,7 +1,7 @@
 #pragma once
 
-#include <XSEPlugin/ImGui/FontManager.h>
-#include <XSEPlugin/ImGui/StyleManager.h>
+#include <XSEPlugin/ImGui/Impl/Fonts.h>
+#include <XSEPlugin/ImGui/Impl/Styles.h>
 
 namespace ImGui
 {
