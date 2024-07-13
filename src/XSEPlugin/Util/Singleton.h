@@ -1,10 +1,11 @@
 #pragma once
 
+#include <atomic>
+#include <cstdint>
 #include <memory>
 #include <mutex>
 #include <shared_mutex>
 
-// The singleton base class.
 template <class T>
 class Singleton
 {
@@ -22,11 +23,9 @@ public:
 
 protected:
     Singleton() = default;
-
     ~Singleton() = default;
 };
 
-// The extended singleton base class.
 template <class T>
 class SingletonEx
 {
@@ -61,7 +60,6 @@ public:
 
 protected:
     SingletonEx() = default;
-
     ~SingletonEx() = default;
 
     struct Deleter
@@ -70,8 +68,6 @@ protected:
     };
 
     static inline std::unique_ptr<T, Deleter> _singleton;
-
-    static inline std::shared_mutex _mutex;
-
-    static inline std::atomic<std::uint32_t> _version{ 0 };
+    static inline std::shared_mutex           _mutex;
+    static inline std::atomic<std::uint32_t>  _version{ 0 };
 };
