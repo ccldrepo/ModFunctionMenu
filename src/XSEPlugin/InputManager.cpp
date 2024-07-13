@@ -10,10 +10,19 @@ namespace
     class MenuOpenHotkeyContext
     {
     public:
-        explicit MenuOpenHotkeyContext(const Configuration* a_config) :
-            keyboard(a_config->controls.keyboard.iHotkey, a_config->controls.keyboard.iModifier),
-            gamepad(a_config->controls.gamepad.iHotkey, a_config->controls.gamepad.iModifier)
-        {}
+        void Load()
+        {
+            auto& cfgControls = Configuration::GetSingleton()->controls;
+
+            keyboard = CLib::KeyCombo{ cfgControls.keyboard.iHotkey, cfgControls.keyboard.iModifier };
+            gamepad = CLib::KeyCombo{ cfgControls.gamepad.iHotkey, cfgControls.gamepad.iModifier };
+        }
+
+        void Reset() noexcept
+        {
+            keyboard.Reset();
+            gamepad.Reset();
+        }
 
         void Update(const RE::ButtonEvent* a_button)
         {
@@ -49,12 +58,23 @@ namespace
     class MenuCloseHotkeyContext
     {
     public:
-        explicit MenuCloseHotkeyContext(const Configuration* a_config) :
-            keyboard(a_config->controls.keyboard.iHotkey, a_config->controls.keyboard.iModifier),
-            gamepad(a_config->controls.gamepad.iHotkey, a_config->controls.gamepad.iModifier),
-            kbExtraExit(a_config->controls.keyboard.iExtraExit),  //
-            gpExtraExit(a_config->controls.gamepad.iExtraExit)    //
-        {}
+        void Load()
+        {
+            auto& cfgControls = Configuration::GetSingleton()->controls;
+
+            keyboard = CLib::KeyCombo{ cfgControls.keyboard.iHotkey, cfgControls.keyboard.iModifier };
+            gamepad = CLib::KeyCombo{ cfgControls.gamepad.iHotkey, cfgControls.gamepad.iModifier };
+            kbExtraExit = CLib::Key{ cfgControls.keyboard.iExtraExit };
+            gpExtraExit = CLib::Key{ cfgControls.gamepad.iExtraExit };
+        }
+
+        void Reset() noexcept
+        {
+            keyboard.Reset();
+            gamepad.Reset();
+            kbExtraExit.Reset();
+            gpExtraExit.Reset();
+        }
 
         void Update(const RE::ButtonEvent* a_button)
         {
@@ -91,26 +111,40 @@ namespace
         CLib::Key      gpExtraExit;
     };
 
+    MenuOpenHotkeyContext  openCtx;
+    MenuCloseHotkeyContext closeCtx;
+
     template <class HotkeyContext>
-    void ProcessHotkey(const RE::InputEvent* const* a_event)
+    void ProcessHotkey(HotkeyContext* ctx, const RE::InputEvent* const* a_event)
     {
-        HotkeyContext ctx{ Configuration::GetSingleton() };
+        ctx->Reset();
         for (auto event = *a_event; event; event = event->next) {
             if (auto button = event->AsButtonEvent()) {
-                ctx.Update(button);
+                ctx->Update(button);
             }
         }
-        ctx.Finalize();
+        ctx->Finalize();
     }
 }
 
 void InputManager::Process(const RE::InputEvent* const* a_event)
 {
+    if (Configuration::IsVersionChanged(_configVersion)) {
+        auto configLock = Configuration::LockShared();
+
+        openCtx.Load();
+        closeCtx.Load();
+
+        _configVersion = Configuration::GetVersion();
+
+        SKSE::log::debug("InputManager: Upgrade to Configuration Version {}.", _configVersion);
+    }
+
     if (InputBlocker::IsNotBlocked()) {
-        ProcessHotkey<MenuOpenHotkeyContext>(a_event);
+        ProcessHotkey(std::addressof(openCtx), a_event);
     } else {
         ImGui::TranslateInputEvent(a_event);
-        ProcessHotkey<MenuCloseHotkeyContext>(a_event);
+        ProcessHotkey(std::addressof(closeCtx), a_event);
     }
 }
 

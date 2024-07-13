@@ -21,9 +21,13 @@ namespace CLib
     class Key
     {
     public:
+        Key() = default;
+
         explicit Key(std::uint32_t a_targetHotkey) noexcept : targetHotkey(a_targetHotkey) {}
 
         bool IsActive() const noexcept { return hasHotkey; }
+
+        void Reset() noexcept { hasHotkey = false; }
 
         void Update(std::uint32_t a_key) noexcept
         {
@@ -33,7 +37,7 @@ namespace CLib
         }
 
     private:
-        const std::uint32_t targetHotkey;
+        std::uint32_t targetHotkey{ INVALID_KEY };
 
         bool hasHotkey{ false };
     };
@@ -41,6 +45,8 @@ namespace CLib
     class KeyCombo
     {
     public:
+        KeyCombo() = default;
+
         KeyCombo(std::uint32_t a_targetHotkey, std::uint32_t a_targetModifier) noexcept :
             targetHotkey(a_targetHotkey), targetModifier(a_targetModifier),
             count(CalcCount(a_targetHotkey, a_targetModifier))
@@ -49,6 +55,12 @@ namespace CLib
         std::uint32_t Count() const noexcept { return count; }
 
         bool IsActive() const noexcept { return hasHotkey && (targetModifier == INVALID_KEY || hasModifier); }
+
+        void Reset() noexcept
+        {
+            hasHotkey = false;
+            hasModifier = false;
+        }
 
         void UpdateDown(std::uint32_t a_key) noexcept
         {
@@ -76,12 +88,12 @@ namespace CLib
             }
         }
 
-        const std::uint32_t targetHotkey;
-        const std::uint32_t targetModifier;
+        std::uint32_t targetHotkey{ INVALID_KEY };
+        std::uint32_t targetModifier{ INVALID_KEY };
 
         bool hasHotkey{ false };
         bool hasModifier{ false };
 
-        const std::uint16_t count;
+        std::uint16_t count{ 0 };
     };
 }

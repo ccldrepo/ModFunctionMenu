@@ -22,8 +22,7 @@ public:
 
     [[nodiscard]] static bool HandleWantUnblock() noexcept
     {
-        auto currentState = _state.load();
-        if (currentState == BlockState::kWantUnblock) {
+        if (auto currentState = _state.load(); currentState == BlockState::kWantUnblock) {
             return _state.compare_exchange_strong(currentState, BlockState::kNotBlocked);
         }
         return false;
@@ -38,4 +37,7 @@ class InputManager
 public:
     static void Process(const RE::InputEvent* const* a_event);
     static void Cleanup();
+
+private:
+    static inline std::uint32_t _configVersion{ 0 };
 };
