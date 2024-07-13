@@ -39,7 +39,7 @@ namespace
         const auto size = std::filesystem::file_size(a_path);
 
         if (size == 0) {
-            return {};
+            throw std::runtime_error("Size check failed. File must not be empty");
         }
 
         if (size % 2 != 0) {
@@ -70,9 +70,7 @@ namespace
 void Translation::Init(bool a_abort)
 {
     auto tmp = std::unique_ptr<Translation, Deleter>{ new Translation };
-
     tmp->Load(a_abort);
-
     _singleton = std::move(tmp);
 }
 

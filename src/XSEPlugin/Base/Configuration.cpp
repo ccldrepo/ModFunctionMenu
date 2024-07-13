@@ -12,21 +12,21 @@ void Configuration::Init(bool a_abort)
     if (std::filesystem::exists(_path)) {
         tmp->Load(&Configuration::LoadImpl, _path, a_abort);
     } else {
-        // Export default config if config file not exists.
+        // Export default config if config file does not exist.
         tmp->Save(&Configuration::SaveImpl, _path, a_abort);
     }
 
     if (std::filesystem::exists(_path_fonts)) {
         tmp->Load(&Configuration::LoadImpl_Fonts, _path_fonts, a_abort);
     } else {
-        // Export default config if config file not exists.
+        // Export default config if config file does not exist.
         tmp->Save(&Configuration::SaveImpl_Fonts, _path_fonts, a_abort);
     }
 
     if (std::filesystem::exists(_path_styles)) {
         tmp->Load(&Configuration::LoadImpl_Styles, _path_styles, a_abort);
     } else {
-        // Export default config if config file not exists.
+        // Export default config if config file does not exist.
         tmp->Save(&Configuration::SaveImpl_Styles, _path_styles, a_abort);
     }
 
