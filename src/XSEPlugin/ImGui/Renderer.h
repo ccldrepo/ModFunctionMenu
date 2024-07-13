@@ -1,5 +1,8 @@
 #pragma once
 
+#include <XSEPlugin/ImGui/FontManager.h>
+#include <XSEPlugin/ImGui/StyleManager.h>
+
 namespace ImGui
 {
     class Renderer
@@ -15,6 +18,9 @@ namespace ImGui
 
         static void Enable() noexcept;
         static void Disable() noexcept;
+
+        static inline Impl::Fonts  fonts;
+        static inline Impl::Styles styles;
 
     private:
         static inline std::atomic<bool> _isInit{ false };

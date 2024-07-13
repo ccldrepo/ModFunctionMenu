@@ -1,6 +1,5 @@
 #include "FontManager.h"
 
-#include <absl/cleanup/cleanup.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 #include <imgui_internal.h>
@@ -8,70 +7,28 @@
 #include <XSEPlugin/Base/Configuration.h>
 #include <XSEPlugin/Base/Translation.h>
 
-namespace ImGui
+namespace ImGui::Impl
 {
-    void FontManager::Init(bool a_abort)
+    void Fonts::Load()
     {
-        auto tmp = std::unique_ptr<FontManager, Deleter>{ new FontManager };
-
-        tmp->Load(a_abort);
-
-        auto lock = LockUnique();
-        _singleton = std::move(tmp);
-        IncrementVersion();
-    }
-
-    void FontManager::Load(bool a_abort)
-    {
+        // Assume the caller has already acquired the lock.
         auto& cfgFonts = Configuration::GetSingleton()->fonts;
-        try {
-            LoadImpl(cfgFonts.general.sFont.c_str());
-            SKSE::log::info("Successfully loaded font from \"{}\".", cfgFonts.general.sFont);
-        } catch (const std::system_error& e) {
-            auto msg = std::format("Failed to load font from \"{}\": {}.", cfgFonts.general.sFont,
-                SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
-            SKSE::stl::report_fatal_error(msg, a_abort);
-        } catch (const std::exception& e) {
-            auto msg = std::format("Failed to load font from \"{}\": {}.", cfgFonts.general.sFont, e.what());
-            SKSE::stl::report_fatal_error(msg, a_abort);
-        }
-    }
-
-    void FontManager::LoadImpl(const char* a_path)
-    {
-        auto st = std::filesystem::status(StrToPath(a_path));
-
-        if (!std::filesystem::exists(st)) {
-            throw std::runtime_error("File does not exist");
-        }
-
-        if (!std::filesystem::is_regular_file(st)) {
-            throw std::runtime_error("File is not a regular file");
-        }
-
-        auto& cfgFonts = Configuration::GetSingleton()->fonts;
-
-        auto& io = ImGui::GetIO();
-        io.Fonts->Clear();
+        _path = cfgFonts.general.sFont;
+        _size = cfgFonts.general.fSize;
+        _config = ImFontConfig();
+        _rangesBuilder = ImFontGlyphRangesBuilder();
 
         // Feed default ranges.
-        rangesBuilder.AddRanges(io.Fonts->GetGlyphRangesDefault());
+        _rangesBuilder.AddRanges(ImGui::GetIO().Fonts->GetGlyphRangesDefault());
         Translation::GetSingleton()->Visit(  //
             [this]([[maybe_unused]] const std::string& key, const std::string& value) {
-                rangesBuilder.AddText(value.c_str());
+                _rangesBuilder.AddText(value.c_str());
             });
 
-        ImVector<ImWchar> ranges;
-        rangesBuilder.BuildRanges(&ranges);
-
-        auto font = io.Fonts->AddFontFromFileTTF(a_path, cfgFonts.general.fSize, &fontConfig, ranges.Data);
-        io.Fonts->Build();
-
-        ImGui_ImplDX11_InvalidateDeviceObjects();
-        ImGui_ImplDX11_CreateDeviceObjects();
+        Rebuild();
     }
 
-    void FontManager::Feed(std::string_view a_text)
+    void Fonts::Feed(std::string_view a_text)
     {
         auto text = a_text.data();
         auto text_end = text + a_text.size();
@@ -82,34 +39,37 @@ namespace ImGui
             if (c_len == 0) {
                 break;
             }
-            if (!rangesBuilder.GetBit(c)) {
-                rangesBuilder.SetBit(c);
+            if (!_rangesBuilder.GetBit(c)) {
+                _rangesBuilder.SetBit(c);
                 _wantRefresh = true;
             }
         }
     }
 
-    void FontManager::Refresh()
+    void Fonts::Refresh()
     {
         if (!_wantRefresh) {
             return;
         }
 
-        absl::Cleanup cleanup = [this]() { _wantRefresh = false; };
+        _wantRefresh = false;
 
+        Rebuild();
+        SKSE::log::debug("Refresh font.");
+    }
+
+    void Fonts::Rebuild()
+    {
         auto& io = ImGui::GetIO();
         io.Fonts->Clear();
 
         ImVector<ImWchar> ranges;
-        rangesBuilder.BuildRanges(&ranges);
+        _rangesBuilder.BuildRanges(&ranges);
 
-        auto& cfgFonts = Configuration::GetSingleton()->fonts;
-        io.Fonts->AddFontFromFileTTF(cfgFonts.general.sFont.c_str(), cfgFonts.general.fSize, &fontConfig, ranges.Data);
+        io.Fonts->AddFontFromFileTTF(_path.c_str(), _size, &_config, ranges.Data);
         io.Fonts->Build();
 
         ImGui_ImplDX11_InvalidateDeviceObjects();
         ImGui_ImplDX11_CreateDeviceObjects();
-
-        SKSE::log::debug("Refresh font.");
     }
 }

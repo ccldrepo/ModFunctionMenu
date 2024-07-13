@@ -120,8 +120,8 @@ namespace ImGui
             SKSE::log::warn("SetWindowLongPtrA failed!");
         }
 
-        FontManager::Init();
-        StyleManager::Init();
+        fonts.Load();
+        styles.Load();
 
         _isInit.store(true);
         SKSE::log::info("ImGui initialized.");
@@ -136,18 +136,18 @@ namespace ImGui
         if (Configuration::IsVersionChanged(_configVersion)) {
             auto configLock = Configuration::LockShared();
             auto transLock = Translation::LockShared();
-            FontManager::Init(false);
-            StyleManager::Init();
+            fonts.Load();
+            styles.Load();
             _configVersion = Configuration::GetVersion();
             _transVersion = Translation::GetVersion();
         } else if (Translation::IsVersionChanged(_transVersion)) {
             auto configLock = Configuration::LockShared();
             auto transLock = Translation::LockShared();
-            FontManager::Init(false);
+            fonts.Load();
             _configVersion = Configuration::GetVersion();
             _transVersion = Translation::GetVersion();
         } else {
-            FontManager::GetSingleton()->Refresh();
+            fonts.Refresh();
         }
 
         auto& io = ImGui::GetIO();

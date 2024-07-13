@@ -4,7 +4,6 @@
 #include <imgui_internal.h>
 
 #include <XSEPlugin/Base/StringTable.h>
-#include <XSEPlugin/ImGui/FontManager.h>
 #include <XSEPlugin/ImGui/Renderer.h>
 
 namespace ImGui
@@ -61,8 +60,6 @@ namespace ImGui
 
     void Menu::DrawExplorer(Datastore* datastore)
     {
-        auto fontManager = ImGui::FontManager::GetSingleton();
-
         auto tree = datastore->CurrentSection();
         ImGui::Text("%s", tree->CurrentPathStr().c_str());
         ImGui::Spacing();
@@ -80,7 +77,7 @@ namespace ImGui
             auto node = tree->CurrentPath();
             for (auto& entry : node->children) {
                 ImGui::TableNextColumn();
-                fontManager->Feed(entry->name);
+                Renderer::fonts.Feed(entry->name);
                 if (ImGui::Button(entry->name.c_str(), sz)) {
                     OnClickEntry(tree, entry.get());
                 }

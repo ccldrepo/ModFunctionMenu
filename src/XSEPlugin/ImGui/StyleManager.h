@@ -1,11 +1,11 @@
 #pragma once
 
-namespace ImGui
+namespace ImGui::Impl
 {
-    class StyleManager
+    class Styles
     {
     public:
         // Initialize or reload style.
-        static void Init();
+        void Load();
     };
 }

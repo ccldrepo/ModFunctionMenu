@@ -4,80 +4,80 @@
 
 #include <XSEPlugin/Base/Configuration.h>
 
-namespace ImGui
+namespace ImGui::Impl
 {
     namespace
     {
-        inline float ByteToFloat(std::uint32_t a_int) { return static_cast<float>(a_int & 0xFF) / 255.0f; }
+        inline float Norm(std::uint32_t a_int) { return static_cast<float>(a_int & 0xFF) / 255.0f; }
 
         inline ImVec4 IntToColor(std::uint32_t a_int)
         {
-            return ImVec4{ ByteToFloat(a_int >> 24), ByteToFloat(a_int >> 16), ByteToFloat(a_int >> 8),
-                ByteToFloat(a_int) };
+            return ImVec4{ Norm(a_int >> 24), Norm(a_int >> 16), Norm(a_int >> 8), Norm(a_int) };
         }
     }
 
-    void StyleManager::Init()
+    void Styles::Load()
     {
-        auto config = Configuration::GetSingleton();
+        // Assume the caller has already acquired the lock.
+        auto& cfgStyles = Configuration::GetSingleton()->styles;
 
         auto& style = ImGui::GetStyle();
         auto  colors = style.Colors;
 
-        colors[ImGuiCol_Text] = IntToColor(config->styles.colors.iText);
-        colors[ImGuiCol_TextDisabled] = IntToColor(config->styles.colors.iTextDisabled);
-        colors[ImGuiCol_WindowBg] = IntToColor(config->styles.colors.iWindowBg);
-        colors[ImGuiCol_ChildBg] = IntToColor(config->styles.colors.iChildBg);
-        colors[ImGuiCol_PopupBg] = IntToColor(config->styles.colors.iPopupBg);
-        colors[ImGuiCol_Border] = IntToColor(config->styles.colors.iBorder);
-        colors[ImGuiCol_BorderShadow] = IntToColor(config->styles.colors.iBorderShadow);
-        colors[ImGuiCol_FrameBg] = IntToColor(config->styles.colors.iFrameBg);
-        colors[ImGuiCol_FrameBgHovered] = IntToColor(config->styles.colors.iFrameBgHovered);
-        colors[ImGuiCol_FrameBgActive] = IntToColor(config->styles.colors.iFrameBgActive);
-        colors[ImGuiCol_TitleBg] = IntToColor(config->styles.colors.iTitleBg);
-        colors[ImGuiCol_TitleBgActive] = IntToColor(config->styles.colors.iTitleBgActive);
-        colors[ImGuiCol_TitleBgCollapsed] = IntToColor(config->styles.colors.iTitleBgCollapsed);
-        colors[ImGuiCol_MenuBarBg] = IntToColor(config->styles.colors.iMenuBarBg);
-        colors[ImGuiCol_ScrollbarBg] = IntToColor(config->styles.colors.iScrollbarBg);
-        colors[ImGuiCol_ScrollbarGrab] = IntToColor(config->styles.colors.iScrollbarGrab);
-        colors[ImGuiCol_ScrollbarGrabHovered] = IntToColor(config->styles.colors.iScrollbarGrabHovered);
-        colors[ImGuiCol_ScrollbarGrabActive] = IntToColor(config->styles.colors.iScrollbarGrabActive);
-        colors[ImGuiCol_CheckMark] = IntToColor(config->styles.colors.iCheckMark);
-        colors[ImGuiCol_SliderGrab] = IntToColor(config->styles.colors.iSliderGrab);
-        colors[ImGuiCol_SliderGrabActive] = IntToColor(config->styles.colors.iSliderGrabActive);
-        colors[ImGuiCol_Button] = IntToColor(config->styles.colors.iButton);
-        colors[ImGuiCol_ButtonHovered] = IntToColor(config->styles.colors.iButtonHovered);
-        colors[ImGuiCol_ButtonActive] = IntToColor(config->styles.colors.iButtonActive);
-        colors[ImGuiCol_Header] = IntToColor(config->styles.colors.iHeader);
-        colors[ImGuiCol_HeaderHovered] = IntToColor(config->styles.colors.iHeaderHovered);
-        colors[ImGuiCol_HeaderActive] = IntToColor(config->styles.colors.iHeaderActive);
-        colors[ImGuiCol_Separator] = IntToColor(config->styles.colors.iSeparator);
-        colors[ImGuiCol_SeparatorHovered] = IntToColor(config->styles.colors.iSeparatorHovered);
-        colors[ImGuiCol_SeparatorActive] = IntToColor(config->styles.colors.iSeparatorActive);
-        colors[ImGuiCol_ResizeGrip] = IntToColor(config->styles.colors.iResizeGrip);
-        colors[ImGuiCol_ResizeGripHovered] = IntToColor(config->styles.colors.iResizeGripHovered);
-        colors[ImGuiCol_ResizeGripActive] = IntToColor(config->styles.colors.iResizeGripActive);
-        colors[ImGuiCol_TabHovered] = IntToColor(config->styles.colors.iTabHovered);
-        colors[ImGuiCol_Tab] = IntToColor(config->styles.colors.iTab);
-        colors[ImGuiCol_TabSelected] = IntToColor(config->styles.colors.iTabSelected);
-        colors[ImGuiCol_TabSelectedOverline] = IntToColor(config->styles.colors.iTabSelectedOverline);
-        colors[ImGuiCol_TabDimmed] = IntToColor(config->styles.colors.iTabDimmed);
-        colors[ImGuiCol_TabDimmedSelected] = IntToColor(config->styles.colors.iTabDimmedSelected);
-        colors[ImGuiCol_TabDimmedSelectedOverline] = IntToColor(config->styles.colors.iTabDimmedSelectedOverline);
-        colors[ImGuiCol_PlotLines] = IntToColor(config->styles.colors.iPlotLines);
-        colors[ImGuiCol_PlotLinesHovered] = IntToColor(config->styles.colors.iPlotLinesHovered);
-        colors[ImGuiCol_PlotHistogram] = IntToColor(config->styles.colors.iPlotHistogram);
-        colors[ImGuiCol_PlotHistogramHovered] = IntToColor(config->styles.colors.iPlotHistogramHovered);
-        colors[ImGuiCol_TableHeaderBg] = IntToColor(config->styles.colors.iTableHeaderBg);
-        colors[ImGuiCol_TableBorderStrong] = IntToColor(config->styles.colors.iTableBorderStrong);
-        colors[ImGuiCol_TableBorderLight] = IntToColor(config->styles.colors.iTableBorderLight);
-        colors[ImGuiCol_TableRowBg] = IntToColor(config->styles.colors.iTableRowBg);
-        colors[ImGuiCol_TableRowBgAlt] = IntToColor(config->styles.colors.iTableRowBgAlt);
-        colors[ImGuiCol_TextSelectedBg] = IntToColor(config->styles.colors.iTextSelectedBg);
-        colors[ImGuiCol_DragDropTarget] = IntToColor(config->styles.colors.iDragDropTarget);
-        colors[ImGuiCol_NavHighlight] = IntToColor(config->styles.colors.iNavHighlight);
-        colors[ImGuiCol_NavWindowingHighlight] = IntToColor(config->styles.colors.iNavWindowingHighlight);
-        colors[ImGuiCol_NavWindowingDimBg] = IntToColor(config->styles.colors.iNavWindowingDimBg);
-        colors[ImGuiCol_ModalWindowDimBg] = IntToColor(config->styles.colors.iModalWindowDimBg);
+        colors[ImGuiCol_Text] = IntToColor(cfgStyles.colors.iText);
+        colors[ImGuiCol_TextDisabled] = IntToColor(cfgStyles.colors.iTextDisabled);
+        colors[ImGuiCol_WindowBg] = IntToColor(cfgStyles.colors.iWindowBg);
+        colors[ImGuiCol_ChildBg] = IntToColor(cfgStyles.colors.iChildBg);
+        colors[ImGuiCol_PopupBg] = IntToColor(cfgStyles.colors.iPopupBg);
+        colors[ImGuiCol_Border] = IntToColor(cfgStyles.colors.iBorder);
+        colors[ImGuiCol_BorderShadow] = IntToColor(cfgStyles.colors.iBorderShadow);
+        colors[ImGuiCol_FrameBg] = IntToColor(cfgStyles.colors.iFrameBg);
+        colors[ImGuiCol_FrameBgHovered] = IntToColor(cfgStyles.colors.iFrameBgHovered);
+        colors[ImGuiCol_FrameBgActive] = IntToColor(cfgStyles.colors.iFrameBgActive);
+        colors[ImGuiCol_TitleBg] = IntToColor(cfgStyles.colors.iTitleBg);
+        colors[ImGuiCol_TitleBgActive] = IntToColor(cfgStyles.colors.iTitleBgActive);
+        colors[ImGuiCol_TitleBgCollapsed] = IntToColor(cfgStyles.colors.iTitleBgCollapsed);
+        colors[ImGuiCol_MenuBarBg] = IntToColor(cfgStyles.colors.iMenuBarBg);
+        colors[ImGuiCol_ScrollbarBg] = IntToColor(cfgStyles.colors.iScrollbarBg);
+        colors[ImGuiCol_ScrollbarGrab] = IntToColor(cfgStyles.colors.iScrollbarGrab);
+        colors[ImGuiCol_ScrollbarGrabHovered] = IntToColor(cfgStyles.colors.iScrollbarGrabHovered);
+        colors[ImGuiCol_ScrollbarGrabActive] = IntToColor(cfgStyles.colors.iScrollbarGrabActive);
+        colors[ImGuiCol_CheckMark] = IntToColor(cfgStyles.colors.iCheckMark);
+        colors[ImGuiCol_SliderGrab] = IntToColor(cfgStyles.colors.iSliderGrab);
+        colors[ImGuiCol_SliderGrabActive] = IntToColor(cfgStyles.colors.iSliderGrabActive);
+        colors[ImGuiCol_Button] = IntToColor(cfgStyles.colors.iButton);
+        colors[ImGuiCol_ButtonHovered] = IntToColor(cfgStyles.colors.iButtonHovered);
+        colors[ImGuiCol_ButtonActive] = IntToColor(cfgStyles.colors.iButtonActive);
+        colors[ImGuiCol_Header] = IntToColor(cfgStyles.colors.iHeader);
+        colors[ImGuiCol_HeaderHovered] = IntToColor(cfgStyles.colors.iHeaderHovered);
+        colors[ImGuiCol_HeaderActive] = IntToColor(cfgStyles.colors.iHeaderActive);
+        colors[ImGuiCol_Separator] = IntToColor(cfgStyles.colors.iSeparator);
+        colors[ImGuiCol_SeparatorHovered] = IntToColor(cfgStyles.colors.iSeparatorHovered);
+        colors[ImGuiCol_SeparatorActive] = IntToColor(cfgStyles.colors.iSeparatorActive);
+        colors[ImGuiCol_ResizeGrip] = IntToColor(cfgStyles.colors.iResizeGrip);
+        colors[ImGuiCol_ResizeGripHovered] = IntToColor(cfgStyles.colors.iResizeGripHovered);
+        colors[ImGuiCol_ResizeGripActive] = IntToColor(cfgStyles.colors.iResizeGripActive);
+        colors[ImGuiCol_TabHovered] = IntToColor(cfgStyles.colors.iTabHovered);
+        colors[ImGuiCol_Tab] = IntToColor(cfgStyles.colors.iTab);
+        colors[ImGuiCol_TabSelected] = IntToColor(cfgStyles.colors.iTabSelected);
+        colors[ImGuiCol_TabSelectedOverline] = IntToColor(cfgStyles.colors.iTabSelectedOverline);
+        colors[ImGuiCol_TabDimmed] = IntToColor(cfgStyles.colors.iTabDimmed);
+        colors[ImGuiCol_TabDimmedSelected] = IntToColor(cfgStyles.colors.iTabDimmedSelected);
+        colors[ImGuiCol_TabDimmedSelectedOverline] = IntToColor(cfgStyles.colors.iTabDimmedSelectedOverline);
+        colors[ImGuiCol_PlotLines] = IntToColor(cfgStyles.colors.iPlotLines);
+        colors[ImGuiCol_PlotLinesHovered] = IntToColor(cfgStyles.colors.iPlotLinesHovered);
+        colors[ImGuiCol_PlotHistogram] = IntToColor(cfgStyles.colors.iPlotHistogram);
+        colors[ImGuiCol_PlotHistogramHovered] = IntToColor(cfgStyles.colors.iPlotHistogramHovered);
+        colors[ImGuiCol_TableHeaderBg] = IntToColor(cfgStyles.colors.iTableHeaderBg);
+        colors[ImGuiCol_TableBorderStrong] = IntToColor(cfgStyles.colors.iTableBorderStrong);
+        colors[ImGuiCol_TableBorderLight] = IntToColor(cfgStyles.colors.iTableBorderLight);
+        colors[ImGuiCol_TableRowBg] = IntToColor(cfgStyles.colors.iTableRowBg);
+        colors[ImGuiCol_TableRowBgAlt] = IntToColor(cfgStyles.colors.iTableRowBgAlt);
+        colors[ImGuiCol_TextSelectedBg] = IntToColor(cfgStyles.colors.iTextSelectedBg);
+        colors[ImGuiCol_DragDropTarget] = IntToColor(cfgStyles.colors.iDragDropTarget);
+        colors[ImGuiCol_NavHighlight] = IntToColor(cfgStyles.colors.iNavHighlight);
+        colors[ImGuiCol_NavWindowingHighlight] = IntToColor(cfgStyles.colors.iNavWindowingHighlight);
+        colors[ImGuiCol_NavWindowingDimBg] = IntToColor(cfgStyles.colors.iNavWindowingDimBg);
+        colors[ImGuiCol_ModalWindowDimBg] = IntToColor(cfgStyles.colors.iModalWindowDimBg);
     }
 }
