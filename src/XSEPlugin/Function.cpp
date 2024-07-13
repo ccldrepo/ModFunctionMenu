@@ -21,11 +21,13 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
         Translation::Init(false);
         Configuration::IncrementVersion();
         Translation::IncrementVersion();
-    } catch (const std::exception&) {
+    } catch (...) {
         // Suppress exception.
     }
 
-    auto msg = oss.str();
-    std::memcpy(a_msg, msg.c_str(), std::min(msg.size() + 1, a_len));
-    spdlog::default_logger_raw()->sinks().pop_back();
+    if (a_msg) {
+        auto msg = oss.str();
+        std::memcpy(a_msg, msg.c_str(), std::min(msg.size() + 1, a_len));
+        spdlog::default_logger_raw()->sinks().pop_back();
+    }
 }
