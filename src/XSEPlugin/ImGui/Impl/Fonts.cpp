@@ -13,12 +13,16 @@ namespace ImGui::Impl
     {
         // Assume the caller has already acquired the lock.
         auto& cfgFonts = Configuration::GetSingleton()->fonts;
+
         _path = cfgFonts.general.sFont;
         _size = cfgFonts.general.fSize;
+
         _config = ImFontConfig();
         _rangesBuilder = ImFontGlyphRangesBuilder();
 
-        // Feed default ranges.
+        _wantRefresh = false;
+
+        // Feed default glyph ranges.
         _rangesBuilder.AddRanges(ImGui::GetIO().Fonts->GetGlyphRangesDefault());
         Translation::GetSingleton()->Visit(  //
             [this]([[maybe_unused]] const std::string& key, const std::string& value) {

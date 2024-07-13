@@ -34,7 +34,7 @@ namespace ImGui
         static void thunk()
         {
             func();
-            Renderer::Init();
+            Renderer::GetSingleton()->Init();
         }
 
         static inline REL::Relocation<decltype(thunk)> func;
@@ -50,7 +50,7 @@ namespace ImGui
         static void thunk(std::uint32_t a_timer)
         {
             func(a_timer);
-            Renderer::Run();
+            Renderer::GetSingleton()->Run();
         }
 
         static inline REL::Relocation<decltype(thunk)> func;
@@ -118,8 +118,7 @@ namespace ImGui
             SKSE::log::warn("SetWindowLongPtrA failed!");
         }
 
-        fonts.Load();
-        styles.Load();
+        Load();
 
         _isInit.store(true);
         SKSE::log::info("ImGui initialized.");
@@ -131,19 +130,8 @@ namespace ImGui
             return;
         }
 
-        if (Configuration::IsVersionChanged(_configVersion)) {
-            auto configLock = Configuration::LockShared();
-            auto transLock = Translation::LockShared();
-            fonts.Load();
-            styles.Load();
-            _configVersion = Configuration::GetVersion();
-            _transVersion = Translation::GetVersion();
-        } else if (Translation::IsVersionChanged(_transVersion)) {
-            auto configLock = Configuration::LockShared();
-            auto transLock = Translation::LockShared();
-            fonts.Load();
-            _configVersion = Configuration::GetVersion();
-            _transVersion = Translation::GetVersion();
+        if (Configuration::IsVersionChanged(_configVersion) || Translation::IsVersionChanged(_transVersion)) {
+            Load();
         } else {
             fonts.Refresh();
         }
@@ -183,4 +171,21 @@ namespace ImGui
         _isEnable.store(false);
         InputBlocker::TryWantUnblock();
     }
+
+    void Renderer::Load()
+    {
+        auto configLock = Configuration::LockShared();
+        auto transLock = Translation::LockShared();
+
+        fonts.Load();
+        styles.Load();
+
+        _configVersion = Configuration::GetVersion();
+        _transVersion = Translation::GetVersion();
+
+        SKSE::log::debug("Renderer: Upgrade to Configuration Version {}.", _configVersion);
+        SKSE::log::debug("Renderer: Upgrade to Translation Version {}.", _transVersion);
+    }
+
+    Renderer Renderer::_singleton;
 }

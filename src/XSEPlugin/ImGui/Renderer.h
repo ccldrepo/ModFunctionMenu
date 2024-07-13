@@ -8,25 +8,40 @@ namespace ImGui
     class Renderer
     {
     public:
+        [[nodiscard]] static Renderer* GetSingleton() noexcept { return std::addressof(_singleton); }
+
         static void Install();
 
-        static void Init();
-        static void Run();
+        Renderer(const Renderer&) = delete;
+        Renderer(Renderer&&) = delete;
+        Renderer& operator=(const Renderer&) = delete;
+        Renderer& operator=(Renderer&&) = delete;
 
-        [[nodiscard]] static bool IsInit() noexcept { return _isInit.load(); }
-        [[nodiscard]] static bool IsEnable() noexcept { return _isEnable.load(); }
+        void Init();
+        void Run();
 
-        static void Enable() noexcept;
-        static void Disable() noexcept;
+        [[nodiscard]] bool IsInit() const noexcept { return _isInit.load(); }
+        [[nodiscard]] bool IsEnable() const noexcept { return _isEnable.load(); }
 
-        static inline Impl::Fonts  fonts;
-        static inline Impl::Styles styles;
+        void Enable() noexcept;
+        void Disable() noexcept;
+
+        Impl::Fonts  fonts;
+        Impl::Styles styles;
 
     private:
-        static inline std::atomic<bool> _isInit{ false };
-        static inline std::atomic<bool> _isEnable{ false };
+        Renderer() = default;
 
-        static inline std::uint32_t _configVersion{ 0 };
-        static inline std::uint32_t _transVersion{ 0 };
+        ~Renderer() = default;
+
+        void Load();
+
+        static Renderer _singleton;
+
+        std::atomic<bool> _isInit{ false };
+        std::atomic<bool> _isEnable{ false };
+
+        std::uint32_t _configVersion{ 0 };
+        std::uint32_t _transVersion{ 0 };
     };
 }

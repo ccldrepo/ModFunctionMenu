@@ -10,7 +10,7 @@ namespace ImGui
 {
     void Menu::Open()
     {
-        Renderer::Enable();
+        Renderer::GetSingleton()->Enable();
         _isOpen.store(true);
         SKSE::log::debug("Open menu.");
     }
@@ -60,6 +60,8 @@ namespace ImGui
 
     void Menu::DrawExplorer(Datastore* datastore)
     {
+        auto renderer = Renderer::GetSingleton();
+
         auto tree = datastore->CurrentSection();
         ImGui::Text("%s", tree->CurrentPathStr().c_str());
         ImGui::Spacing();
@@ -77,7 +79,7 @@ namespace ImGui
             auto node = tree->CurrentPath();
             for (auto& entry : node->children) {
                 ImGui::TableNextColumn();
-                Renderer::fonts.Feed(entry->name);
+                renderer->fonts.Feed(entry->name);
                 if (ImGui::Button(entry->name.c_str(), sz)) {
                     OnClickEntry(tree, entry.get());
                 }
