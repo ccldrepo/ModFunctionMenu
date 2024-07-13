@@ -9,6 +9,7 @@
 
 #include <XSEPlugin/Base/Configuration.h>
 #include <XSEPlugin/Base/Translation.h>
+#include <XSEPlugin/ImGui/Input.h>
 #include <XSEPlugin/ImGui/Menu.h>
 #include <XSEPlugin/InputManager.h>
 #include <XSEPlugin/Util/CLib/Hook.h>
@@ -20,8 +21,7 @@ namespace ImGui
         static LRESULT thunk(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             if (uMsg == WM_KILLFOCUS) {
-                auto& io = ImGui::GetIO();
-                io.ClearInputKeys();
+                ClearInputEvent();
             }
             return func(hWnd, uMsg, wParam, lParam);
         }

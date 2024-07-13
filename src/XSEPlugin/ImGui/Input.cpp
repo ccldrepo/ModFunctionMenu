@@ -326,6 +326,8 @@ namespace ImGui
     void ClearInputEvent()
     {
         auto& io = ImGui::GetIO();
+        io.ClearEventsQueue();
         io.ClearInputKeys();
+        io.ClearInputMouse();
     }
 }
