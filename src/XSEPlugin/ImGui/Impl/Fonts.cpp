@@ -11,7 +11,6 @@ namespace ImGui::Impl
 {
     void Fonts::Load()
     {
-        // Assume the caller has already acquired the lock.
         auto& cfgFonts = Configuration::GetSingleton()->fonts;
 
         _path = cfgFonts.general.sFont;
@@ -43,6 +42,7 @@ namespace ImGui::Impl
             if (c_len == 0) {
                 break;
             }
+
             if (!_rangesBuilder.GetBit(c)) {
                 _rangesBuilder.SetBit(c);
                 _wantRefresh = true;
@@ -59,7 +59,7 @@ namespace ImGui::Impl
         _wantRefresh = false;
 
         Rebuild();
-        SKSE::log::debug("Refresh font.");
+        SKSE::log::trace("Refresh font.");
     }
 
     void Fonts::Rebuild()

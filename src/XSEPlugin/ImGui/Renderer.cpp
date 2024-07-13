@@ -136,14 +136,13 @@ namespace ImGui
             fonts.Refresh();
         }
 
-        auto& io = ImGui::GetIO();
-
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         {
             // trick imgui into rendering at game's real resolution (ie. if upscaled with Display Tweaks)
             static const auto screenSize = RE::BSGraphics::Renderer::GetScreenSize();
 
+            auto& io = ImGui::GetIO();
             io.DisplaySize.x = static_cast<float>(screenSize.width);
             io.DisplaySize.y = static_cast<float>(screenSize.height);
         }

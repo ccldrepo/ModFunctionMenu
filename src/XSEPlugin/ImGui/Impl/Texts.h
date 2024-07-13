@@ -5,7 +5,9 @@ namespace ImGui::Impl
     class Texts
     {
     public:
-        // Initialize or reload texts.
+        /// Fetch and apply the latest texts.
+        ///
+        /// Assume caller has already acquired shared lock of translation before calling.
         void Load();
 
         std::string Title;

@@ -7,15 +7,19 @@ namespace ImGui::Impl
     class Fonts
     {
     public:
-        // Initialize or reload fonts.
+        /// Fetch and apply the latest fonts.
+        ///
+        /// Assume caller has already acquired shared lock of configuration and translation before calling.
         void Load();
 
-        // Dynamically collect text and rebuild font atlas.
+        /// Update glyph ranges.
         void Feed(std::string_view a_text);
+
+        /// Rebuild fonts if glyph ranges change.
         void Refresh();
 
     private:
-        // Rebuild font from current config and glyph ranges.
+        /// Rebuild fonts from current config and glyph ranges.
         void Rebuild();
 
         std::string _path;

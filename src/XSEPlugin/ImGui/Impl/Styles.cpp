@@ -18,12 +18,10 @@ namespace ImGui::Impl
 
     void Styles::Load()
     {
-        // Assume the caller has already acquired the lock.
         auto& cfgStyles = Configuration::GetSingleton()->styles;
 
         auto& style = ImGui::GetStyle();
         auto  colors = style.Colors;
-
         colors[ImGuiCol_Text] = IntToColor(cfgStyles.colors.iText);
         colors[ImGuiCol_TextDisabled] = IntToColor(cfgStyles.colors.iTextDisabled);
         colors[ImGuiCol_WindowBg] = IntToColor(cfgStyles.colors.iWindowBg);

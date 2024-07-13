@@ -5,7 +5,9 @@ namespace ImGui::Impl
     class Styles
     {
     public:
-        // Initialize or reload styles.
+        /// Fetch and apply the latest styles.
+        ///
+        /// Assume caller has already acquired shared lock of configuration before calling.
         void Load();
     };
 }

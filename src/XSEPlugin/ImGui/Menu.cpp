@@ -11,13 +11,13 @@ namespace ImGui
     {
         Renderer::GetSingleton()->Enable();
         _isOpen.store(true);
-        SKSE::log::debug("Open menu.");
+        SKSE::log::trace("Open menu.");
     }
 
     void Menu::Close()
     {
         _isOpen.store(false);
-        SKSE::log::debug("Close menu.");
+        SKSE::log::trace("Close menu.");
     }
 
     void Menu::Draw()

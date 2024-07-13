@@ -6,7 +6,6 @@ namespace ImGui::Impl
 {
     void Texts::Load()
     {
-        // Assume the caller has already acquired the lock.
         auto trans = Translation::GetSingleton();
 
         Title = trans->Lookup("$Title"sv);
