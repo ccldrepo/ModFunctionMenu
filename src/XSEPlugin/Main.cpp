@@ -70,8 +70,8 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
     SKSE::Init(a_skse);
 
     {
-        auto configLock = Configuration::LockUnique();
-        auto transLock = Translation::LockUnique();
+        std::scoped_lock lock{ Configuration::GetMutex(), Translation::GetMutex() };
+
         Configuration::Init();
         Translation::Init();
         Configuration::IncrementVersion();

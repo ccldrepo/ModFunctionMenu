@@ -33,6 +33,8 @@ class SingletonEx
 public:
     [[nodiscard]] static T* GetSingleton() noexcept { return _singleton.get(); }
 
+    [[nodiscard]] static std::shared_mutex& GetMutex() noexcept { return _mutex; }
+
     [[nodiscard]] static std::shared_lock<std::shared_mutex> LockShared() noexcept
     {
         return std::shared_lock<std::shared_mutex>{ _mutex };
