@@ -73,9 +73,9 @@ void Translation::Init(bool a_abort)
 
     tmp->Load(a_abort);
 
-    auto lock = LockUnique();
+    // Assume the caller has already acquired the lock.
     _singleton = std::move(tmp);
-    IncrementVersion();
+    // Assume the caller will increase version.
 }
 
 void Translation::Load(bool a_abort)

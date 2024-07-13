@@ -30,9 +30,9 @@ void Configuration::Init(bool a_abort)
         tmp->Save(&Configuration::SaveImpl_Styles, _path_styles, a_abort);
     }
 
-    auto lock = LockUnique();
+    // Assume the caller has already acquired the lock.
     _singleton = std::move(tmp);
-    IncrementVersion();
+    // Assume the caller will increase version.
 }
 
 void Configuration::Load(LoadImplFunc a_func, const std::filesystem::path& a_path, bool a_abort)

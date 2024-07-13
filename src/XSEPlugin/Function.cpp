@@ -15,8 +15,12 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
     }
 
     try {
+        auto configLock = Configuration::LockUnique();
+        auto transLock = Translation::LockUnique();
         Configuration::Init(false);
         Translation::Init(false);
+        Configuration::IncrementVersion();
+        Translation::IncrementVersion();
     } catch (const std::exception&) {
         // Suppress exception.
     }

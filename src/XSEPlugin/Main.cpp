@@ -69,8 +69,14 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
     SKSE::Init(a_skse);
 
-    Configuration::Init();
-    Translation::Init();
+    {
+        auto configLock = Configuration::LockUnique();
+        auto transLock = Translation::LockUnique();
+        Configuration::Init();
+        Translation::Init();
+        Configuration::IncrementVersion();
+        Translation::IncrementVersion();
+    }
 
     ImGui::Renderer::Install();
 
