@@ -124,6 +124,12 @@ inline void GetTOMLValue(const toml::table& a_table, std::string_view a_key, T& 
 }
 
 template <TOMLScalar T, bool required = false>
+inline void GetTOMLValue(const toml::table* a_table, std::string_view a_key, T& a_target)
+{
+    return GetTOMLValue<T, required>(*a_table, a_key, a_target);
+}
+
+template <TOMLScalar T, bool required = false>
 inline void GetTOMLValue(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
 {
     auto node = a_table.get(a_key);
@@ -168,6 +174,12 @@ inline void GetTOMLValue(const toml::table& a_table, std::string_view a_key, std
     }
 }
 
+template <TOMLScalar T, bool required = false>
+inline void GetTOMLValue(const toml::table* a_table, std::string_view a_key, std::vector<T>& a_target)
+{
+    return GetTOMLValue<T, required>(*a_table, a_key, a_target);
+}
+
 template <TOMLScalar T>
 inline void GetTOMLValueRequired(const toml::table& a_table, std::string_view a_key, T& a_target)
 {
@@ -175,9 +187,21 @@ inline void GetTOMLValueRequired(const toml::table& a_table, std::string_view a_
 }
 
 template <TOMLScalar T>
+inline void GetTOMLValueRequired(const toml::table* a_table, std::string_view a_key, T& a_target)
+{
+    return GetTOMLValue<T, true>(*a_table, a_key, a_target);
+}
+
+template <TOMLScalar T>
 inline void GetTOMLValueRequired(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
 {
     return GetTOMLValue<T, true>(a_table, a_key, a_target);
+}
+
+template <TOMLScalar T>
+inline void GetTOMLValueRequired(const toml::table* a_table, std::string_view a_key, std::vector<T>& a_target)
+{
+    return GetTOMLValue<T, true>(*a_table, a_key, a_target);
 }
 
 template <TOMLScalar T>
