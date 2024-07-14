@@ -68,7 +68,6 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
     SKSE::log::info("{} {} is loading...", plugin->GetName(), plugin->GetVersion().string("."sv));
 
     SKSE::Init(a_skse);
-
     {
         std::scoped_lock lock{ Configuration::GetMutex(), Translation::GetMutex() };
 
@@ -77,7 +76,6 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
         Configuration::IncrementVersion();
         Translation::IncrementVersion();
     }
-
     ImGui::Renderer::Install();
 
     SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
