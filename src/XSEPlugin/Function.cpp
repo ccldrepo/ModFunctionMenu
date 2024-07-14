@@ -15,7 +15,7 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
     }
 
     try {
-        std::scoped_lock lock{ Configuration::GetMutex(), Translation::GetMutex() };
+        std::scoped_lock lock{ Configuration::Mutex(), Translation::Mutex() };
 
         Configuration::Init(false);
         Translation::Init(false);

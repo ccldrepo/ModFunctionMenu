@@ -32,7 +32,7 @@ class SingletonEx
 public:
     [[nodiscard]] static T* GetSingleton() noexcept { return _singleton.get(); }
 
-    [[nodiscard]] static std::shared_mutex& GetMutex() noexcept { return _mutex; }
+    [[nodiscard]] static std::shared_mutex& Mutex() noexcept { return _mutex; }
 
     [[nodiscard]] static std::shared_lock<std::shared_mutex> LockShared() noexcept
     {
@@ -49,7 +49,7 @@ public:
         return _version.load() != a_version;
     }
 
-    [[nodiscard]] static std::uint32_t GetVersion() noexcept { return _version.load(); }
+    [[nodiscard]] static std::uint32_t Version() noexcept { return _version.load(); }
 
     static void IncrementVersion() noexcept { _version.fetch_add(1); }
 

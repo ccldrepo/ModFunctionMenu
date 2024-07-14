@@ -115,7 +115,7 @@ namespace
     MenuCloseHotkeyContext closeCtx;
 
     template <class HotkeyContext>
-    void ProcessHotkey(HotkeyContext* ctx, const RE::InputEvent* const* a_event)
+    inline void ProcessHotkey(HotkeyContext* ctx, const RE::InputEvent* const* a_event)
     {
         ctx->Reset();
         for (auto event = *a_event; event; event = event->next) {
@@ -135,7 +135,7 @@ void InputManager::Process(const RE::InputEvent* const* a_event)
         openCtx.Load();
         closeCtx.Load();
 
-        _configVersion = Configuration::GetVersion();
+        _configVersion = Configuration::Version();
 
         SKSE::log::debug("InputManager: Upgrade to Configuration Version {}.", _configVersion);
     }

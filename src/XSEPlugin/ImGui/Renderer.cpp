@@ -180,8 +180,8 @@ namespace ImGui
         styles.Load();
         texts.Load();
 
-        _configVersion = Configuration::GetVersion();
-        _transVersion = Translation::GetVersion();
+        _configVersion = Configuration::Version();
+        _transVersion = Translation::Version();
 
         SKSE::log::debug("Renderer: Upgrade to Configuration Version {}.", _configVersion);
         SKSE::log::debug("Renderer: Upgrade to Translation Version {}.", _transVersion);

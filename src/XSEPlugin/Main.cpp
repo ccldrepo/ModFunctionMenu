@@ -69,7 +69,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
     SKSE::Init(a_skse);
     {
-        std::scoped_lock lock{ Configuration::GetMutex(), Translation::GetMutex() };
+        std::scoped_lock lock{ Configuration::Mutex(), Translation::Mutex() };
 
         Configuration::Init();
         Translation::Init();
