@@ -23,23 +23,23 @@ namespace CLib
     public:
         Key() = default;
 
-        explicit Key(std::uint32_t a_targetHotkey) noexcept : targetHotkey(a_targetHotkey) {}
+        explicit Key(std::uint32_t a_targetHotkey) noexcept : _targetHotkey(a_targetHotkey) {}
 
-        bool IsActive() const noexcept { return hasHotkey; }
+        bool IsActive() const noexcept { return _hasHotkey; }
 
-        void Reset() noexcept { hasHotkey = false; }
+        void Reset() noexcept { _hasHotkey = false; }
 
         void Update(std::uint32_t a_key) noexcept
         {
-            if (targetHotkey != INVALID_KEY && a_key == targetHotkey) {
-                hasHotkey = true;
+            if (_targetHotkey != INVALID_KEY && a_key == _targetHotkey) {
+                _hasHotkey = true;
             }
         }
 
     private:
-        std::uint32_t targetHotkey{ INVALID_KEY };
+        std::uint32_t _targetHotkey{ INVALID_KEY };
 
-        bool hasHotkey{ false };
+        bool _hasHotkey{ false };
     };
 
     class KeyCombo
@@ -48,31 +48,31 @@ namespace CLib
         KeyCombo() = default;
 
         KeyCombo(std::uint32_t a_targetHotkey, std::uint32_t a_targetModifier) noexcept :
-            targetHotkey(a_targetHotkey), targetModifier(a_targetModifier),
-            count(CalcCount(a_targetHotkey, a_targetModifier))
+            _targetHotkey(a_targetHotkey), _targetModifier(a_targetModifier),
+            _count(CalcCount(a_targetHotkey, a_targetModifier))
         {}
 
-        std::uint32_t Count() const noexcept { return count; }
+        std::uint32_t Count() const noexcept { return _count; }
 
-        bool IsActive() const noexcept { return hasHotkey && (targetModifier == INVALID_KEY || hasModifier); }
+        bool IsActive() const noexcept { return _hasHotkey && (_targetModifier == INVALID_KEY || _hasModifier); }
 
         void Reset() noexcept
         {
-            hasHotkey = false;
-            hasModifier = false;
+            _hasHotkey = false;
+            _hasModifier = false;
         }
 
         void UpdateDown(std::uint32_t a_key) noexcept
         {
-            if (targetHotkey != INVALID_KEY && a_key == targetHotkey) {
-                hasHotkey = true;
+            if (_targetHotkey != INVALID_KEY && a_key == _targetHotkey) {
+                _hasHotkey = true;
             }
         }
 
         void UpdatePressed(std::uint32_t a_key) noexcept
         {
-            if (targetModifier != INVALID_KEY && a_key == targetModifier) {
-                hasModifier = true;
+            if (_targetModifier != INVALID_KEY && a_key == _targetModifier) {
+                _hasModifier = true;
             }
         }
 
@@ -88,12 +88,12 @@ namespace CLib
             }
         }
 
-        std::uint32_t targetHotkey{ INVALID_KEY };
-        std::uint32_t targetModifier{ INVALID_KEY };
+        std::uint32_t _targetHotkey{ INVALID_KEY };
+        std::uint32_t _targetModifier{ INVALID_KEY };
 
-        bool hasHotkey{ false };
-        bool hasModifier{ false };
+        bool _hasHotkey{ false };
+        bool _hasModifier{ false };
 
-        std::uint16_t count{ 0 };
+        std::uint16_t _count{ 0 };
     };
 }
