@@ -9,7 +9,9 @@ namespace ImGui::Impl
     public:
         /// Fetch and apply the latest fonts.
         ///
-        /// Assume caller has already acquired shared lock of configuration and translation before calling.
+        /// @note
+        ///   Assume caller has already acquired shared lock of
+        ///   configuration and translation before calling.
         void Load();
 
         /// Update glyph ranges.

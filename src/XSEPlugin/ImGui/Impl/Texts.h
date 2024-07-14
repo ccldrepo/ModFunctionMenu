@@ -7,7 +7,9 @@ namespace ImGui::Impl
     public:
         /// Fetch and apply the latest texts.
         ///
-        /// Assume caller has already acquired shared lock of translation before calling.
+        /// @note
+        ///   Assume caller has already acquired shared lock of
+        ///   translation before calling.
         void Load();
 
         std::string Title;

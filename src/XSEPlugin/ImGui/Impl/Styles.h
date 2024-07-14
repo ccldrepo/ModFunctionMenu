@@ -7,7 +7,9 @@ namespace ImGui::Impl
     public:
         /// Fetch and apply the latest styles.
         ///
-        /// Assume caller has already acquired shared lock of configuration before calling.
+        /// @note
+        ///   Assume caller has already acquired shared lock of
+        ///   configuration before calling.
         void Load();
     };
 }

@@ -11,12 +11,13 @@ class Translation final : public SingletonEx<Translation>
 public:
     /// Initialize translation and replace internal singleton.
     ///
-    /// Assume caller has already acquired unique lock before calling,
-    /// and will increase version after calling.
-    ///
     /// @param a_abort
     ///   If true, terminate this process when error occurred;
     ///   otherwise, throw exception.
+    ///
+    /// @note
+    ///   Assume caller has already acquired unique lock before calling,
+    ///   and will increase version after calling.
     static void Init(bool a_abort = true);
 
     /// Lookup translation text.
@@ -39,7 +40,6 @@ public:
 
 private:
     Translation() = default;
-
     ~Translation() = default;
 
     void Load(bool a_abort);
