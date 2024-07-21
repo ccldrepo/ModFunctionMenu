@@ -130,7 +130,7 @@ namespace
 void InputManager::Process(const RE::InputEvent* const* a_event)
 {
     if (Configuration::IsVersionChanged(_configVersion)) {
-        auto configLock = Configuration::LockShared();
+        std::shared_lock configLock{ Configuration::Mutex() };
 
         openCtx.Load();
         closeCtx.Load();

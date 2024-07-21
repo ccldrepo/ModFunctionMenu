@@ -173,8 +173,8 @@ namespace ImGui
 
     void Renderer::Load()
     {
-        auto configLock = Configuration::LockShared();
-        auto transLock = Translation::LockShared();
+        std::shared_lock configLock{ Configuration::Mutex() };
+        std::shared_lock transLock{ Translation::Mutex() };
 
         fonts.Load();
         styles.Load();

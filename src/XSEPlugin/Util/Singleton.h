@@ -34,16 +34,6 @@ public:
 
     [[nodiscard]] static std::shared_mutex& Mutex() noexcept { return _mutex; }
 
-    [[nodiscard]] static std::shared_lock<std::shared_mutex> LockShared() noexcept
-    {
-        return std::shared_lock<std::shared_mutex>{ _mutex };
-    }
-
-    [[nodiscard]] static std::unique_lock<std::shared_mutex> LockUnique() noexcept
-    {
-        return std::unique_lock<std::shared_mutex>{ _mutex };
-    }
-
     [[nodiscard]] static bool IsVersionChanged(std::uint32_t a_version) noexcept
     {
         return _version.load() != a_version;
