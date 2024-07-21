@@ -7,22 +7,22 @@ MFM_Function MFM_Function::Get(const std::filesystem::path& a_path)
 {
     MFM_Function func;
 
-    auto data = LoadTOMLFile(a_path);
+    auto data = TOML::LoadFile(a_path);
 
-    GetTOMLValueRequired(data, "dll"sv, func.dll);
+    TOML::GetValueRequired(data, "dll"sv, func.dll);
 
-    GetTOMLValueRequired(data, "api"sv, func.api);
+    TOML::GetValueRequired(data, "api"sv, func.api);
 
     std::string type;
-    GetTOMLValue(data, "type"sv, type);
+    TOML::GetValue(data, "type"sv, type);
     func.type = MFMAPI_Type_StrToEnum(type);
 
     std::string preAction;
-    GetTOMLValue(data, "preAction"sv, preAction);
+    TOML::GetValue(data, "preAction"sv, preAction);
     func.preAction = MFMAPI_PreAction_StrToEnum(preAction);
 
     std::string postAction;
-    GetTOMLValue(data, "postAction"sv, postAction);
+    TOML::GetValue(data, "postAction"sv, postAction);
     func.postAction = MFMAPI_PostAction_StrToEnum(postAction);
 
     SKSE::log::info("Get function: dll = \"{}\", api = \"{}\", type = \"{}\", preAction = \"{}\", postAction = \"{}\".",
