@@ -25,6 +25,53 @@ namespace TOML
         using std::runtime_error::runtime_error;
     };
 
+    template <class T>
+    struct Validator
+    {
+        [[nodiscard]] std::pair<bool, std::string> operator()([[maybe_unused]] const T& a_value) const
+        {
+            return { true, std::string() };
+        }
+    };
+
+    struct DirectoryValidator
+    {
+        [[nodiscard]] std::pair<bool, std::string> operator()(const std::string& a_value) const
+        {
+            auto path = StrToPath(a_value);
+            auto st = std::filesystem::status(path);
+
+            if (!std::filesystem::exists(st)) {
+                return { false, std::format("'{}' does not exist", a_value) };
+            }
+
+            if (!std::filesystem::is_directory(st)) {
+                return { false, std::format("'{}' is not a directory", a_value) };
+            }
+
+            return { true, std::string() };
+        }
+    };
+
+    struct RegularFileValidator
+    {
+        [[nodiscard]] std::pair<bool, std::string> operator()(const std::string& a_value) const
+        {
+            auto path = StrToPath(a_value);
+            auto st = std::filesystem::status(path);
+
+            if (!std::filesystem::exists(st)) {
+                return { false, std::format("'{}' does not exist", a_value) };
+            }
+
+            if (!std::filesystem::is_regular_file(st)) {
+                return { false, std::format("'{}' is not a regular file", a_value) };
+            }
+
+            return { true, std::string() };
+        }
+    };
+
     [[nodiscard]] inline toml::table LoadFile(const std::filesystem::path& a_path)
     {
         const auto size = static_cast<std::size_t>(std::filesystem::file_size(a_path));
@@ -90,8 +137,8 @@ namespace TOML
         }
     }
 
-    template <Scalar T, bool required = false>
-    inline void GetValue(const toml::table& a_table, std::string_view a_key, T& a_target)
+    template <Scalar T, class V = Validator<T>, bool required = false>
+    inline void GetValue(const toml::table& a_table, std::string_view a_key, T& a_target, V&& a_validator = V())
     {
         auto node = a_table.get(a_key);
         if (!node) {
@@ -129,17 +176,22 @@ namespace TOML
             auto msg = std::format("Invalid '{}'", a_key);
             throw toml::parse_error(msg.c_str(), node->source());
         }
+
+        if (auto [ok, msg] = a_validator(*value); !ok) {
+            throw toml::parse_error(msg.c_str(), node->source());
+        }
         a_target = *std::move(value);
     }
 
-    template <Scalar T, bool required = false>
-    inline void GetValue(const toml::table* a_table, std::string_view a_key, T& a_target)
+    template <Scalar T, class V = Validator<T>, bool required = false>
+    inline void GetValue(const toml::table* a_table, std::string_view a_key, T& a_target, V&& a_validator = V())
     {
-        return GetValue<T, required>(*a_table, a_key, a_target);
+        return GetValue<T, V, required>(*a_table, a_key, a_target, std::forward<V>(a_validator));
     }
 
-    template <Scalar T, bool required = false>
-    inline void GetValue(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
+    template <Scalar T, class V = Validator<T>, bool required = false>
+    inline void GetValue(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target,
+        V&& a_validator = V())
     {
         auto node = a_table.get(a_key);
         if (!node) {
@@ -186,38 +238,45 @@ namespace TOML
                 auto msg = std::format("Invalid '{}'", a_key);
                 throw toml::parse_error(msg.c_str(), node->source());
             }
+
+            if (auto [ok, msg] = a_validator(*value); !ok) {
+                throw toml::parse_error(msg.c_str(), node->source());
+            }
             a_target.push_back(*std::move(value));
         }
     }
 
-    template <Scalar T, bool required = false>
-    inline void GetValue(const toml::table* a_table, std::string_view a_key, std::vector<T>& a_target)
+    template <Scalar T, class V = Validator<T>, bool required = false>
+    inline void GetValue(const toml::table* a_table, std::string_view a_key, std::vector<T>& a_target,
+        V&& a_validator = V())
     {
-        return GetValue<T, required>(*a_table, a_key, a_target);
+        return GetValue<T, V, required>(*a_table, a_key, a_target, std::forward<V>(a_validator));
     }
 
-    template <Scalar T>
-    inline void GetValueRequired(const toml::table& a_table, std::string_view a_key, T& a_target)
+    template <Scalar T, class V = Validator<T>>
+    inline void GetValueRequired(const toml::table& a_table, std::string_view a_key, T& a_target, V&& a_validator = V())
     {
-        return GetValue<T, true>(a_table, a_key, a_target);
+        return GetValue<T, V, true>(a_table, a_key, a_target, std::forward<V>(a_validator));
     }
 
-    template <Scalar T>
-    inline void GetValueRequired(const toml::table* a_table, std::string_view a_key, T& a_target)
+    template <Scalar T, class V = Validator<T>>
+    inline void GetValueRequired(const toml::table* a_table, std::string_view a_key, T& a_target, V&& a_validator = V())
     {
-        return GetValue<T, true>(*a_table, a_key, a_target);
+        return GetValue<T, V, true>(*a_table, a_key, a_target, std::forward<V>(a_validator));
     }
 
-    template <Scalar T>
-    inline void GetValueRequired(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target)
+    template <Scalar T, class V = Validator<T>>
+    inline void GetValueRequired(const toml::table& a_table, std::string_view a_key, std::vector<T>& a_target,
+        V&& a_validator = V())
     {
-        return GetValue<T, true>(a_table, a_key, a_target);
+        return GetValue<T, V, true>(a_table, a_key, a_target, std::forward<V>(a_validator));
     }
 
-    template <Scalar T>
-    inline void GetValueRequired(const toml::table* a_table, std::string_view a_key, std::vector<T>& a_target)
+    template <Scalar T, class V = Validator<T>>
+    inline void GetValueRequired(const toml::table* a_table, std::string_view a_key, std::vector<T>& a_target,
+        V&& a_validator = V())
     {
-        return GetValue<T, true>(*a_table, a_key, a_target);
+        return GetValue<T, V, true>(*a_table, a_key, a_target, std::forward<V>(a_validator));
     }
 
     template <Scalar T>
