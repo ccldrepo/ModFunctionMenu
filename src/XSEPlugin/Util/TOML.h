@@ -71,7 +71,8 @@ namespace TOML
 
         auto section = node->as_table();
         if (!section) {
-            throw Error(std::format("'{}' is not a section", a_key));
+            auto msg = std::format("'{}' is not a section", a_key);
+            throw toml::parse_error(msg.c_str(), node->source());
         }
         return section;
     }
@@ -105,22 +106,28 @@ namespace TOML
         if (!value) {
             if constexpr (std::is_same_v<T, bool>) {
                 if (!node->is_boolean()) {
-                    throw Error(std::format("'{}' is not a bool", a_key));
+                    auto msg = std::format("'{}' is not a bool", a_key);
+                    throw toml::parse_error(msg.c_str(), node->source());
                 }
             } else if constexpr (std::is_integral_v<T>) {
                 if (!node->is_integer()) {
-                    throw Error(std::format("'{}' is not an integer", a_key));
+                    auto msg = std::format("'{}' is not an integer", a_key);
+                    throw toml::parse_error(msg.c_str(), node->source());
                 }
             } else if constexpr (std::is_floating_point_v<T>) {
                 if (!node->is_floating_point()) {
-                    throw Error(std::format("'{}' is not a float", a_key));
+                    auto msg = std::format("'{}' is not a float", a_key);
+                    throw toml::parse_error(msg.c_str(), node->source());
                 }
             } else if constexpr (std::is_same_v<T, std::string>) {
                 if (!node->is_string()) {
-                    throw Error(std::format("'{}' is not a string", a_key));
+                    auto msg = std::format("'{}' is not a string", a_key);
+                    throw toml::parse_error(msg.c_str(), node->source());
                 }
             }
-            throw Error(std::format("Invalid '{}'", a_key));
+
+            auto msg = std::format("Invalid '{}'", a_key);
+            throw toml::parse_error(msg.c_str(), node->source());
         }
         a_target = *std::move(value);
     }
@@ -145,7 +152,8 @@ namespace TOML
 
         auto arr = node->as_array();
         if (!arr) {
-            throw Error(std::format("'{}' is not an array", a_key));
+            auto msg = std::format("'{}' is not an array", a_key);
+            throw toml::parse_error(msg.c_str(), node->source());
         }
 
         a_target.clear();
@@ -155,22 +163,28 @@ namespace TOML
             if (!value) {
                 if constexpr (std::is_same_v<T, bool>) {
                     if (!node->is_boolean()) {
-                        throw Error(std::format("'{}' is not an array of bool", a_key));
+                        auto msg = std::format("'{}' is not an array of bool", a_key);
+                        throw toml::parse_error(msg.c_str(), node->source());
                     }
                 } else if constexpr (std::is_integral_v<T>) {
                     if (!node->is_integer()) {
-                        throw Error(std::format("'{}' is not an array of integer", a_key));
+                        auto msg = std::format("'{}' is not an array of integer", a_key);
+                        throw toml::parse_error(msg.c_str(), node->source());
                     }
                 } else if constexpr (std::is_floating_point_v<T>) {
                     if (!node->is_floating_point()) {
-                        throw Error(std::format("'{}' is not an array of float", a_key));
+                        auto msg = std::format("'{}' is not an array of float", a_key);
+                        throw toml::parse_error(msg.c_str(), node->source());
                     }
                 } else if constexpr (std::is_same_v<T, std::string>) {
                     if (!node->is_string()) {
-                        throw Error(std::format("'{}' is not an array of string", a_key));
+                        auto msg = std::format("'{}' is not an array of string", a_key);
+                        throw toml::parse_error(msg.c_str(), node->source());
                     }
                 }
-                throw Error(std::format("Invalid '{}'", a_key));
+
+                auto msg = std::format("Invalid '{}'", a_key);
+                throw toml::parse_error(msg.c_str(), node->source());
             }
             a_target.push_back(*std::move(value));
         }
