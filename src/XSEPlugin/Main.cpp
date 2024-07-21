@@ -73,6 +73,10 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 
         Configuration::Init();
         Translation::Init();
+
+        auto config = Configuration::GetSingleton();
+        ReconfigureLogger(config->general.sLogLevel);
+
         Configuration::IncrementVersion();
         Translation::IncrementVersion();
     }

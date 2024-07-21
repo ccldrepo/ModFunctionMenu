@@ -1,6 +1,14 @@
 [General]
-# The language used in this mod. If not specified, use game language.
+# The language.
+#
+# If not specified, use game language.
+# If not found, fallback to English.
 #sLanguage = "chinese"
+
+# The log level.
+#
+# Possible value: trace, debug, info, warn, error, critical.
+#sLogLevel = "trace"
 
 [Controls]
 # For hotkey code reference, see:

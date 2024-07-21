@@ -72,6 +72,7 @@ void Configuration::LoadImpl(const std::filesystem::path& a_path)
 
     if (auto section = TOML::GetSection(data, "General"sv)) {
         TOML::GetValue(section, "sLanguage"sv, general.sLanguage);
+        TOML::GetValue(section, "sLogLevel"sv, general.sLogLevel, TOML::LogLevelValidator());
     }
 
     if (auto section = TOML::GetSection(data, "Controls"sv)) {
@@ -95,6 +96,7 @@ void Configuration::SaveImpl(const std::filesystem::path& a_path) const
     {
         toml::table section;
         TOML::SetValue(section, "sLanguage"sv, general.sLanguage);
+        TOML::SetValue(section, "sLogLevel"sv, general.sLogLevel);
         TOML::SetSection(data, "General"sv, std::move(section));
     }
     {

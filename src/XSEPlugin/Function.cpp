@@ -19,6 +19,10 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
 
         Configuration::Init(false);
         Translation::Init(false);
+
+        auto config = Configuration::GetSingleton();
+        ReconfigureLogger(config->general.sLogLevel);
+
         Configuration::IncrementVersion();
         Translation::IncrementVersion();
     } catch (...) {

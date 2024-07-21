@@ -21,6 +21,7 @@ public:
     struct General
     {
         std::string sLanguage;
+        std::string sLogLevel;
     };
 
     struct Controls

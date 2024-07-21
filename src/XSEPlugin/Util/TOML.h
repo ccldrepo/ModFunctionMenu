@@ -72,6 +72,24 @@ namespace TOML
         }
     };
 
+    struct LogLevelValidator
+    {
+        [[nodiscard]] std::pair<bool, std::string> operator()(const std::string& a_value) const
+        {
+            if (a_value.empty()) {
+                return { true, std::string() };
+            }
+
+            constexpr std::array log_levels{ "trace"sv, "debug"sv, "info"sv, "warn"sv, "error"sv, "critical"sv };
+            for (std::string_view log_level : log_levels) {
+                if (a_value == log_level) {
+                    return { true, std::string() };
+                }
+            }
+            return { false, std::format("'{}' is not a valid log level", a_value) };
+        }
+    };
+
     [[nodiscard]] inline toml::table LoadFile(const std::filesystem::path& a_path)
     {
         const auto size = static_cast<std::size_t>(std::filesystem::file_size(a_path));
