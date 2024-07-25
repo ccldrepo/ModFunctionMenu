@@ -36,18 +36,19 @@ void Configuration::Load(LoadImplFunc a_func, const std::filesystem::path& a_pat
 {
     try {
         (this->*a_func)(a_path);
-        SKSE::log::info("Successfully loaded configuration from \"{}\".", PathToStr(a_path));
+        auto msg = std::format("Successfully loaded configuration from \"{}\".", PathToStr(a_path));
+        SKSE::stl::report_success(msg);
     } catch (const toml::parse_error& e) {
         auto msg = std::format("Failed to load configuration from \"{}\" (error occurred at line {}, column {}): {}.",
             PathToStr(a_path), e.source().begin.line, e.source().begin.column, e.what());
-        SKSE::stl::report_fatal_error(msg, a_abort);
+        SKSE::stl::report_failure(msg, a_abort);
     } catch (const std::system_error& e) {
         auto msg = std::format("Failed to load configuration from \"{}\": {}.", PathToStr(a_path),
             SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
-        SKSE::stl::report_fatal_error(msg, a_abort);
+        SKSE::stl::report_failure(msg, a_abort);
     } catch (const std::exception& e) {
         auto msg = std::format("Failed to load configuration from \"{}\": {}.", PathToStr(a_path), e.what());
-        SKSE::stl::report_fatal_error(msg, a_abort);
+        SKSE::stl::report_failure(msg, a_abort);
     }
 }
 
@@ -55,14 +56,15 @@ void Configuration::Save(SaveImplFunc a_func, const std::filesystem::path& a_pat
 {
     try {
         (this->*a_func)(a_path);
-        SKSE::log::info("Successfully saved configuration to \"{}\".", PathToStr(a_path));
+        auto msg = std::format("Successfully saved configuration to \"{}\".", PathToStr(a_path));
+        SKSE::stl::report_success(msg);
     } catch (const std::system_error& e) {
         auto msg = std::format("Failed to save configuration to \"{}\": {}.", PathToStr(a_path),
             SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
-        SKSE::stl::report_fatal_error(msg, a_abort);
+        SKSE::stl::report_failure(msg, a_abort);
     } catch (const std::exception& e) {
         auto msg = std::format("Failed to save configuration to \"{}\": {}.", PathToStr(a_path), e.what());
-        SKSE::stl::report_fatal_error(msg, a_abort);
+        SKSE::stl::report_failure(msg, a_abort);
     }
 }
 

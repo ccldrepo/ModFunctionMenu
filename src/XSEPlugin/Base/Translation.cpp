@@ -79,14 +79,15 @@ void Translation::Load(bool a_abort)
     auto path = GetTranslationPath(SKSE::PluginDeclaration::GetSingleton()->GetName(), GetUserLanguage());
     try {
         LoadImpl(path);
-        SKSE::log::info("Successfully loaded translation from \"{}\".", PathToStr(path));
+        auto msg = std::format("Successfully loaded translation from \"{}\".", PathToStr(path));
+        SKSE::stl::report_success(msg);
     } catch (const std::system_error& e) {
         auto msg = std::format("Failed to load translation from \"{}\": {}.", PathToStr(path),
             SKSE::stl::ansi_to_utf8(e.what()).value_or(e.what()));
-        SKSE::stl::report_fatal_error(msg, a_abort);
+        SKSE::stl::report_failure(msg, a_abort);
     } catch (const std::exception& e) {
         auto msg = std::format("Failed to load translation from \"{}\": {}.", PathToStr(path), e.what());
-        SKSE::stl::report_fatal_error(msg, a_abort);
+        SKSE::stl::report_failure(msg, a_abort);
     }
 }
 

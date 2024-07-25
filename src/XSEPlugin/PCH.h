@@ -132,15 +132,27 @@ namespace SKSE::stl
         return std::nullopt;
     }
 
-    [[noreturn]] inline void report_fatal_error(const std::string& a_msg, bool a_abort,
+    inline void report_success(const std::string& a_msg, std::source_location a_loc = std::source_location::current())
+    {
+        spdlog::source_loc loc{ a_loc.file_name(), static_cast<int>(a_loc.line()), a_loc.function_name() };
+        spdlog::log(loc, spdlog::level::info, a_msg);
+        if (auto logger = spdlog::get("Base")) {
+            logger->log(loc, spdlog::level::info, a_msg);
+        }
+    }
+
+    [[noreturn]] inline void report_failure(const std::string& a_msg, bool a_abort,
         std::source_location a_loc = std::source_location::current())
     {
         // Abort or throw when error occurred.
         if (a_abort) {
             report_and_fail(a_msg, a_loc);
         } else {
-            spdlog::log(spdlog::source_loc{ a_loc.file_name(), static_cast<int>(a_loc.line()), a_loc.function_name() },
-                spdlog::level::err, a_msg);
+            spdlog::source_loc loc{ a_loc.file_name(), static_cast<int>(a_loc.line()), a_loc.function_name() };
+            spdlog::log(loc, spdlog::level::err, a_msg);
+            if (auto logger = spdlog::get("Base")) {
+                logger->log(loc, spdlog::level::err, a_msg);
+            }
             throw std::runtime_error(a_msg);
         }
     }
