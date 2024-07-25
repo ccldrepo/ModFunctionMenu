@@ -8,11 +8,7 @@
 MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
 {
     std::ostringstream oss;
-    {
-        auto sink = std::make_shared<spdlog::sinks::ostream_sink_mt>(oss);
-        sink->set_pattern("[%l] %v");
-        spdlog::default_logger_raw()->sinks().push_back(std::move(sink));
-    }
+    spdlog::create<spdlog::sinks::ostream_sink_mt>("Base", oss);
 
     try {
         std::scoped_lock lock{ Configuration::Mutex(), Translation::Mutex() };
@@ -20,8 +16,7 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
         Configuration::Init(false);
         Translation::Init(false);
 
-        auto config = Configuration::GetSingleton();
-        ReconfigureLogger(config->general.sLogLevel);
+        ReconfigureLogger(Configuration::GetSingleton()->general.sLogLevel);
 
         Configuration::IncrementVersion();
         Translation::IncrementVersion();
@@ -32,6 +27,7 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
     if (a_msg) {
         auto msg = oss.str();
         std::memcpy(a_msg, msg.c_str(), std::min(msg.size() + 1, a_len));
-        spdlog::default_logger_raw()->sinks().pop_back();
     }
+
+    spdlog::drop("Base");
 }

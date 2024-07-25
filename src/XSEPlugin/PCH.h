@@ -176,32 +176,32 @@ namespace SKSE::stl
 
 inline void ReconfigureLogger(std::string_view a_log_level)
 {
-    auto logger = spdlog::default_logger_raw();
     if (a_log_level.empty()) {
 #ifndef _DEBUG
-        logger->set_level(spdlog::level::info);
-        logger->flush_on(spdlog::level::info);
+        spdlog::set_level(spdlog::level::info);
+        spdlog::flush_on(spdlog::level::info);
 #else
-        logger->set_level(spdlog::level::trace);
-        logger->flush_on(spdlog::level::trace);
+        spdlog::set_level(spdlog::level::trace);
+        spdlog::flush_on(spdlog::level::trace);
 #endif
     } else if (a_log_level == "trace"sv) {
-        logger->set_level(spdlog::level::trace);
-        logger->flush_on(spdlog::level::trace);
+        spdlog::set_level(spdlog::level::trace);
+        spdlog::flush_on(spdlog::level::trace);
     } else if (a_log_level == "debug"sv) {
-        logger->set_level(spdlog::level::debug);
-        logger->flush_on(spdlog::level::debug);
+        spdlog::set_level(spdlog::level::debug);
+        spdlog::flush_on(spdlog::level::debug);
     } else if (a_log_level == "info"sv) {
-        logger->set_level(spdlog::level::info);
-        logger->flush_on(spdlog::level::info);
+        spdlog::set_level(spdlog::level::info);
+        spdlog::flush_on(spdlog::level::info);
     } else if (a_log_level == "warn"sv) {
-        logger->set_level(spdlog::level::warn);
-        logger->flush_on(spdlog::level::warn);
+        spdlog::set_level(spdlog::level::warn);
+        spdlog::flush_on(spdlog::level::warn);
     } else if (a_log_level == "error"sv) {
-        logger->set_level(spdlog::level::err);
-        logger->flush_on(spdlog::level::err);
+        spdlog::set_level(spdlog::level::err);
+        spdlog::flush_on(spdlog::level::err);
     } else if (a_log_level == "critical"sv) {
-        logger->set_level(spdlog::level::critical);
-        logger->flush_on(spdlog::level::critical);
+        spdlog::set_level(spdlog::level::critical);
+        spdlog::flush_on(spdlog::level::critical);
+    } else {
     }
 }

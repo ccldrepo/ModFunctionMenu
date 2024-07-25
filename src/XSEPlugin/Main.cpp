@@ -11,6 +11,15 @@ namespace
 {
     void InitLogger()
     {
+        spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] %v");
+#ifndef _DEBUG
+        spdlog::set_level(spdlog::level::info);
+        spdlog::flush_on(spdlog::level::info);
+#else
+        spdlog::set_level(spdlog::level::trace);
+        spdlog::flush_on(spdlog::level::trace);
+#endif
+
         auto path = SKSE::log::log_directory();
         if (!path) {
             SKSE::stl::report_and_fail("Failed to find SKSE logging directory."sv);
@@ -19,16 +28,7 @@ namespace
         *path += L".log"sv;
 
         auto logger = spdlog::basic_logger_mt("Global", PathToStr(*path), true);
-#ifndef _DEBUG
-        logger->set_level(spdlog::level::info);
-        logger->flush_on(spdlog::level::info);
-#else
-        logger->set_level(spdlog::level::trace);
-        logger->flush_on(spdlog::level::trace);
-#endif
-
         spdlog::set_default_logger(std::move(logger));
-        spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] %v");
     }
 
     void OnMessage(SKSE::MessagingInterface::Message* a_message)
@@ -36,7 +36,6 @@ namespace
         switch (a_message->type) {
         case SKSE::MessagingInterface::kPostLoad:
             {
-                // Speed up first datastore access.
                 std::thread t{ []() { (void)Datastore::GetSingleton(); } };
                 t.detach();
             }
@@ -74,8 +73,7 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
         Configuration::Init();
         Translation::Init();
 
-        auto config = Configuration::GetSingleton();
-        ReconfigureLogger(config->general.sLogLevel);
+        ReconfigureLogger(Configuration::GetSingleton()->general.sLogLevel);
 
         Configuration::IncrementVersion();
         Translation::IncrementVersion();
