@@ -37,12 +37,9 @@ namespace
     inline std::string ReadUTF16LEFile(const std::filesystem::path& a_path)
     {
         const auto size = std::filesystem::file_size(a_path);
-
         if (size == 0) {
-            throw std::runtime_error("Size check failed. File must not be empty");
-        }
-
-        if (size % 2 != 0) {
+            throw std::runtime_error("Size check failed. File is empty");
+        } else if (size % 2 != 0) {
             throw std::runtime_error("Size check failed. File must be encoded in UTF-16 LE");
         }
 
@@ -100,14 +97,14 @@ void Translation::LoadImpl(const std::filesystem::path& a_path)
             throw std::runtime_error(msg);
         }
 
-        auto tab_pos = line.find_first_of('\t');
-        if (tab_pos == std::string::npos) {
+        auto pivot = line.find_first_of('\t');
+        if (pivot == std::string::npos) {
             auto msg = std::format("Translation key and value must be seperated with 'TAB': {}", line);
             throw std::runtime_error(msg);
         }
 
-        auto key = line.substr(0, tab_pos);
-        auto value = line.substr(tab_pos + 1);
+        auto key = line.substr(0, pivot);
+        auto value = line.substr(pivot + 1);
 
         auto [pos, ok] = _map.try_emplace(key, value);
         if (!ok) {
