@@ -12,13 +12,7 @@ namespace
     void InitLogger()
     {
         spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] %v");
-#ifndef _DEBUG
-        spdlog::set_level(spdlog::level::info);
-        spdlog::flush_on(spdlog::level::info);
-#else
-        spdlog::set_level(spdlog::level::trace);
-        spdlog::flush_on(spdlog::level::trace);
-#endif
+        ReconfigureLogger(""sv);
 
         auto path = SKSE::log::log_directory();
         if (!path) {

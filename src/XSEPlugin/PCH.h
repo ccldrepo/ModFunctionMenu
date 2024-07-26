@@ -174,9 +174,9 @@ namespace SKSE::stl
     return {};
 }
 
-inline void ReconfigureLogger(std::string_view a_log_level)
+inline void ReconfigureLogger(std::string_view a_logLevel)
 {
-    if (a_log_level.empty()) {
+    if (a_logLevel.empty()) {
 #ifndef _DEBUG
         spdlog::set_level(spdlog::level::info);
         spdlog::flush_on(spdlog::level::info);
@@ -184,24 +184,26 @@ inline void ReconfigureLogger(std::string_view a_log_level)
         spdlog::set_level(spdlog::level::trace);
         spdlog::flush_on(spdlog::level::trace);
 #endif
-    } else if (a_log_level == "trace"sv) {
+    } else if (a_logLevel == "trace"sv) {
         spdlog::set_level(spdlog::level::trace);
         spdlog::flush_on(spdlog::level::trace);
-    } else if (a_log_level == "debug"sv) {
+    } else if (a_logLevel == "debug"sv) {
         spdlog::set_level(spdlog::level::debug);
         spdlog::flush_on(spdlog::level::debug);
-    } else if (a_log_level == "info"sv) {
+    } else if (a_logLevel == "info"sv) {
         spdlog::set_level(spdlog::level::info);
         spdlog::flush_on(spdlog::level::info);
-    } else if (a_log_level == "warn"sv) {
+    } else if (a_logLevel == "warn"sv) {
         spdlog::set_level(spdlog::level::warn);
         spdlog::flush_on(spdlog::level::warn);
-    } else if (a_log_level == "error"sv) {
+    } else if (a_logLevel == "error"sv) {
         spdlog::set_level(spdlog::level::err);
         spdlog::flush_on(spdlog::level::err);
-    } else if (a_log_level == "critical"sv) {
+    } else if (a_logLevel == "critical"sv) {
         spdlog::set_level(spdlog::level::critical);
         spdlog::flush_on(spdlog::level::critical);
     } else {
+        ReconfigureLogger(""sv);
+        spdlog::warn("Invalid log level: {}.", a_logLevel);
     }
 }
