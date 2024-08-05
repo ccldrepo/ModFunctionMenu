@@ -14,8 +14,8 @@ namespace
         {
             auto& cfgControls = Configuration::GetSingleton()->controls;
 
-            keyboard = CLib::KeyCombo{ cfgControls.keyboard.iHotkey, cfgControls.keyboard.iModifier };
-            gamepad = CLib::KeyCombo{ cfgControls.gamepad.iHotkey, cfgControls.gamepad.iModifier };
+            keyboard.Load(cfgControls.keyboard.iHotkey, cfgControls.keyboard.iModifier);
+            gamepad.Load(cfgControls.gamepad.iHotkey, cfgControls.gamepad.iModifier);
         }
 
         void Reset() noexcept
@@ -62,10 +62,10 @@ namespace
         {
             auto& cfgControls = Configuration::GetSingleton()->controls;
 
-            keyboard = CLib::KeyCombo{ cfgControls.keyboard.iHotkey, cfgControls.keyboard.iModifier };
-            gamepad = CLib::KeyCombo{ cfgControls.gamepad.iHotkey, cfgControls.gamepad.iModifier };
-            kbExtraExit = CLib::Key{ cfgControls.keyboard.iExtraExit };
-            gpExtraExit = CLib::Key{ cfgControls.gamepad.iExtraExit };
+            keyboard.Load(cfgControls.keyboard.iHotkey, cfgControls.keyboard.iModifier);
+            gamepad.Load(cfgControls.gamepad.iHotkey, cfgControls.gamepad.iModifier);
+            kbExtraExit.Load(cfgControls.keyboard.iExtraExit);
+            gpExtraExit.Load(cfgControls.gamepad.iExtraExit);
         }
 
         void Reset() noexcept

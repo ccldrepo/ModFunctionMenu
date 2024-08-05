@@ -25,7 +25,9 @@ namespace CLib
 
         explicit Key(std::uint32_t a_targetHotkey) noexcept : _targetHotkey(a_targetHotkey) {}
 
-        bool IsActive() const noexcept { return _hasHotkey; }
+        void Load(std::uint32_t a_targetHotkey) noexcept { _targetHotkey = a_targetHotkey; }
+
+        [[nodiscard]] bool IsActive() const noexcept { return _hasHotkey; }
 
         void Reset() noexcept { _hasHotkey = false; }
 
@@ -54,7 +56,17 @@ namespace CLib
 
         std::uint32_t Count() const noexcept { return _count; }
 
-        bool IsActive() const noexcept { return _hasHotkey && (_targetModifier == INVALID_KEY || _hasModifier); }
+        void Load(std::uint32_t a_targetHotkey, std::uint32_t a_targetModifier) noexcept
+        {
+            _targetHotkey = a_targetHotkey;
+            _targetModifier = a_targetModifier;
+            _count = CalcCount(a_targetHotkey, a_targetModifier);
+        }
+
+        [[nodiscard]] bool IsActive() const noexcept
+        {
+            return _hasHotkey && (_targetModifier == INVALID_KEY || _hasModifier);
+        }
 
         void Reset() noexcept
         {
