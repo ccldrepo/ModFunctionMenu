@@ -8,7 +8,12 @@
 MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
 {
     std::ostringstream oss;
-    spdlog::create<spdlog::sinks::ostream_sink_mt>("Base", oss)->set_pattern("[%l] %v");
+    {
+        auto logger = spdlog::create<spdlog::sinks::ostream_sink_mt>("Base", oss);
+        logger->set_pattern("[%l] %v");
+        logger->set_level(spdlog::level::info);
+        logger->flush_on(spdlog::level::info);
+    }
 
     try {
         std::scoped_lock lock{ Configuration::Mutex(), Translation::Mutex() };
