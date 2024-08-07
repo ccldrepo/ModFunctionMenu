@@ -2,7 +2,7 @@
 
 namespace CLib
 {
-    inline std::uint32_t ParseKey(std::uint32_t a_key, RE::INPUT_DEVICE a_device)
+    [[nodiscard]] inline std::uint32_t ParseKey(std::uint32_t a_key, RE::INPUT_DEVICE a_device)
     {
         switch (a_device) {
         case RE::INPUT_DEVICE::kKeyboard:
@@ -17,6 +17,29 @@ namespace CLib
     }
 
     constexpr inline std::uint32_t INVALID_KEY = 0;
+
+    namespace Internal
+    {
+        template <std::same_as<std::uint32_t>... T>
+        [[nodiscard]] inline std::uint16_t ResolveModifierKeyCount(std::uint32_t a_key, T... a_keys)
+        {
+            if constexpr (sizeof...(T) == 0) {
+                return a_key == INVALID_KEY ? 0 : 1;
+            } else {
+                return ResolveModifierKeyCount(a_key) + ResolveModifierKeyCount(a_keys...);
+            }
+        }
+    }
+
+    template <std::same_as<std::uint32_t>... T>
+    [[nodiscard]] inline std::uint16_t ResolveKeyCount(std::uint32_t a_key, T... a_keys)
+    {
+        if constexpr (sizeof...(T) == 0) {
+            return a_key == INVALID_KEY ? 0 : 1;
+        } else {
+            return a_key == INVALID_KEY ? 0 : 1 + Internal::ResolveModifierKeyCount(a_keys...);
+        }
+    }
 
     class Key
     {
@@ -51,16 +74,16 @@ namespace CLib
 
         KeyCombo(std::uint32_t a_targetHotkey, std::uint32_t a_targetModifier) noexcept :
             _targetHotkey(a_targetHotkey), _targetModifier(a_targetModifier),
-            _count(CalcCount(a_targetHotkey, a_targetModifier))
+            _count(ResolveKeyCount(a_targetHotkey, a_targetModifier))
         {}
 
-        std::uint32_t Count() const noexcept { return _count; }
+        [[nodiscard]] std::uint16_t Count() const noexcept { return _count; }
 
         void Load(std::uint32_t a_targetHotkey, std::uint32_t a_targetModifier) noexcept
         {
             _targetHotkey = a_targetHotkey;
             _targetModifier = a_targetModifier;
-            _count = CalcCount(a_targetHotkey, a_targetModifier);
+            _count = ResolveKeyCount(a_targetHotkey, a_targetModifier);
         }
 
         [[nodiscard]] bool IsActive() const noexcept
@@ -89,17 +112,6 @@ namespace CLib
         }
 
     private:
-        static std::uint16_t CalcCount(std::uint32_t a_targetHotkey, std::uint32_t a_targetModifier) noexcept
-        {
-            if (a_targetHotkey == INVALID_KEY) {
-                return 0;
-            } else if (a_targetModifier == INVALID_KEY) {
-                return 1;
-            } else {
-                return 2;
-            }
-        }
-
         std::uint32_t _targetHotkey{ INVALID_KEY };
         std::uint32_t _targetModifier{ INVALID_KEY };
 
