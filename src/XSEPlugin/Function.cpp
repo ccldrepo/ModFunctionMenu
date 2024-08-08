@@ -15,18 +15,19 @@ MFMAPI void ReloadConfig(char* a_msg, std::size_t a_len)
         logger->flush_on(spdlog::level::info);
     }
 
-    try {
+    {
         std::scoped_lock lock{ Configuration::Mutex(), Translation::Mutex() };
+        try {
+            Configuration::Init(false);
+            Translation::Init(false);
 
-        Configuration::Init(false);
-        Translation::Init(false);
+            ReconfigureLogger(Configuration::GetSingleton()->general.sLogLevel);
 
-        ReconfigureLogger(Configuration::GetSingleton()->general.sLogLevel);
-
-        Configuration::IncrementVersion();
-        Translation::IncrementVersion();
-    } catch (...) {
-        // Suppress exception.
+            Configuration::IncrementVersion();
+            Translation::IncrementVersion();
+        } catch (...) {
+            // Suppress exception.
+        }
     }
 
     if (a_msg) {
